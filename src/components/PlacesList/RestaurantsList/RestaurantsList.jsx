@@ -1,21 +1,23 @@
 import React from 'react';
-import classes from '../PlacesList/PlacesList.module.css';
 import PlaceItem from '../PlaceItem/PlaceItem';
+import { Grid } from '@mui/material';
 
 const RestaurantsList = ({ restaurants }) => {
 	return (
-		<ul className={classes.list}>
+		<Grid container spacing={1}>
 			{restaurants.map((restaurant) => (
-				<PlaceItem
-					key={restaurant.id}
-					id={restaurant.id}
-					image={restaurant.image}
-					title={restaurant.title}
-					address={restaurant.address}
-					description={restaurant.description}
-				/>
+				<Grid item xs={12} sm={6} md={3} key={restaurant.id}>
+					<PlaceItem
+						id={restaurant.id}
+						image={restaurant.image}
+						title={restaurant.title}
+						rating={restaurant.rating}
+						address={restaurant.address}
+						description={restaurant.description}
+					/>
+				</Grid>
 			))}
-		</ul>
+		</Grid>
 	);
 };
 

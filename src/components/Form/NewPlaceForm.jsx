@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRef, useState } from 'react';
-import Card from '../UI/Card';
+import { Card, Rating } from '@mui/material';
 
 import {
 	Box,
@@ -14,6 +14,15 @@ import {
 	Grid,
 } from '@mui/material';
 
+const StyledCard = styled(Card)({
+	transition: '0.3s ease-in-out',
+	boxShadow:
+		'0 0 0 1px rgb(53 72 91 / 7%), 0 2px 2px rgb(0 0 0 / 1%), 0 4px 4px rgb(0 0 0 / 2%), 0 10px 8px rgb(0 0 0 / 3%), 0 15px 15px rgb(0 0 0 / 3%), 0 30px 30px rgb(0 0 0 / 4%), 0 70px 65px rgb(0 0 0 / 5%)',
+	'&:hover': {
+		boxShadow:
+			'0 0 0 1px rgb(53 72 91 / 4%), 0 2px 2px rgb(0 0 0 / 0%), 0 4px 4px rgb(0 0 0 / 1%), 0 10px 8px rgb(0 0 0 / 2%), 0 15px 15px rgb(0 0 0 / 2%), 0 30px 30px rgb(0 0 0 / 2%), 0 70px 65px rgb(0 0 0 / 3%)',
+	},
+});
 const StyledInputLabel = styled(InputLabel)({
 	display: 'block',
 	fontWeight: 'bold',
@@ -50,12 +59,14 @@ const NewPlaceForm = ({ onAddPlace }) => {
 	const descriptionInputRef = useRef();
 
 	const [type, setType] = useState('');
+	const [rating, setRating] = React.useState(0);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 
 		const enteredTitle = titleInputRef.current.value;
 		const enteredType = type;
+		const enteredRating = rating;
 		const enteredImage = imageInputRef.current.value;
 		const enteredAddress = addressInputRef.current.value;
 		const enteredDescription = descriptionInputRef.current.value;
@@ -63,6 +74,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
 		const placesData = {
 			title: enteredTitle,
 			type: enteredType,
+			rating: enteredRating,
 			image: enteredImage,
 			address: enteredAddress,
 			description: enteredDescription,
@@ -73,7 +85,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
 		setType(e.target.value);
 	};
 	return (
-		<Card>
+		<StyledCard>
 			<StyledForm onSubmit={submitHandler}>
 				{/* <div className={classes.control}>
 					<label htmlFor='type'>Type of place</label>
@@ -145,6 +157,19 @@ const NewPlaceForm = ({ onAddPlace }) => {
 					</Grid>
 					<Grid item xs={12}>
 						<StyledInputLabel htmlFor='description'>
+							Rating
+						</StyledInputLabel>
+						<Rating
+							name='simple-controlled'
+							value={rating}
+							precision={0.5}
+							onChange={(event, newValue) => {
+								setRating(newValue);
+							}}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<StyledInputLabel htmlFor='description'>
 							Description
 						</StyledInputLabel>
 						<TextField
@@ -164,7 +189,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
 					</StyledBox>
 				</Grid>
 			</StyledForm>
-		</Card>
+		</StyledCard>
 	);
 };
 

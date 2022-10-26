@@ -75,7 +75,10 @@ const StyledButton = styled(Button)({
 	fontSize: '1rem',
 	fontWeight: 'bold',
 });
-
+const StyledToolbar = styled(Toolbar)({
+	display: 'flex',
+	justifyContent: 'space-between',
+});
 const NavBar = ({ setMode, mode }) => {
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -103,13 +106,13 @@ const NavBar = ({ setMode, mode }) => {
 	return (
 		<AppBar position='static'>
 			<Container maxWidth='xl'>
-				<Toolbar disableGutters>
+				<StyledToolbar disableGutters>
 					<IconButton
 						size='large'
 						edge='start'
 						color='inherit'
 						aria-label='menu'
-						sx={{ mr: 2, display: { md: 'none' } }}
+						sx={{ display: { xs: 'block', md: 'none' } }}
 					>
 						<MenuIcon />
 					</IconButton>
@@ -203,14 +206,12 @@ const NavBar = ({ setMode, mode }) => {
 							</Link>
 						</StyledButton>
 					</Box>
-					<Box>
+					<Box sx={{ flexGrow: 0 }}>
 						<ModeSwitch
 							sx={{ m: 1 }}
 							defaultChecked
 							onChange={handlerMode}
 						/>
-					</Box>
-					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title='Open settings'>
 							<IconButton
 								onClick={handleOpenUserMenu}
@@ -218,7 +219,7 @@ const NavBar = ({ setMode, mode }) => {
 							>
 								<Avatar
 									alt=''
-									src='/static/images/avatar/2.jpg'
+									src='https://media.wired.com/photos/592676467034dc5f91beb80e/master/pass/MarkZuckerberg.jpg'
 								/>
 							</IconButton>
 						</Tooltip>
@@ -251,7 +252,7 @@ const NavBar = ({ setMode, mode }) => {
 							))}
 						</Menu>
 					</Box>
-				</Toolbar>
+				</StyledToolbar>
 			</Container>
 		</AppBar>
 	);

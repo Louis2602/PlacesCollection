@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import FavoritesContext from '../contexts/FavoritesContext';
-import PlacesList from '../components/PlacesList/PlacesList/PlacesList';
+import FavoritesList from '../components/PlacesList/FavoritesList/FavoritesList';
 
 const Favorites = () => {
 	const favoritesCtx = useContext(FavoritesContext);
@@ -15,7 +15,7 @@ const Favorites = () => {
 		keys.map((key) => {
 			return favorites.push(JSON.parse(localStorage.getItem(key)));
 		});
-		content = <PlacesList favorites={favorites} />;
+		content = <FavoritesList favorites={favorites} />;
 	}
 
 	return (
