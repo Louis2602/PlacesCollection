@@ -1,5 +1,5 @@
 import React from 'react';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import FavoritesContext from '../../../contexts/FavoritesContext';
 import { useNavigate } from 'react-router';
 
@@ -20,6 +20,7 @@ import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import HomePage from './../../../pages/HomePage';
 
 const StyledCard = styled(Card)({
 	transition: '0.3s ease-in-out',
@@ -60,15 +61,9 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
 	};
 	const navigate = useNavigate();
 
-	// const [coordinates, setCoordinates] = useState({});
 	const toggleGoogleMap = () => {
-		// console.log(address);
-		// navigator.geolocation.getCurrentPosition(
-		// 	({ coords: { latitude, longitude } }) => {
-		// 		setCoordinates({ lat: latitude, lon: longitude });
-		// 		console.log(latitude, longitude);
-		// 	}
-		// );
+		console.log(address);
+		<HomePage address={address} />;
 		navigate('/');
 	};
 	return (
@@ -110,17 +105,26 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
 					<Typography align='center' fontWeight='bold'>
 						Rating
 					</Typography>
-					<Rating
-						name='read-only'
-						value={rating}
-						readOnly
-						precision={0.5}
+					<Box
 						sx={{
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'center',
 						}}
-					/>
+					>
+						<Rating
+							name='read-only'
+							value={rating}
+							readOnly
+							precision={0.5}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						/>
+						<Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
+					</Box>
 				</CardContent>
 				<StyledCardActions>
 					<StyledIconButton

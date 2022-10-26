@@ -17,12 +17,17 @@ const Map = () => {
 	);
 };
 
-const HomePage = () => {
+const HomePage = ({ address }) => {
 	const { isLoaded } = useLoadScript({
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-		libraries: ['places'],
 	});
-
+	console.log(address);
+	// var geocoder = new window.google.maps.Geocoder();
+	// geocoder.geocode({ address: address }, (results, status) => {
+	// 	if (status === 'OK') {
+	// 		var center = results[0].geometry.location;
+	// 	}
+	// });
 	if (!isLoaded) return <div>Loading...</div>;
 	return <Map />;
 };

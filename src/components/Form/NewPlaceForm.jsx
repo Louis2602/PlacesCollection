@@ -1,7 +1,5 @@
 import React from 'react';
 import { useRef, useState } from 'react';
-import { Card, Rating } from '@mui/material';
-
 import {
 	Box,
 	Button,
@@ -12,6 +10,9 @@ import {
 	styled,
 	TextField,
 	Grid,
+	Typography,
+	Card,
+	Rating,
 } from '@mui/material';
 
 const StyledCard = styled(Card)({
@@ -52,6 +53,7 @@ const StyledForm = styled('form')({
 	padding: '1rem 1rem',
 	width: '40rem',
 });
+
 const NewPlaceForm = ({ onAddPlace }) => {
 	const titleInputRef = useRef();
 	const imageInputRef = useRef();
@@ -59,7 +61,8 @@ const NewPlaceForm = ({ onAddPlace }) => {
 	const descriptionInputRef = useRef();
 
 	const [type, setType] = useState('');
-	const [rating, setRating] = React.useState(0);
+	const [rating, setRating] = useState(2);
+	const [hover, setHover] = useState(-1);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -84,13 +87,10 @@ const NewPlaceForm = ({ onAddPlace }) => {
 	const handleTypeChange = (e) => {
 		setType(e.target.value);
 	};
+
 	return (
 		<StyledCard>
 			<StyledForm onSubmit={submitHandler}>
-				{/* <div className={classes.control}>
-					<label htmlFor='type'>Type of place</label>
-					<input type='text' required id='type' ref={typeInputRef} />
-				</div> */}
 				<Grid container spacing={1}>
 					<Grid item xs={12}>
 						<FormControl fullWidth>
@@ -129,16 +129,15 @@ const NewPlaceForm = ({ onAddPlace }) => {
 					</Grid>
 					<Grid item xs={12}>
 						<StyledInputLabel htmlFor='image'>
-							Image
+							Image Url
 						</StyledInputLabel>
 						<TextField
 							fullWidth
-							required
 							type='url'
 							variant='outlined'
 							id='image'
 							inputRef={imageInputRef}
-							placeholder='Image'
+							placeholder='Image url'
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -155,18 +154,31 @@ const NewPlaceForm = ({ onAddPlace }) => {
 							placeholder='Address'
 						/>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={6}>
 						<StyledInputLabel htmlFor='description'>
 							Rating
 						</StyledInputLabel>
-						<Rating
-							name='simple-controlled'
-							value={rating}
-							precision={0.5}
-							onChange={(event, newValue) => {
-								setRating(newValue);
+						<Box
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
 							}}
-						/>
+						>
+							<Rating
+								name='simple-controlled'
+								value={rating}
+								precision={0.1}
+								onChange={(event, newValue) => {
+									setRating(newValue);
+								}}
+								onChangeActive={(event, newHover) => {
+									setHover(newHover);
+								}}
+							/>
+							<Typography sx={{ mx: 1 }}>
+								{hover !== -1 ? `(${hover})` : `(${rating})`}
+							</Typography>
+						</Box>
 					</Grid>
 					<Grid item xs={12}>
 						<StyledInputLabel htmlFor='description'>
