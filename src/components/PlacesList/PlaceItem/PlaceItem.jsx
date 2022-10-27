@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
-import FavoritesContext from '../../../contexts/FavoritesContext';
 import { useNavigate } from 'react-router';
+import FavoritesContext from '../../../contexts/FavoritesContext';
 
 import {
 	Card,
@@ -20,7 +20,6 @@ import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import HomePage from './../../../pages/HomePage';
 
 const StyledCard = styled(Card)({
 	transition: '0.3s ease-in-out',
@@ -40,6 +39,7 @@ const StyledCardActions = styled(CardActions)({
 	alignItems: 'center',
 	justifyContent: 'center',
 });
+
 const PlaceItem = ({ id, image, title, rating, address, description }) => {
 	const favoriteCtx = useContext(FavoritesContext);
 
@@ -60,11 +60,14 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
 		}
 	};
 	const navigate = useNavigate();
-
 	const toggleGoogleMap = () => {
-		console.log(address);
-		<HomePage address={address} />;
-		navigate('/');
+		navigate('/map', {
+			state: {
+				id: id,
+				address: address,
+				tittle: title,
+			},
+		});
 	};
 	return (
 		<Box>

@@ -7,6 +7,7 @@ import NewPlace from './pages/NewPlace';
 import HomePage from './pages/HomePage';
 import Favorites from './pages/Favorites';
 import NavBar from './components/NavBar/NavBar';
+import Map from './pages/Map';
 
 import { FavoritesContextProvider } from './contexts/FavoritesContext';
 import { useState } from 'react';
@@ -36,7 +37,12 @@ function App() {
 						<NavBar setMode={setMode} mode={mode} />
 						<StyledStack spacing={2}>
 							<Routes>
-								<Route path='/' element={<HomePage />}></Route>
+								<Route
+									exact
+									path='/'
+									element={<HomePage />}
+								></Route>
+								<Route path='/map' element={<Map />}></Route>
 								<Route
 									path='/Restaurants'
 									element={<AllRestaurants />}
