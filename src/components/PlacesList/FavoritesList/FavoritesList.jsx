@@ -4,9 +4,25 @@ import { Grid } from '@mui/material';
 
 const FavoritesList = ({ favorites }) => {
 	return (
-		<Grid container spacing={1} sx={{width: '100%'}}>
+		<Grid
+			container
+			spacing={1}
+			sx={{
+				width: '100%',
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}}
+		>
 			{favorites.map((fav) => (
-				<Grid item xs={12} sm={6} md={3} key={fav.id}>
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={3}
+					key={fav.id}
+					sx={{ height: 600, width: 'auto' }}
+				>
 					<PlaceItem
 						id={fav.id}
 						image={fav.image}

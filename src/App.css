@@ -21,7 +21,6 @@ body {
 
 h1 {
 	font-size: 2.5rem;
-	color: #2c292b;
 	margin-bottom: 1.5rem;
 	padding-top: 1rem;
 	text-align: center;
@@ -29,11 +28,9 @@ h1 {
 
 h2 {
 	font-size: 1.5rem;
-	color: #2c292b;
 }
 
 .loader {
-	color: #5a5a5a;
 	font-size: 90px;
 	text-indent: -9999em;
 	overflow: hidden;

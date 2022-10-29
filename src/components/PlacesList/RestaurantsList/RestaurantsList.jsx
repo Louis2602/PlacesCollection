@@ -4,9 +4,25 @@ import { Grid } from '@mui/material';
 
 const RestaurantsList = ({ restaurants }) => {
 	return (
-		<Grid container spacing={1}>
+		<Grid
+			container
+			spacing={1}
+			sx={{
+				width: '100%',
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}}
+		>
 			{restaurants.map((restaurant) => (
-				<Grid item xs={12} sm={6} md={3} key={restaurant.id}>
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={3}
+					key={restaurant.id}
+					sx={{ height: 600, width: 'auto' }}
+				>
 					<PlaceItem
 						id={restaurant.id}
 						image={restaurant.image}

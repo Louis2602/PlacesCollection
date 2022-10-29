@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 
 import Switch from '@mui/material/Switch';
+import { ListItemIcon } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,8 +17,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Logout from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 
-const settings = ['Profile', 'Account', 'Reviews', 'Logout'];
 const places = ['restaurants', 'hotels', 'attractions'];
 
 const ModeSwitch = styled(Switch)(({ theme }) => ({
@@ -71,7 +75,7 @@ const ModeSwitch = styled(Switch)(({ theme }) => ({
 const StyledButton = styled(Button)({
 	'&:hover': {
 		color: 'black',
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 	fontSize: '1rem',
 	fontWeight: 'bold',
@@ -81,6 +85,7 @@ const StyledToolbar = styled(Toolbar)({
 	display: 'flex',
 	justifyContent: 'space-between',
 });
+const StyledAppBar = styled(AppBar)({});
 const NavBar = ({ setMode, mode }) => {
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -106,7 +111,7 @@ const NavBar = ({ setMode, mode }) => {
 	};
 
 	return (
-		<AppBar position='static'>
+		<StyledAppBar position='static'>
 			<Container maxWidth='xl'>
 				<StyledToolbar disableGutters>
 					<IconButton
@@ -118,6 +123,13 @@ const NavBar = ({ setMode, mode }) => {
 					>
 						<MenuIcon />
 					</IconButton>
+					<img
+						src='/assets/placeLogo.png'
+						alt='no logo'
+						width='40px'
+						height='40px'
+						style={{ margin: '0 1rem' }}
+					/>
 					<Typography
 						variant='h6'
 						noWrap
@@ -137,7 +149,7 @@ const NavBar = ({ setMode, mode }) => {
 							}}
 							to={'/'}
 						>
-							Places Collections
+							PLACES COLLECTION
 						</Link>
 					</Typography>
 					<Box
@@ -146,19 +158,34 @@ const NavBar = ({ setMode, mode }) => {
 							mx: 2,
 						}}
 					>
-							<StyledButton
-								onClick={handleOpenPlaces}
+						<StyledButton
+							onClick={handleOpenPlaces}
+							sx={{
+								color: 'white',
+								display: 'block',
+								p: 3,
+							}}
+						>
+							Collections
+							<ArrowDropDownIcon
 								sx={{
-									color: 'white',
-									display: 'block',
-									p: 3,
+									verticalAlign: 'top',
 								}}
-							>
-								Collections
-							</StyledButton>
+							/>
+						</StyledButton>
 						<Menu
+							sx={{ mt: 5 }}
 							id='basic-menu'
 							anchorEl={anchorEl}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
 							open={open}
 							onClose={handleClosePlaces}
 							MenuListProps={{
@@ -181,32 +208,32 @@ const NavBar = ({ setMode, mode }) => {
 								</MenuItem>
 							))}
 						</Menu>
-						<StyledButton
-							sx={{ p: 3, color: 'white', display: 'block' }}
+						<Link
+							style={{
+								textDecoration: 'none',
+								color: 'inherit',
+							}}
+							to={'/new-place'}
 						>
-							<Link
-								style={{
-									textDecoration: 'none',
-									color: 'inherit',
-								}}
-								to={'/new-place'}
+							<StyledButton
+								sx={{ p: 3, color: 'white', display: 'block' }}
 							>
 								Add New Place
-							</Link>
-						</StyledButton>
-						<StyledButton
-							sx={{ p: 3, color: 'white', display: 'block' }}
+							</StyledButton>
+						</Link>
+						<Link
+							style={{
+								textDecoration: 'none',
+								color: 'inherit',
+							}}
+							to={'/favorites'}
 						>
-							<Link
-								style={{
-									textDecoration: 'none',
-									color: 'inherit',
-								}}
-								to={'/favorites'}
+							<StyledButton
+								sx={{ p: 3, color: 'white', display: 'block' }}
 							>
 								My Favorites
-							</Link>
-						</StyledButton>
+							</StyledButton>
+						</Link>
 					</Box>
 					<Box sx={{ flexGrow: 0 }}>
 						<ModeSwitch
@@ -226,7 +253,7 @@ const NavBar = ({ setMode, mode }) => {
 							</IconButton>
 						</Tooltip>
 						<Menu
-							sx={{ mt: '45px' }}
+							sx={{ mt: 6 }}
 							id='menu-appbar'
 							anchorEl={anchorElUser}
 							anchorOrigin={{
@@ -240,23 +267,37 @@ const NavBar = ({ setMode, mode }) => {
 							}}
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
+							onClick={handleCloseUserMenu}
 						>
-							{settings.map((setting) => (
-								<MenuItem
-									key={setting}
-									onClick={handleCloseUserMenu}
-									sx={{ px: 2 }}
-								>
-									<Typography textAlign='center'>
-										{setting}
-									</Typography>
-								</MenuItem>
-							))}
+							<MenuItem sx={{ px: 2 }}>
+								<ListItemIcon>
+									<AccountCircleIcon fontSize='small' />
+								</ListItemIcon>
+								<Typography textAlign='center'>
+									Profile
+								</Typography>
+							</MenuItem>
+							<MenuItem sx={{ px: 2 }}>
+								<ListItemIcon>
+									<ReviewsIcon fontSize='small' />
+								</ListItemIcon>
+								<Typography textAlign='center'>
+									Reviews
+								</Typography>
+							</MenuItem>
+							<MenuItem sx={{ px: 2 }}>
+								<ListItemIcon>
+									<Logout fontSize='small' />
+								</ListItemIcon>
+								<Typography textAlign='center'>
+									Logout
+								</Typography>
+							</MenuItem>
 						</Menu>
 					</Box>
 				</StyledToolbar>
 			</Container>
-		</AppBar>
+		</StyledAppBar>
 	);
 };
 
