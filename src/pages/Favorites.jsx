@@ -19,7 +19,7 @@ const Favorites = () => {
 	}
 
 	return (
-		<section>
+		<section style={{width: '100%'}}>
 			<h1>My Favorites</h1>
 			{content}
 		</section>

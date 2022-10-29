@@ -70,10 +70,12 @@ const ModeSwitch = styled(Switch)(({ theme }) => ({
 
 const StyledButton = styled(Button)({
 	'&:hover': {
-		color: 'gold',
+		color: 'black',
+		backgroundColor: 'white'
 	},
 	fontSize: '1rem',
 	fontWeight: 'bold',
+	borderRadius: 0,
 });
 const StyledToolbar = styled(Toolbar)({
 	display: 'flex',
@@ -144,16 +146,16 @@ const NavBar = ({ setMode, mode }) => {
 							mx: 2,
 						}}
 					>
-						<StyledButton
-							onClick={handleOpenPlaces}
-							sx={{
-								m: 2,
-								color: 'white',
-								display: 'block',
-							}}
-						>
-							Collections
-						</StyledButton>
+							<StyledButton
+								onClick={handleOpenPlaces}
+								sx={{
+									color: 'white',
+									display: 'block',
+									p: 3,
+								}}
+							>
+								Collections
+							</StyledButton>
 						<Menu
 							id='basic-menu'
 							anchorEl={anchorEl}
@@ -180,7 +182,7 @@ const NavBar = ({ setMode, mode }) => {
 							))}
 						</Menu>
 						<StyledButton
-							sx={{ m: 2, color: 'white', display: 'block' }}
+							sx={{ p: 3, color: 'white', display: 'block' }}
 						>
 							<Link
 								style={{
@@ -193,7 +195,7 @@ const NavBar = ({ setMode, mode }) => {
 							</Link>
 						</StyledButton>
 						<StyledButton
-							sx={{ m: 2, color: 'white', display: 'block' }}
+							sx={{ p: 3, color: 'white', display: 'block' }}
 						>
 							<Link
 								style={{
