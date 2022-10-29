@@ -123,13 +123,6 @@ const NavBar = ({ setMode, mode }) => {
 					>
 						<MenuIcon />
 					</IconButton>
-					<img
-						src='/assets/placeLogo.png'
-						alt='no logo'
-						width='40px'
-						height='40px'
-						style={{ margin: '0 1rem' }}
-					/>
 					<Typography
 						variant='h6'
 						noWrap
@@ -140,8 +133,18 @@ const NavBar = ({ setMode, mode }) => {
 							letterSpacing: '.3rem',
 							color: 'inherit',
 							textDecoration: 'none',
+							alignItems: 'center',
 						}}
 					>
+						<img
+							src='/assets/placeLogo.png'
+							alt='no logo'
+							width='40px'
+							height='40px'
+							style={{
+								margin: '0 1rem',
+							}}
+						/>
 						<Link
 							style={{
 								textDecoration: 'none',
