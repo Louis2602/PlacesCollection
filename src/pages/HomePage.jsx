@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box } from '@mui/material';
+import Carousel from '../components/Carousel/Carousel';
 
 const HomePage = () => {
 	return (
 		<Box>
-			<h1>Hello World</h1>
+			<Carousel />
 		</Box>
 	);
 };

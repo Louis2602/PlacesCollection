@@ -10,7 +10,7 @@ const FavoritesList = ({ favorites }) => {
 			sx={{
 				width: '100%',
 				display: 'flex',
-				alignItems: 'center',
+				alignItems: 'flex-start',
 				justifyContent: 'center',
 			}}
 		>
@@ -21,7 +21,7 @@ const FavoritesList = ({ favorites }) => {
 					sm={6}
 					md={3}
 					key={fav.id}
-					sx={{ height: 600, width: 'auto' }}
+					sx={{ height: '100%', width: 'auto' }}
 				>
 					<PlaceItem
 						id={fav.id}

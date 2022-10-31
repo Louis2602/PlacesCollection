@@ -10,7 +10,7 @@ const RestaurantsList = ({ restaurants }) => {
 			sx={{
 				width: '100%',
 				display: 'flex',
-				alignItems: 'center',
+				alignItems: 'flex-start',
 				justifyContent: 'center',
 			}}
 		>
@@ -21,7 +21,7 @@ const RestaurantsList = ({ restaurants }) => {
 					sm={6}
 					md={3}
 					key={restaurant.id}
-					sx={{ height: 600, width: 'auto' }}
+					sx={{ height: '100%', width: 'auto' }}
 				>
 					<PlaceItem
 						id={restaurant.id}

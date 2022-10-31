@@ -64,10 +64,18 @@ const Footer = () => {
 							About Us
 						</Typography>
 						<Stack spacing={2}>
-							<Typography>How it works</Typography>
-							<Typography>Testimonials</Typography>
-							<Typography>Careers</Typography>
-							<Typography>Terms of service</Typography>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								About
+							</Atag>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								How it works
+							</Atag>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								Testimonials
+							</Atag>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								Terms of service
+							</Atag>
 						</Stack>
 					</Grid>
 					<Grid item xs={4}>
@@ -83,10 +91,18 @@ const Footer = () => {
 							Contact Us
 						</Typography>
 						<Stack spacing={2}>
-							<Typography>Contact</Typography>
-							<Typography>Support</Typography>
-							<Typography>Destinations</Typography>
-							<Typography>Sponsorships</Typography>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								Contact
+							</Atag>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								Support
+							</Atag>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								Destination
+							</Atag>
+							<Atag href='/' rel='noreferrer' target='_blank'>
+								Sponsorships
+							</Atag>
 						</Stack>
 					</Grid>
 					<Grid item xs={4}>
@@ -142,15 +158,20 @@ const Footer = () => {
 				</Grid>
 				<Grid container spacing={2} sx={{ marginTop: '1rem' }}>
 					<Grid item xs={4}>
-						<Typography
+						<Atag
+							href='/'
 							sx={{
 								fontSize: '1.5rem',
 								fontWeight: 'bold',
 								color: 'crimson',
+								'&:hover': {
+									color: 'orange',
+									transition: '0.3s ease-in-out',
+								},
 							}}
 						>
 							PLACES COLLECTION
-						</Typography>
+						</Atag>
 					</Grid>
 					<Grid item xs={4}>
 						<Typography>
