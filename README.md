@@ -1,4 +1,4 @@
--   View Demo at: https://places-collection.netlify.app/
+#### View Demo at: https://places-collection.netlify.app/
 ## Things used in this React Application Project
 
 -   Material-UI (mui)
