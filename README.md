@@ -1,3 +1,4 @@
+-   View Demo at: https://places-collection.netlify.app/
 ## Things used in this React Application Project
 
 -   Material-UI (mui)
@@ -9,6 +10,6 @@
 
 ## Missing features
 
--   Google Maps API (half way through)
--   Sign in/up
+-   Sign in/up - Authentication
+-   Database Management
 -   Better security
