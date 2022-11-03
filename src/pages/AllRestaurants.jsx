@@ -1,5 +1,5 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
+
 import RestaurantsList from '../components/PlacesList/RestaurantsList/RestaurantsList';
 
 const AllRestaurants = () => {

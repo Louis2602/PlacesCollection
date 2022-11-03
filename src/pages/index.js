@@ -1,0 +1,11 @@
+export { default as AllRestaurants } from './AllRestaurants';
+export { default as AllHotels } from './AllHotels';
+export { default as AllAttractions } from './AllAttractions';
+export { default as NewPlace } from './NewPlace';
+export { default as HomePage } from './HomePage';
+export { default as Favorites } from './Favorites';
+export { default as Map } from './Map';
+export { default as NavBar } from '../components/NavBar/NavBar';
+export { default as SignIn } from './SignIn';
+export { default as SignUp } from './SignUp';
+export { default as Footer } from '../components/Footer/Footer';

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { styled } from '@mui/material/styles';
 import {
+    styled,
     Box,
     Switch,
     AppBar,
@@ -100,11 +100,14 @@ const StyledMenu = styled((props) => (
     />
 ))(({ theme }) => ({
     '& .MuiPaper-root': {
+        borderRadius: 0,
         '& .MuiMenu-list': {
-            border: `1px solid ${theme.palette.mode === 'dark' ? 'white' : 'black'}`
+            padding: 0,
+            width: '180px'
         },
         '& .MuiMenuItem-root': {
-            width: '300px'
+            padding: 10,
+            borderTop: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`
         }
     }
 }));
@@ -216,7 +219,7 @@ const NavBar = ({ setMode, mode }) => {
                                 'aria-labelledby': 'basic-button'
                             }}>
                             {places.map((place, idx) => (
-                                <MenuItem key={idx} elevation={2} onClick={handleClosePlaces}>
+                                <MenuItem key={idx} onClick={handleClosePlaces}>
                                     <Typography textAlign="center">
                                         <Link
                                             style={{
