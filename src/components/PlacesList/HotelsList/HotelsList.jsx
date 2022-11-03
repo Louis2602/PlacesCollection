@@ -1,6 +1,6 @@
-import React from 'react';
-import PlaceItem from '../PlaceItem/PlaceItem';
 import { Grid } from '@mui/material';
+
+import PlaceItem from '../PlaceItem/PlaceItem';
 
 const HotelsList = ({ hotels }) => {
 	return (
