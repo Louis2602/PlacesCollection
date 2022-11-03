@@ -5,3 +5,4 @@ export const img4 = require('./4.jpg');
 export const img5 = require('./5.jpg');
 export const img6 = require('./6.jpg');
 export const img7 = require('./7.jpg');
+export const Avatar = require('./Avatar.jpg');

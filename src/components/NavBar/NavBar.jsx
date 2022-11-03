@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import {
     styled,
     Box,
@@ -15,7 +14,10 @@ import {
     Button,
     Tooltip,
     MenuItem,
-    ListItemIcon
+    List,
+    ListItem,
+    ListItemIcon,
+    Drawer
 } from '@mui/material';
 import {
     KeyboardArrowDown,
@@ -25,6 +27,8 @@ import {
     Reviews,
     MenuOutlined
 } from '@mui/icons-material';
+
+import { Avatar as AvatarImg } from '../Carousel/assets';
 
 const places = ['restaurants', 'hotels', 'attractions'];
 
@@ -74,7 +78,14 @@ const ModeSwitch = styled(Switch)(({ theme }) => ({
         borderRadius: 20 / 2
     }
 }));
-
+const StyledList = styled(List)(({ theme }) => ({
+    '& .MuiListItem-root': {
+        borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`,
+        alignItems: 'center',
+        justiftContent: 'center',
+        display: 'flex'
+    }
+}));
 const StyledButton = styled(Button)({
     '&:hover': {
         color: 'black',
@@ -119,6 +130,7 @@ const StyledAppBar = styled(AppBar)({});
 const NavBar = ({ setMode, mode }) => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorSm, setAnchorSm] = useState(false);
 
     const handlerMode = () => {
         setMode(mode === 'light' ? 'dark' : 'light');
@@ -131,8 +143,6 @@ const NavBar = ({ setMode, mode }) => {
         setAnchorElUser(null);
     };
 
-    const open = Boolean(anchorEl);
-
     const handleOpenPlaces = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -140,48 +150,132 @@ const NavBar = ({ setMode, mode }) => {
         setAnchorEl(null);
     };
 
+    const open = Boolean(anchorEl);
+    const openSm = Boolean(anchorSm);
+
+    const handleToggleSidebar = () => setAnchorSm(!anchorSm);
+
     return (
         <StyledAppBar position="static">
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" sx={{ marginY: { xs: '1rem', md: 0 } }}>
                 <StyledToolbar disableGutters>
+                    {/* Small devices */}
                     <IconButton
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ display: { xs: 'block', md: 'none' } }}>
+                        sx={{
+                            display: { xs: 'block', md: 'none' },
+                            marginRight: { xs: '.2rem', md: '1rem' }
+                        }}
+                        onClick={handleToggleSidebar}>
                         <MenuOutlined />
                     </IconButton>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: 'none', md: 'flex' },
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
+                    <Drawer anchor={'left'} open={openSm} onClick={handleToggleSidebar}>
+                        <Box sx={{ width: '50vw' }}>
+                            <StyledList>
+                                <ListItem sx={{ paddingY: 3 }}>
+                                    <img
+                                        src="/assets/placeLogo.png"
+                                        alt="no logo"
+                                        width="40px"
+                                        height="40px"
+                                    />
+                                    <Typography
+                                        variant="h7"
+                                        sx={{
+                                            flexGrow: 1,
+                                            display: 'flex',
+                                            fontWeight: 700,
+                                            letterSpacing: { xs: '0.1rem', md: '.3rem' },
+                                            lineHeight: '1.5rem',
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                            alignItems: 'center',
+                                            textAlign: 'center',
+                                            marginLeft: { xs: '10px', md: '20px' }
+                                        }}>
+                                        PLACES COLLECTION
+                                    </Typography>
+                                </ListItem>
+                                <ListItem onClick={handleToggleSidebar}>
+                                    <Typography textAlign="center"> - COLLECTIONS:</Typography>
+                                </ListItem>
+
+                                {places.map((place, idx) => (
+                                    <Link
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'inherit'
+                                        }}
+                                        to={`/${place}`}>
+                                        <ListItem key={idx} onClick={handleToggleSidebar}>
+                                            <Typography textAlign="center">
+                                                + {place.toUpperCase()}
+                                            </Typography>
+                                        </ListItem>
+                                    </Link>
+                                ))}
+
+                                <ListItem onClick={handleToggleSidebar}>
+                                    <Typography>
+                                        <Link
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'inherit'
+                                            }}
+                                            to={`/new-place`}>
+                                            - ADD NEW PLACE
+                                        </Link>
+                                    </Typography>
+                                </ListItem>
+
+                                <ListItem onClick={handleToggleSidebar}>
+                                    <Typography>
+                                        <Link
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'inherit'
+                                            }}
+                                            to={`/favorites`}>
+                                            - MY FAVORITES
+                                        </Link>
+                                    </Typography>
+                                </ListItem>
+                            </StyledList>
+                        </Box>
+                    </Drawer>
+
+                    {/* Medium devices */}
+
+                    <Link
+                        style={{
                             textDecoration: 'none',
-                            alignItems: 'center'
-                        }}>
-                        <img
-                            src="/assets/placeLogo.png"
-                            alt="no logo"
-                            width="40px"
-                            height="40px"
-                            style={{
-                                margin: '0 1rem'
-                            }}
-                        />
-                        <Link
-                            style={{
+                            color: 'inherit',
+                            display: 'flex',
+                            flexDirection: 'row'
+                        }}
+                        to={'/'}>
+                        <img src="/assets/placeLogo.png" alt="no logo" width="40px" height="40px" />
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                flexGrow: 1,
+                                display: 'flex',
+                                fontWeight: 700,
+                                letterSpacing: { xs: '0.1rem', md: '.3rem' },
+                                lineHeight: '1.5rem',
+                                color: 'inherit',
                                 textDecoration: 'none',
-                                color: 'inherit'
-                            }}
-                            to={'/'}>
+                                alignItems: 'center',
+                                textAlign: 'center',
+                                marginLeft: { xs: '10px', md: '20px' }
+                            }}>
                             PLACES COLLECTION
-                        </Link>
-                    </Typography>
+                        </Typography>
+                    </Link>
+
                     <Box
                         sx={{
                             display: { xs: 'none', md: 'flex' },
@@ -219,18 +313,16 @@ const NavBar = ({ setMode, mode }) => {
                                 'aria-labelledby': 'basic-button'
                             }}>
                             {places.map((place, idx) => (
-                                <MenuItem key={idx} onClick={handleClosePlaces}>
-                                    <Typography textAlign="center">
-                                        <Link
-                                            style={{
-                                                textDecoration: 'none',
-                                                color: 'inherit'
-                                            }}
-                                            to={`/${place}`}>
-                                            {place.toUpperCase()}
-                                        </Link>
-                                    </Typography>
-                                </MenuItem>
+                                <Link
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'inherit'
+                                    }}
+                                    to={`/${place}`}>
+                                    <MenuItem key={idx} onClick={handleClosePlaces}>
+                                        <Typography textAlign="center">{place.toUpperCase()}</Typography>
+                                    </MenuItem>
+                                </Link>
                             ))}
                         </StyledMenu>
                         <Link
@@ -254,18 +346,15 @@ const NavBar = ({ setMode, mode }) => {
                             </StyledButton>
                         </Link>
                     </Box>
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row' }}>
                         <ModeSwitch sx={{ m: 1 }} defaultChecked onChange={handlerMode} />
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar
-                                    alt=""
-                                    src="https://media.wired.com/photos/592676467034dc5f91beb80e/master/pass/MarkZuckerberg.jpg"
-                                />
+                                <Avatar alt="Avatar" src={AvatarImg} />
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: 2.1 }}
+                            sx={{ mt: { xs: 2.5, md: 1.5 } }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{

@@ -19,7 +19,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
     '&:hover': {
         color: '#757de8'
     },
-    [theme.breakpoints.down('xs')]: {
+    display: 'block',
+    [theme.breakpoints.down('md')]: {
         display: 'none'
     }
 }));
@@ -28,8 +29,9 @@ const StyledImg = styled('img')(({ theme }) => ({
     width: '100%',
     height: '100vh',
     padding: '0 10% 5% 10%',
-    [theme.breakpoints.down('xs')]: {
-        padding: '0 0 10% 0'
+    [theme.breakpoints.down('md')]: {
+        padding: '0 0 10% 0',
+        height: 'auto'
     }
 }));
 
