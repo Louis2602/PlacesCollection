@@ -209,8 +209,9 @@ const NavBar = ({ setMode, mode }) => {
                                             textDecoration: 'none',
                                             color: 'inherit'
                                         }}
+                                        key={idx}
                                         to={`/${place}`}>
-                                        <ListItem key={idx} onClick={handleToggleSidebar}>
+                                        <ListItem  onClick={handleToggleSidebar}>
                                             <Typography textAlign="center">
                                                 + {place.toUpperCase()}
                                             </Typography>
@@ -318,8 +319,9 @@ const NavBar = ({ setMode, mode }) => {
                                         textDecoration: 'none',
                                         color: 'inherit'
                                     }}
+                                    key={idx}
                                     to={`/${place}`}>
-                                    <MenuItem key={idx} onClick={handleClosePlaces}>
+                                    <MenuItem  onClick={handleClosePlaces}>
                                         <Typography textAlign="center">{place.toUpperCase()}</Typography>
                                     </MenuItem>
                                 </Link>

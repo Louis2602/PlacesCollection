@@ -14,7 +14,7 @@ import {
     Rating
 } from '@mui/material';
 
-const StyledCard = styled(Card)({
+const StyledCard = styled(Card)(({theme}) => ({
     transition: '0.3s ease-in-out',
     boxShadow:
         '0 0 0 1px rgb(53 72 91 / 7%), 0 2px 2px rgb(0 0 0 / 1%), 0 4px 4px rgb(0 0 0 / 2%), 0 10px 8px rgb(0 0 0 / 3%), 0 15px 15px rgb(0 0 0 / 3%), 0 30px 30px rgb(0 0 0 / 4%), 0 70px 65px rgb(0 0 0 / 5%)',
@@ -22,7 +22,7 @@ const StyledCard = styled(Card)({
         boxShadow:
             '0 0 0 1px rgb(53 72 91 / 4%), 0 2px 2px rgb(0 0 0 / 0%), 0 4px 4px rgb(0 0 0 / 1%), 0 10px 8px rgb(0 0 0 / 2%), 0 15px 15px rgb(0 0 0 / 2%), 0 30px 30px rgb(0 0 0 / 2%), 0 70px 65px rgb(0 0 0 / 3%)'
     }
-});
+}));
 const StyledInputLabel = styled(InputLabel)({
     display: 'block',
     fontWeight: 'bold',
