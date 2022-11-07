@@ -126,7 +126,35 @@ const StyledToolbar = styled(Toolbar)({
     display: 'flex',
     justifyContent: 'space-between'
 });
+
+const StyledTypoLogo = styled(Typography)(({ theme }) => ({
+    flexGrow: 1,
+    display: 'flex',
+    fontWeight: 700,
+    letterSpacing: '.3rem',
+    lineHeight: '1.5rem',
+    color: 'inherit',
+    textDecoration: 'none',
+    alignItems: 'center',
+    textAlign: 'center',
+    marginLeft: '20px',
+    [theme.breakpoints.down('md')]: {
+        letterSpacing: '0.1rem',
+        marginLeft: '10px'
+    }
+}));
+
 const StyledAppBar = styled(AppBar)({});
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    display: 'none',
+    marginRight: '1rem',
+    [theme.breakpoints.down('md')]: {
+        display: 'block',
+        marginRight: '.2rem'
+    }
+}));
+
 const NavBar = ({ setMode, mode }) => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -160,20 +188,16 @@ const NavBar = ({ setMode, mode }) => {
             <Container maxWidth="xl" sx={{ marginY: { xs: '1rem', md: 0 } }}>
                 <StyledToolbar disableGutters>
                     {/* Small devices */}
-                    <IconButton
+                    <StyledIconButton
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{
-                            display: { xs: 'block', md: 'none' },
-                            marginRight: { xs: '.2rem', md: '1rem' }
-                        }}
                         onClick={handleToggleSidebar}>
                         <MenuOutlined />
-                    </IconButton>
-                    <Drawer anchor={'left'} open={openSm} onClick={handleToggleSidebar}>
-                        <Box sx={{ width: '50vw' }}>
+                    </StyledIconButton>
+                    <Drawer sx={{ width: '50%' }} anchor={'left'} open={openSm} onClick={handleToggleSidebar}>
+                        <Box>
                             <StyledList>
                                 <ListItem sx={{ paddingY: 3 }}>
                                     <img
@@ -182,22 +206,7 @@ const NavBar = ({ setMode, mode }) => {
                                         width="40px"
                                         height="40px"
                                     />
-                                    <Typography
-                                        variant="h7"
-                                        sx={{
-                                            flexGrow: 1,
-                                            display: 'flex',
-                                            fontWeight: 700,
-                                            letterSpacing: { xs: '0.1rem', md: '.3rem' },
-                                            lineHeight: '1.5rem',
-                                            color: 'inherit',
-                                            textDecoration: 'none',
-                                            alignItems: 'center',
-                                            textAlign: 'center',
-                                            marginLeft: { xs: '10px', md: '20px' }
-                                        }}>
-                                        PLACES COLLECTION
-                                    </Typography>
+                                    <StyledTypoLogo variant="h7">PLACES COLLECTION</StyledTypoLogo>
                                 </ListItem>
                                 <ListItem onClick={handleToggleSidebar}>
                                     <Typography textAlign="center"> - COLLECTIONS:</Typography>
@@ -258,22 +267,7 @@ const NavBar = ({ setMode, mode }) => {
                         }}
                         to={'/'}>
                         <img src="/assets/placeLogo.png" alt="no logo" width="40px" height="40px" />
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                flexGrow: 1,
-                                display: 'flex',
-                                fontWeight: 700,
-                                letterSpacing: { xs: '0.1rem', md: '.3rem' },
-                                lineHeight: '1.5rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                                alignItems: 'center',
-                                textAlign: 'center',
-                                marginLeft: { xs: '10px', md: '20px' }
-                            }}>
-                            PLACES COLLECTION
-                        </Typography>
+                        <StyledTypoLogo variant="h6">PLACES COLLECTION</StyledTypoLogo>
                     </Link>
 
                     <Box
