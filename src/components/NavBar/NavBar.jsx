@@ -17,20 +17,29 @@ import {
     List,
     ListItem,
     ListItemIcon,
-    Drawer
+    Drawer,
+    Grow,
+    Collapse
 } from '@mui/material';
 import {
-    KeyboardArrowDown,
-    KeyboardArrowUp,
-    Logout,
     AccountCircle,
+    MenuOutlined,
     Reviews,
-    MenuOutlined
+    Logout,
+    ExpandMore,
+    ExpandLess,
+    ChevronLeft
 } from '@mui/icons-material';
 
 import { Avatar as AvatarImg } from '../Carousel/assets';
 
 const places = ['restaurants', 'hotels', 'attractions'];
+
+const userMenu = [
+    { obj: 'Profile', icon: AccountCircle },
+    { obj: 'Reviews', icon: Reviews },
+    { obj: 'Logout', icon: Logout }
+];
 
 const ModeSwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -91,7 +100,8 @@ const StyledButton = styled(Button)({
         color: 'black',
         backgroundColor: 'white'
     },
-
+    padding: '24px',
+    color: 'white',
     fontSize: '1rem',
     fontWeight: 'bold',
     borderRadius: 0
@@ -101,17 +111,18 @@ const StyledMenu = styled((props) => (
         elevation={0}
         anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left'
+            horizontal: 'center'
         }}
         transformOrigin={{
             vertical: 'top',
-            horizontal: 'left'
+            horizontal: 'center'
         }}
         {...props}
     />
 ))(({ theme }) => ({
     '& .MuiPaper-root': {
-        borderRadius: 0,
+        borderRadius: 1,
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
         '& .MuiMenu-list': {
             padding: 0,
             width: '180px'
@@ -122,9 +133,39 @@ const StyledMenu = styled((props) => (
         }
     }
 }));
+
+const StyledUserMenu = styled((props) => (
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+        }}
+        transformOrigin={{
+            vertical: 'left',
+            horizontal: 'right'
+        }}
+        {...props}
+    />
+))(({ theme }) => ({
+    '& .MuiPaper-root': {
+        borderRadius: 1,
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
+        '& .MuiMenu-list': {
+            padding: 0,
+            width: '180px'
+        },
+        '& .MuiMenuItem-root': {
+            padding: 10,
+            borderTop: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`
+        }
+    }
+}));
+
 const StyledToolbar = styled(Toolbar)({
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    width: '100%'
 });
 
 const StyledTypoLogo = styled(Typography)(({ theme }) => ({
@@ -146,6 +187,11 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
 
 const StyledAppBar = styled(AppBar)({});
 
+const StyledLink = styled(Link)({
+    textDecoration: 'none',
+    color: 'inherit'
+});
+
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     display: 'none',
     marginRight: '1rem',
@@ -155,10 +201,35 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     }
 }));
 
+const StyledExpandMore = styled(ExpandMore)({
+    animation: 'spin 0.4s linear 1',
+    '@keyframes spin': {
+        '0%': { transform: 'rotate(180deg)' },
+        '100%': { transform: 'rotate(0deg)' }
+    }
+});
+
+const StyledExpandLess = styled(ExpandLess)({
+    animation: 'spin 0.4s linear 1',
+    '@keyframes spin': {
+        '0%': { transform: 'rotate(180deg)' },
+        '100%': { transform: 'rotate(0deg)' }
+    }
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '32px 15px',
+    borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`
+}));
+
 const NavBar = ({ setMode, mode }) => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
+    const [openList, setOpenList] = useState(true);
 
     const handlerMode = () => {
         setMode(mode === 'light' ? 'dark' : 'light');
@@ -177,9 +248,13 @@ const NavBar = ({ setMode, mode }) => {
     const handleClosePlaces = () => {
         setAnchorEl(null);
     };
+    const handleOpenList = () => {
+        setOpenList(!openList);
+    };
 
     const open = Boolean(anchorEl);
     const openSm = Boolean(anchorSm);
+    const openUser = Boolean(anchorElUser);
 
     const handleToggleSidebar = () => setAnchorSm(!anchorSm);
 
@@ -196,61 +271,36 @@ const NavBar = ({ setMode, mode }) => {
                         onClick={handleToggleSidebar}>
                         <MenuOutlined />
                     </StyledIconButton>
-                    <Drawer sx={{ width: '50%' }} anchor={'left'} open={openSm} onClick={handleToggleSidebar}>
+                    <Drawer anchor={'left'} open={openSm}>
                         <Box>
+                            <DrawerHeader>
+                                <ChevronLeft onClick={handleToggleSidebar} />
+                            </DrawerHeader>
+
                             <StyledList>
-                                <ListItem sx={{ paddingY: 3 }}>
-                                    <img
-                                        src="/assets/placeLogo.png"
-                                        alt="no logo"
-                                        width="40px"
-                                        height="40px"
-                                    />
-                                    <StyledTypoLogo variant="h7">PLACES COLLECTION</StyledTypoLogo>
+                                <ListItem onClick={handleOpenList}>
+                                    <Typography variant="h6">COLLECTIONS</Typography>
+                                    {!openList ? <StyledExpandLess /> : <StyledExpandMore />}
                                 </ListItem>
-                                <ListItem onClick={handleToggleSidebar}>
-                                    <Typography textAlign="center"> - COLLECTIONS:</Typography>
-                                </ListItem>
-
-                                {places.map((place, idx) => (
-                                    <Link
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: 'inherit'
-                                        }}
-                                        key={idx}
-                                        to={`/${place}`}>
-                                        <ListItem  onClick={handleToggleSidebar}>
-                                            <Typography textAlign="center">
-                                                + {place.toUpperCase()}
-                                            </Typography>
-                                        </ListItem>
-                                    </Link>
-                                ))}
+                                <Collapse in={openList} timeout="auto" unmountOnExit>
+                                    {places.map((place, idx) => (
+                                        <StyledLink key={idx} to={`/${place}`}>
+                                            <ListItem onClick={handleToggleSidebar}>
+                                                <Typography>{place.toUpperCase()}</Typography>
+                                            </ListItem>
+                                        </StyledLink>
+                                    ))}
+                                </Collapse>
 
                                 <ListItem onClick={handleToggleSidebar}>
-                                    <Typography>
-                                        <Link
-                                            style={{
-                                                textDecoration: 'none',
-                                                color: 'inherit'
-                                            }}
-                                            to={`/new-place`}>
-                                            - ADD NEW PLACE
-                                        </Link>
+                                    <Typography variant="h6">
+                                        <StyledLink to={`/new-place`}> ADD NEW PLACE </StyledLink>
                                     </Typography>
                                 </ListItem>
 
                                 <ListItem onClick={handleToggleSidebar}>
-                                    <Typography>
-                                        <Link
-                                            style={{
-                                                textDecoration: 'none',
-                                                color: 'inherit'
-                                            }}
-                                            to={`/favorites`}>
-                                            - MY FAVORITES
-                                        </Link>
+                                    <Typography variant="h6">
+                                        <StyledLink to={`/favorites`}> MY FAVORITES </StyledLink>
                                     </Typography>
                                 </ListItem>
                             </StyledList>
@@ -259,17 +309,15 @@ const NavBar = ({ setMode, mode }) => {
 
                     {/* Medium devices */}
 
-                    <Link
+                    <StyledLink
                         style={{
-                            textDecoration: 'none',
-                            color: 'inherit',
                             display: 'flex',
                             flexDirection: 'row'
                         }}
                         to={'/'}>
                         <img src="/assets/placeLogo.png" alt="no logo" width="40px" height="40px" />
                         <StyledTypoLogo variant="h6">PLACES COLLECTION</StyledTypoLogo>
-                    </Link>
+                    </StyledLink>
 
                     <Box
                         sx={{
@@ -278,26 +326,10 @@ const NavBar = ({ setMode, mode }) => {
                         }}>
                         <StyledButton
                             onClick={handleOpenPlaces}
-                            sx={{
-                                color: 'white',
-                                display: 'relative',
-                                p: 3
-                            }}>
+                            endIcon={!open ? <StyledExpandLess /> : <StyledExpandMore />}>
                             Collections
-                            {open ? (
-                                <KeyboardArrowDown
-                                    sx={{
-                                        verticalAlign: 'top'
-                                    }}
-                                />
-                            ) : (
-                                <KeyboardArrowUp
-                                    sx={{
-                                        verticalAlign: 'top'
-                                    }}
-                                />
-                            )}
                         </StyledButton>
+
                         <StyledMenu
                             id="basic-menu"
                             anchorEl={anchorEl}
@@ -308,40 +340,25 @@ const NavBar = ({ setMode, mode }) => {
                                 'aria-labelledby': 'basic-button'
                             }}>
                             {places.map((place, idx) => (
-                                <Link
-                                    style={{
-                                        textDecoration: 'none',
-                                        color: 'inherit'
-                                    }}
-                                    key={idx}
-                                    to={`/${place}`}>
-                                    <MenuItem  onClick={handleClosePlaces}>
-                                        <Typography textAlign="center">{place.toUpperCase()}</Typography>
-                                    </MenuItem>
-                                </Link>
+                                <Grow in={open} key={idx} {...(open ? { timeout: 600 * idx } : {})}>
+                                    <StyledLink to={`/${place}`}>
+                                        <MenuItem onClick={handleClosePlaces}>
+                                            <Typography textAlign="center">{place.toUpperCase()}</Typography>
+                                        </MenuItem>
+                                    </StyledLink>
+                                </Grow>
                             ))}
                         </StyledMenu>
-                        <Link
-                            style={{
-                                textDecoration: 'none',
-                                color: 'inherit'
-                            }}
-                            to={'/new-place'}>
-                            <StyledButton sx={{ p: 3, color: 'white', display: 'block' }}>
-                                Add New Place
-                            </StyledButton>
-                        </Link>
-                        <Link
-                            style={{
-                                textDecoration: 'none',
-                                color: 'inherit'
-                            }}
-                            to={'/favorites'}>
-                            <StyledButton sx={{ p: 3, color: 'white', display: 'block' }}>
-                                My Favorites
-                            </StyledButton>
-                        </Link>
+
+                        <StyledLink to={'/new-place'}>
+                            <StyledButton>Add New Place</StyledButton>
+                        </StyledLink>
+
+                        <StyledLink to={'/favorites'}>
+                            <StyledButton>My Favorites</StyledButton>
+                        </StyledLink>
                     </Box>
+
                     <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row' }}>
                         <ModeSwitch sx={{ m: 1 }} defaultChecked onChange={handlerMode} />
                         <Tooltip title="Open settings">
@@ -349,41 +366,26 @@ const NavBar = ({ setMode, mode }) => {
                                 <Avatar alt="Avatar" src={AvatarImg} />
                             </IconButton>
                         </Tooltip>
-                        <Menu
+
+                        <StyledUserMenu
                             sx={{ mt: { xs: 2.5, md: 1.5 } }}
                             id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right'
-                            }}
                             keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            open={Boolean(anchorElUser)}
+                            anchorEl={anchorElUser}
+                            open={openUser}
                             onClose={handleCloseUserMenu}
                             onClick={handleCloseUserMenu}>
-                            <MenuItem sx={{ px: 2 }}>
-                                <ListItemIcon>
-                                    <AccountCircle fontSize="small" />
-                                </ListItemIcon>
-                                <Typography textAlign="center">Profile</Typography>
-                            </MenuItem>
-                            <MenuItem sx={{ px: 2 }}>
-                                <ListItemIcon>
-                                    <Reviews fontSize="small" />
-                                </ListItemIcon>
-                                <Typography textAlign="center">Reviews</Typography>
-                            </MenuItem>
-                            <MenuItem sx={{ px: 2 }}>
-                                <ListItemIcon>
-                                    <Logout fontSize="small" />
-                                </ListItemIcon>
-                                <Typography textAlign="center">Logout</Typography>
-                            </MenuItem>
-                        </Menu>
+                            {userMenu.map((userItem, idx) => (
+                                <Grow key={idx} in={openUser} {...(openUser ? { timeout: 600 * idx } : {})}>
+                                    <MenuItem sx={{ px: 2 }}>
+                                        <ListItemIcon>
+                                            <userItem.icon />
+                                        </ListItemIcon>
+                                        <Typography textAlign="center">{userItem.obj}</Typography>
+                                    </MenuItem>
+                                </Grow>
+                            ))}
+                        </StyledUserMenu>
                     </Box>
                 </StyledToolbar>
             </Container>
