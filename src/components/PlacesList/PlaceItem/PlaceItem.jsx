@@ -18,6 +18,7 @@ import FavoritesContext from '../../../contexts/FavoritesContext';
 
 const StyledCard = styled(Card)({
     maxWidth: 600,
+    minHeight: 540,
     margin: '1rem',
     alignItems: 'center',
     justifyContent: 'center',
@@ -34,6 +35,16 @@ const StyledIconButton = styled(IconButton)({
     padding: 0
 });
 const StyledCardActions = styled(CardActions)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+});
+const StyledBox = styled(Box)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+});
+const StyledRating = styled(Rating)({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -72,13 +83,14 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
         <StyledCard>
             <CardMedia component="img" height="240" width="auto" image={image} alt="error" />
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div" align="center">
+                <Typography noWrap gutterBottom variant="h5" component="div" align="center">
                     {title}
                 </Typography>
-                <Typography variant="body1" color="text.primary" gutterBottom align="center">
+                <Typography noWrap variant="body1" color="text.primary" gutterBottom align="center">
                     {description}
                 </Typography>
                 <Typography
+                    noWrap
                     variant="subtitle2"
                     color="text.secondary"
                     gutterBottom
@@ -89,25 +101,10 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
                 <Typography align="center" fontWeight="bold">
                     Rating
                 </Typography>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                    <Rating
-                        name="read-only"
-                        value={rating}
-                        readOnly
-                        precision={0.5}
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    />
+                <StyledBox>
+                    <StyledRating name="read-only" value={rating} readOnly precision={0.5} />
                     <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
-                </Box>
+                </StyledBox>
             </CardContent>
             <StyledCardActions>
                 <StyledIconButton aria-label="add to favorites" onClick={toggleFavoriteStatusHandler}>

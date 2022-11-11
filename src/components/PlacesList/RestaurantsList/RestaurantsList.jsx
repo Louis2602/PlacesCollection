@@ -1,18 +1,17 @@
-import { Grid } from '@mui/material';
+import { Grid, styled } from '@mui/material';
 
 import PlaceItem from '../PlaceItem/PlaceItem';
 
+const StyledGrid = styled(Grid)({
+    width: '100%',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+});
+
 const RestaurantsList = ({ restaurants }) => {
     return (
-        <Grid
-            container
-            spacing={1}
-            sx={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'center'
-            }}>
+        <StyledGrid container spacing={1}>
             {restaurants.map((restaurant) => (
                 <Grid item xs={12} sm={6} md={3} key={restaurant.id} sx={{ height: '100%', width: 'auto' }}>
                     <PlaceItem
@@ -25,7 +24,7 @@ const RestaurantsList = ({ restaurants }) => {
                     />
                 </Grid>
             ))}
-        </Grid>
+        </StyledGrid>
     );
 };
 
