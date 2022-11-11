@@ -32,22 +32,39 @@ const Atag = styled('a')({
     transition: '0.3s ease-in-out'
 });
 
+const StyledGrid = styled(Grid)(({ theme }) => ({
+    flexDirection: 'row',
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+}));
+
+const StyledLogoATag = styled('a')({
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    color: 'crimson',
+    '&:hover': {
+        color: 'orange',
+        transition: '0.3s ease-in-out'
+    }
+});
+
+const StyledFooterTypo = styled(Typography)({
+    display: 'inline-block',
+    marginBottom: '1.5rem'
+});
+
 const Footer = () => {
     return (
         <StyledBox>
             <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
-                <Grid container spacing={5}>
-                    <Grid item xs={4}>
-                        <Typography
-                            variant="h5"
-                            fontWeight="bold"
-                            textAlign="center"
-                            sx={{
-                                display: 'inline-block',
-                                marginBottom: '1.5rem'
-                            }}>
+                <StyledGrid container spacing={5}>
+                    <StyledGrid item xs={10} md={4}>
+                        <StyledFooterTypo variant="h5" fontWeight="bold" textAlign="center">
                             About Us
-                        </Typography>
+                        </StyledFooterTypo>
                         <Stack spacing={2}>
                             <Atag href="/" rel="noreferrer" target="_blank">
                                 About
@@ -62,18 +79,12 @@ const Footer = () => {
                                 Terms of service
                             </Atag>
                         </Stack>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography
-                            variant="h5"
-                            fontWeight="bold"
-                            textAlign="center"
-                            sx={{
-                                display: 'inline-block',
-                                marginBottom: '1.5rem'
-                            }}>
+                    </StyledGrid>
+
+                    <StyledGrid item xs={10} md={4}>
+                        <StyledFooterTypo variant="h5" fontWeight="bold" textAlign="center">
                             Contact Us
-                        </Typography>
+                        </StyledFooterTypo>
                         <Stack spacing={2}>
                             <Atag href="/" rel="noreferrer" target="_blank">
                                 Contact
@@ -88,18 +99,12 @@ const Footer = () => {
                                 Sponsorships
                             </Atag>
                         </Stack>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography
-                            variant="h5"
-                            fontWeight="bold"
-                            textAlign="center"
-                            sx={{
-                                display: 'inline-block',
-                                marginBottom: '1.5rem'
-                            }}>
+                    </StyledGrid>
+
+                    <StyledGrid item xs={10} md={4}>
+                        <StyledFooterTypo variant="h5" fontWeight="bold" textAlign="center">
                             Social Media
-                        </Typography>
+                        </StyledFooterTypo>
                         <Stack spacing={2}>
                             <Atag
                                 href="https://www.facebook.com/tunglam.262/"
@@ -123,28 +128,19 @@ const Footer = () => {
                                 Github
                             </Atag>
                         </Stack>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} sx={{ marginTop: '1rem' }}>
-                    <Grid item xs={4}>
-                        <Atag
-                            href="/"
-                            sx={{
-                                fontSize: '1.5rem',
-                                fontWeight: 'bold',
-                                color: 'crimson',
-                                '&:hover': {
-                                    color: 'orange',
-                                    transition: '0.3s ease-in-out'
-                                }
-                            }}>
-                            PLACES COLLECTION
-                        </Atag>
-                    </Grid>
-                    <Grid item xs={4}>
+                    </StyledGrid>
+                </StyledGrid>
+
+                <StyledGrid container spacing={2} sx={{ marginTop: '2rem' }}>
+                    <StyledGrid item xs={10} md={4}>
+                        <StyledLogoATag href="/">PLACES COLLECTION</StyledLogoATag>
+                    </StyledGrid>
+
+                    <StyledGrid item xs={10} md={4}>
                         <Typography>© Lam Tran. All rights reserved.</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
+                    </StyledGrid>
+
+                    <StyledGrid item xs={8} md={4}>
                         <StyledIconButton aria-label="facebook">
                             <Facebook />
                         </StyledIconButton>
@@ -160,8 +156,8 @@ const Footer = () => {
                         <StyledIconButton aria-label="github">
                             <GitHub />
                         </StyledIconButton>
-                    </Grid>
-                </Grid>
+                    </StyledGrid>
+                </StyledGrid>
             </Container>
         </StyledBox>
     );

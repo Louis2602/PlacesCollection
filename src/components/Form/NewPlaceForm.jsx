@@ -14,15 +14,17 @@ import {
     Rating
 } from '@mui/material';
 
-const StyledCard = styled(Card)(({theme}) => ({
+const StyledCard = styled(Card)(({ theme }) => ({
     transition: '0.3s ease-in-out',
     boxShadow:
         '0 0 0 1px rgb(53 72 91 / 7%), 0 2px 2px rgb(0 0 0 / 1%), 0 4px 4px rgb(0 0 0 / 2%), 0 10px 8px rgb(0 0 0 / 3%), 0 15px 15px rgb(0 0 0 / 3%), 0 30px 30px rgb(0 0 0 / 4%), 0 70px 65px rgb(0 0 0 / 5%)',
     '&:hover': {
         boxShadow:
             '0 0 0 1px rgb(53 72 91 / 4%), 0 2px 2px rgb(0 0 0 / 0%), 0 4px 4px rgb(0 0 0 / 1%), 0 10px 8px rgb(0 0 0 / 2%), 0 15px 15px rgb(0 0 0 / 2%), 0 30px 30px rgb(0 0 0 / 2%), 0 70px 65px rgb(0 0 0 / 3%)'
-    }
+    },
+    width: '100%'
 }));
+
 const StyledInputLabel = styled(InputLabel)({
     display: 'block',
     fontWeight: 'bold',
@@ -48,10 +50,13 @@ const StyledBox = styled(Box)({
     textAlign: 'right'
 });
 
-const StyledForm = styled('form')({
+const StyledForm = styled('form')(({ theme }) => ({
     padding: '1rem 1rem',
-    width: '40rem'
-});
+    width: '40rem',
+    [theme.breakpoints.down('md')]: {
+        width: '100%'
+    }
+}));
 
 const NewPlaceForm = ({ onAddPlace }) => {
     const titleInputRef = useRef();
@@ -90,11 +95,16 @@ const NewPlaceForm = ({ onAddPlace }) => {
     return (
         <StyledCard>
             <StyledForm onSubmit={submitHandler}>
-                <Grid container spacing={1}>
+                <Grid container fullWidth spacing={1} direction="column">
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <StyledInputLabel htmlFor="type">Type of place</StyledInputLabel>
-                            <Select required value={type} label="Type of place" onChange={handleTypeChange}>
+                            <Select
+                                fullWidth
+                                required
+                                value={type}
+                                label="Type of place"
+                                onChange={handleTypeChange}>
                                 <MenuItem value="restaurant">Restaurants</MenuItem>
                                 <MenuItem value="hotel">Hotels</MenuItem>
                                 <MenuItem value="attraction">Attractions</MenuItem>
@@ -113,7 +123,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
                             placeholder="Title"
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item>
                         <StyledInputLabel htmlFor="image">Image Url</StyledInputLabel>
                         <TextField
                             fullWidth
@@ -124,7 +134,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
                             placeholder="Image url"
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item>
                         <StyledInputLabel htmlFor="address">Address</StyledInputLabel>
                         <TextField
                             fullWidth
@@ -136,7 +146,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
                             placeholder="Address"
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item>
                         <StyledInputLabel htmlFor="description">Rating</StyledInputLabel>
                         <Box
                             sx={{
@@ -159,7 +169,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
                             </Typography>
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item>
                         <StyledInputLabel htmlFor="description">Description</StyledInputLabel>
                         <TextField
                             fullWidth
