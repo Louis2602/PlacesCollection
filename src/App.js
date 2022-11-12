@@ -4,9 +4,7 @@ import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FavoritesContextProvider } from './contexts/FavoritesContext';
 import {
-    AllRestaurants,
-    AllHotels,
-    AllAttractions,
+    AllCollections,
     NewPlace,
     HomePage,
     Favorites,
@@ -14,7 +12,8 @@ import {
     NavBar,
     SignIn,
     SignUp,
-    Footer
+    Footer,
+    ItemDetails
 } from './pages';
 import './App.css';
 
@@ -59,11 +58,10 @@ function App() {
                                     <Route path="/map" element={<Map />}></Route>
                                     <Route path="/sign-in" element={<SignIn />}></Route>
                                     <Route path="/sign-up" element={<SignUp />}></Route>
-                                    <Route path="/Restaurants" element={<AllRestaurants />}></Route>
-                                    <Route path="/Hotels" element={<AllHotels />}></Route>
-                                    <Route path="/Attractions" element={<AllAttractions />}></Route>
+                                    <Route path="/:collection" element={<AllCollections />}></Route>
                                     <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/favorites" element={<Favorites />}></Route>
+                                    <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                 </Routes>
                             </StyledStack>
                         </Box>
