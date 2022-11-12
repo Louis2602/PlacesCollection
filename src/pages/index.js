@@ -8,3 +8,5 @@ export { default as SignIn } from './SignIn';
 export { default as SignUp } from './SignUp';
 export { default as Footer } from '../components/Footer/Footer';
 export { default as ItemDetails } from './ItemDetails';
+export { default as Reviews } from './Reviews';
+export { default as Profile } from './Profile';

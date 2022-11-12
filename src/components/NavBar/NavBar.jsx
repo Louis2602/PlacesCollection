@@ -36,9 +36,9 @@ import { Avatar as AvatarImg } from '../Carousel/assets';
 const places = ['restaurants', 'hotels', 'attractions'];
 
 const userMenu = [
-    { obj: 'Profile', icon: AccountCircle },
-    { obj: 'Reviews', icon: Reviews },
-    { obj: 'Logout', icon: Logout }
+    { obj: 'Profile', icon: AccountCircle, link: 'profile' },
+    { obj: 'Reviews', icon: Reviews, link: 'reviews' },
+    { obj: 'Logout', icon: Logout, link: 'sign-in' }
 ];
 
 const ModeSwitch = styled(Switch)(({ theme }) => ({
@@ -377,12 +377,14 @@ const NavBar = ({ setMode, mode }) => {
                             onClick={handleCloseUserMenu}>
                             {userMenu.map((userItem, idx) => (
                                 <Grow key={idx} in={openUser} {...(openUser ? { timeout: 600 * idx } : {})}>
-                                    <MenuItem sx={{ px: 2 }}>
-                                        <ListItemIcon>
-                                            <userItem.icon />
-                                        </ListItemIcon>
-                                        <Typography textAlign="center">{userItem.obj}</Typography>
-                                    </MenuItem>
+                                    <StyledLink to={userItem.link}>
+                                        <MenuItem sx={{ px: 2 }}>
+                                            <ListItemIcon>
+                                                <userItem.icon />
+                                            </ListItemIcon>
+                                            <Typography textAlign="center">{userItem.obj}</Typography>
+                                        </MenuItem>
+                                    </StyledLink>
                                 </Grow>
                             ))}
                         </StyledUserMenu>

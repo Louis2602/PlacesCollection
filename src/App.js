@@ -13,7 +13,9 @@ import {
     SignIn,
     SignUp,
     Footer,
-    ItemDetails
+    ItemDetails,
+    Reviews,
+    Profile
 } from './pages';
 import './App.css';
 
@@ -62,6 +64,8 @@ function App() {
                                     <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/favorites" element={<Favorites />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
+                                    <Route path="/reviews" element={<Reviews />}></Route>
+                                    <Route path="/profile" element={<Profile />}></Route>
                                 </Routes>
                             </StyledStack>
                         </Box>
