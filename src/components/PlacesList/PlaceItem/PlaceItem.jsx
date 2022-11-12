@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
     Card,
     CardActions,
@@ -12,7 +13,7 @@ import {
     styled,
     Rating
 } from '@mui/material/';
-import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined } from '@mui/icons-material';
+import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
 
 import FavoritesContext from '../../../contexts/FavoritesContext';
 
@@ -31,8 +32,7 @@ const StyledCard = styled(Card)({
     }
 });
 const StyledIconButton = styled(IconButton)({
-    margin: 0,
-    padding: 0
+    padding: 2
 });
 const StyledCardActions = styled(CardActions)({
     display: 'flex',
@@ -49,8 +49,11 @@ const StyledRating = styled(Rating)({
     alignItems: 'center',
     justifyContent: 'center'
 });
+const StyledLink = styled(Link)(({ theme }) => ({
+    color: theme.palette.mode === 'dark' ? 'white' : 'black'
+}));
 
-const PlaceItem = ({ id, image, title, rating, address, description }) => {
+const PlaceItem = ({ id, image, title, rating, address, description, type }) => {
     const favoriteCtx = useContext(FavoritesContext);
 
     const itemIsFavorite = favoriteCtx.itemIsFavorite(id);
@@ -65,7 +68,8 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
                 rating: rating,
                 description: description,
                 image: image,
-                address: address
+                address: address,
+                type: type
             });
         }
     };
@@ -81,43 +85,50 @@ const PlaceItem = ({ id, image, title, rating, address, description }) => {
     };
     return (
         <StyledCard>
-            <CardMedia component="img" height="240" width="auto" image={image} alt="error" />
-            <CardContent>
-                <Typography noWrap gutterBottom variant="h5" component="div" align="center">
-                    {title}
-                </Typography>
-                <Typography noWrap variant="body1" color="text.primary" gutterBottom align="center">
-                    {description}
-                </Typography>
-                <Typography
-                    noWrap
-                    variant="subtitle2"
-                    color="text.secondary"
-                    gutterBottom
-                    align="center"
-                    sx={{ fontStyle: 'italic' }}>
-                    {address}
-                </Typography>
-                <Typography align="center" fontWeight="bold">
-                    Rating
-                </Typography>
-                <StyledBox>
-                    <StyledRating name="read-only" value={rating} readOnly precision={0.5} />
-                    <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
-                </StyledBox>
-            </CardContent>
+            <StyledLink to={`/${type}s/${id}`}>
+                <CardMedia component="img" height="240" width="auto" image={image} alt="error" />
+                <CardContent>
+                    <Typography noWrap gutterBottom variant="h5" component="div" align="center">
+                        {title}
+                    </Typography>
+                    <Typography noWrap variant="body1" color="text.primary" gutterBottom align="center">
+                        {description}
+                    </Typography>
+                    <Typography
+                        noWrap
+                        variant="subtitle2"
+                        color="text.secondary"
+                        gutterBottom
+                        align="center"
+                        sx={{ fontStyle: 'italic' }}>
+                        {address}
+                    </Typography>
+
+                    <Typography align="center" fontWeight="bold">
+                        Rating
+                    </Typography>
+                    <StyledBox>
+                        <StyledRating name="read-only" value={rating} readOnly precision={0.5} />
+                        <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
+                    </StyledBox>
+                </CardContent>
+            </StyledLink>
             <StyledCardActions>
                 <StyledIconButton aria-label="add to favorites" onClick={toggleFavoriteStatusHandler}>
                     {itemIsFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                 </StyledIconButton>
                 <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
                     <Checkbox
+                        sx={{ padding: 0 }}
                         checkedIcon={<LocationOn sx={{ color: 'orange' }} />}
                         icon={<LocationOnOutlined />}
                     />
                 </StyledIconButton>
                 <StyledIconButton aria-label="share">
                     <Share />
+                </StyledIconButton>
+                <StyledIconButton aria-label="delete">
+                    <Delete />
                 </StyledIconButton>
             </StyledCardActions>
         </StyledCard>
