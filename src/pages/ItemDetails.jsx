@@ -48,6 +48,7 @@ const ItemDetails = () => {
                                 id={loadedItem.id}
                                 address={loadedItem.address}
                                 description={loadedItem.description}
+                                rating={loadedItem.rating}
                                 image={loadedItem.image}
                                 title={loadedItem.title}
                                 type={loadedItem.type}

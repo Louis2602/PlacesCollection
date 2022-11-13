@@ -111,13 +111,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                         Rating
                     </Typography>
                     <Box className={classes.root}>
-                        <Rating
-                            className={classes.root}
-                            name="read-only"
-                            value={rating}
-                            readOnly
-                            precision={0.5}
-                        />
+                        <Rating name="read-only" value={rating} readOnly precision={0.5} />
                         <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
                     </Box>
                     <CardActions className={classes.root}>
