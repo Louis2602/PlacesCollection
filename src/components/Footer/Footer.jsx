@@ -8,7 +8,7 @@ const StyledIconButton = styled(IconButton)({
     },
     transition: '0.3s ease-in-out'
 });
-const StyledBox = styled(Box)({
+const StyledBox = styled(Box)(({ theme }) => ({
     backgroundColor: '#242424',
     color: '#fff',
     width: '100%',
@@ -20,24 +20,39 @@ const StyledBox = styled(Box)({
     alignItems: 'center',
     fontSize: '1.2rem',
     height: '100%',
-    marginTop: '7rem'
-});
-const Atag = styled('a')({
+    marginTop: '7rem',
+    [theme.breakpoints.down('md')]: {
+        padding: '1rem 0'
+    }
+}));
+const Atag = styled('a')(({ theme }) => ({
     textDecoration: 'none',
     fontSize: '1rem',
     color: '#fff',
     '&:hover': {
         color: 'crimson'
     },
-    transition: '0.3s ease-in-out'
-});
+    transition: '0.3s ease-in-out',
+    [theme.breakpoints.down('md')]: {
+        width: '122px'
+    }
+}));
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-    flexDirection: 'row',
     [theme.breakpoints.down('md')]: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        display: 'flex',
+        justifyContent: 'space-between',
+        margin: 0,
+        '& .MuiGrid-item': {
+            paddingLeft: '1rem'
+        }
+    }
+}));
+
+const StyledBotGrid = styled(Grid)(({ theme }) => ({
+    [theme.breakpoints.down('md')]: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 }));
 
@@ -51,10 +66,17 @@ const StyledLogoATag = styled('a')({
     }
 });
 
-const StyledFooterTypo = styled(Typography)({
+const StyledFooterTypo = styled(Typography)(({ theme }) => ({
     display: 'inline-block',
-    marginBottom: '1.5rem'
-});
+    marginBottom: '1.5rem',
+    [theme.breakpoints.down('md')]: {
+        display: 'flex',
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '140px'
+    }
+}));
 
 const Footer = () => {
     return (
@@ -131,16 +153,16 @@ const Footer = () => {
                     </StyledGrid>
                 </StyledGrid>
 
-                <StyledGrid container spacing={2} sx={{ marginTop: '2rem' }}>
-                    <StyledGrid item xs={10} md={4}>
+                <StyledBotGrid container spacing={2} sx={{ marginTop: '2rem' }}>
+                    <StyledBotGrid item xs={10} md={4}>
                         <StyledLogoATag href="/">PLACES COLLECTION</StyledLogoATag>
-                    </StyledGrid>
+                    </StyledBotGrid>
 
-                    <StyledGrid item xs={10} md={4}>
+                    <StyledBotGrid item xs={10} md={4}>
                         <Typography>© Lam Tran. All rights reserved.</Typography>
-                    </StyledGrid>
+                    </StyledBotGrid>
 
-                    <StyledGrid item xs={8} md={4}>
+                    <StyledBotGrid item xs={8} md={4}>
                         <StyledIconButton aria-label="facebook">
                             <Facebook />
                         </StyledIconButton>
@@ -156,8 +178,8 @@ const Footer = () => {
                         <StyledIconButton aria-label="github">
                             <GitHub />
                         </StyledIconButton>
-                    </StyledGrid>
-                </StyledGrid>
+                    </StyledBotGrid>
+                </StyledBotGrid>
             </Container>
         </StyledBox>
     );
