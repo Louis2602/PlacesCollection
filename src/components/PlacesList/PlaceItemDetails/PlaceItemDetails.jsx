@@ -33,8 +33,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
     minHeight: '70vh',
     margin: '1rem',
     padding: '0 10px',
-    alignItems: 'center',
-    justifyContent: 'center',
     transition: '0.3s ease-in-out',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.1)',
     [theme.breakpoints.down('md')]: {
@@ -113,13 +111,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                         Rating
                     </Typography>
                     <Box className={classes.root}>
-                        <Rating
-                            className={classes.root}
-                            name="read-only"
-                            value={rating}
-                            readOnly
-                            precision={0.5}
-                        />
+                        <Rating name="read-only" value={rating} readOnly precision={0.5} />
                         <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
                     </Box>
                     <CardActions className={classes.root}>
