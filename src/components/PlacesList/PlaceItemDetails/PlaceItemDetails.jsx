@@ -91,6 +91,18 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
         });
     };
     const classes = useStyles();
+
+    const handleDelete = ({ id, type }) => {
+        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${type}s/${id}.json`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            window.location.reload(false);
+        });
+    };
+
     return (
         <StyledCard className={classes.root}>
             <StyledCardContent className={classes.root}>
@@ -128,7 +140,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                         <StyledIconButton aria-label="share">
                             <Share />
                         </StyledIconButton>
-                        <StyledIconButton aria-label="delete">
+                        <StyledIconButton aria-label="delete" onClick={() => handleDelete({ id, type })}>
                             <Delete />
                         </StyledIconButton>
                     </CardActions>

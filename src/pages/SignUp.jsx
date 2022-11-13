@@ -35,7 +35,7 @@ const StyledInputLabel = styled(InputLabel)({
 const StyledForm = styled('form')({
     padding: '1rem 1rem',
     width: '40rem',
-    height: '55rem'
+    height: '54rem'
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -162,7 +162,7 @@ const SignUp = () => {
                         Sign Up
                     </StyledButton>
                 </Grid>
-                <Typography textAlign="center">
+                <Typography sx={{ marginTop: '2rem' }} textAlign="center">
                     Already have an account?
                     <Link
                         style={{
