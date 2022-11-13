@@ -17,9 +17,9 @@ import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete
 
 import FavoritesContext from '../../../contexts/FavoritesContext';
 
-const StyledCard = styled(Card)({
-    maxWidth: 600,
-    minHeight: 540,
+const StyledCard = styled(Card)(({ theme }) => ({
+    width: 380,
+    height: 540,
     margin: '1rem',
     alignItems: 'center',
     justifyContent: 'center',
@@ -29,8 +29,11 @@ const StyledCard = styled(Card)({
     '&:hover': {
         boxShadow:
             '0 0 0 1px rgb(53 72 91 / 4%), 0 2px 2px rgb(0 0 0 / 0%), 0 4px 4px rgb(0 0 0 / 1%), 0 10px 8px rgb(0 0 0 / 2%), 0 15px 15px rgb(0 0 0 / 2%), 0 30px 30px rgb(0 0 0 / 2%), 0 70px 65px rgb(0 0 0 / 3%)'
+    },
+    [theme.breakpoints.down('md')]: {
+        width: 310
     }
-});
+}));
 const StyledIconButton = styled(IconButton)({
     padding: 2
 });
@@ -83,6 +86,18 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
             }
         });
     };
+
+    const handleDelete = ({ id, type }) => {
+        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${type}s/${id}.json`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            window.location.reload(false);
+        });
+    };
+
     return (
         <StyledCard>
             <StyledLink to={`/${type}s/${id}`}>
@@ -127,7 +142,7 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                 <StyledIconButton aria-label="share">
                     <Share />
                 </StyledIconButton>
-                <StyledIconButton aria-label="delete">
+                <StyledIconButton aria-label="delete" onClick={() => handleDelete({ id, type })}>
                     <Delete />
                 </StyledIconButton>
             </StyledCardActions>

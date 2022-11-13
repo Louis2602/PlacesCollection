@@ -3,17 +3,20 @@ import { Grid, styled } from '@mui/material';
 import PlaceItem from '../PlaceItem/PlaceItem';
 
 const StyledGrid = styled(Grid)({
-    width: '100%',
+    width: '90vw',
     display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& .MuiGrid-item': {
+        paddingLeft: '1rem'
+    }
 });
 
 const ItemsList = ({ items }) => {
     return (
         <StyledGrid container spacing={1}>
             {items.map((item) => (
-                <Grid item xs={12} sm={6} md={3} key={item.id} sx={{ height: '100%', width: 'auto' }}>
+                <Grid item md={4} key={item.id}>
                     <PlaceItem
                         id={item.id}
                         image={item.image}
