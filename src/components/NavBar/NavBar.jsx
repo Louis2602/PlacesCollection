@@ -185,7 +185,9 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
     }
 }));
 
-const StyledAppBar = styled(AppBar)({});
+const StyledAppBar = styled(AppBar)({
+    position: 'sticky'
+});
 
 const StyledLink = styled(Link)({
     textDecoration: 'none',
@@ -224,12 +226,18 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     padding: '32px 15px',
     borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`
 }));
+const StyledImg = styled('img')(({ theme }) => ({
+    display: 'block',
+    [theme.breakpoints.down('md')]: {
+        display: 'none'
+    }
+}));
 
 const NavBar = ({ setMode, mode }) => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
-    const [openList, setOpenList] = useState(true);
+    const [openList, setOpenList] = useState(false);
 
     const handlerMode = () => {
         setMode(mode === 'light' ? 'dark' : 'light');
@@ -259,7 +267,7 @@ const NavBar = ({ setMode, mode }) => {
     const handleToggleSidebar = () => setAnchorSm(!anchorSm);
 
     return (
-        <StyledAppBar position="static">
+        <StyledAppBar>
             <Container maxWidth="xl" sx={{ marginY: { xs: '1rem', md: 0 } }}>
                 <StyledToolbar disableGutters>
                     {/* Small devices */}
@@ -315,7 +323,7 @@ const NavBar = ({ setMode, mode }) => {
                             flexDirection: 'row'
                         }}
                         to={'/'}>
-                        <img src="/assets/placeLogo.png" alt="no logo" width="40px" height="40px" />
+                        <StyledImg src="/assets/placeLogo.png" alt="no logo" width="40px" height="40px" />
                         <StyledTypoLogo variant="h6">PLACES COLLECTION</StyledTypoLogo>
                     </StyledLink>
 

@@ -14,6 +14,7 @@ import {
     OutlinedInput
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const StyledCard = styled(Card)({
     transition: '0.3s ease-in-out',
@@ -33,7 +34,8 @@ const StyledInputLabel = styled(InputLabel)({
 
 const StyledForm = styled('form')({
     padding: '1rem 1rem',
-    width: '40rem'
+    width: '40rem',
+    height: '49rem'
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -138,6 +140,18 @@ const SignIn = () => {
                         Sign In
                     </StyledButton>
                 </Grid>
+                <Typography sx={{ marginTop: '2rem' }} textAlign="center">
+                    Don't have an account?
+                    <Link
+                        style={{
+                            color: '#42a5f5',
+                            textDecoration: 'underline',
+                            margin: '0 0.5rem'
+                        }}
+                        to={'/sign-up'}>
+                        Sign up
+                    </Link>
+                </Typography>
             </StyledForm>
         </StyledCard>
     );

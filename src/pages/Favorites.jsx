@@ -18,7 +18,6 @@ const Favorites = () => {
 
         content = <ItemsList items={favorites} />;
     }
-    console.log(favorites);
     return (
         <section
             style={{
