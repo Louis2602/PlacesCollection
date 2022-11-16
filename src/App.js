@@ -3,20 +3,7 @@ import { ThemeProvider } from '@emotion/react';
 import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FavoritesContextProvider } from './contexts/FavoritesContext';
-import {
-    AllCollections,
-    NewPlace,
-    HomePage,
-    Favorites,
-    Map,
-    NavBar,
-    SignIn,
-    SignUp,
-    Footer,
-    ItemDetails,
-    Reviews,
-    Profile
-} from './pages';
+import { AllCollections, NewPlace, HomePage, Favorites, Map, NavBar, SignIn, SignUp, Footer, ItemDetails, Reviews, Profile } from './pages';
 import './App.css';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -49,7 +36,8 @@ function App() {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            minHeight: '100vh'
+                            minHeight: '100vh',
+                            padding: 0
                         }}>
                         <CssBaseline />
                         <NavBar setMode={setMode} mode={mode} />
