@@ -3,7 +3,7 @@ import { ThemeProvider } from '@emotion/react';
 import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FavoritesContextProvider } from './contexts/FavoritesContext';
-import { AllCollections, NewPlace, HomePage, Favorites, Map, NavBar, SignIn, SignUp, Footer, ItemDetails, Reviews, Profile } from './pages';
+import { AllCollections, NewPlace, HomePage, Favorites, Map, NavBar, SignIn, SignUp, Footer, ItemDetails, Reviews, Profile, Error } from './pages';
 import './App.css';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -49,12 +49,15 @@ function App() {
                                     <Route path="/map" element={<Map />}></Route>
                                     <Route path="/sign-in" element={<SignIn />}></Route>
                                     <Route path="/sign-up" element={<SignUp />}></Route>
-                                    <Route path="/:collection" element={<AllCollections />}></Route>
+                                    <Route path="/restaurants" element={<AllCollections collection="restaurants" />}></Route>
+                                    <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
+                                    <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
                                     <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/favorites" element={<Favorites />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
                                     <Route path="/profile" element={<Profile />}></Route>
+                                    <Route path="/:error" element={<Error />}></Route>
                                 </Routes>
                             </StyledStack>
                         </Box>

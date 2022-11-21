@@ -10,3 +10,4 @@ export { default as Footer } from '../components/Footer/Footer';
 export { default as ItemDetails } from './ItemDetails';
 export { default as Reviews } from './Reviews';
 export { default as Profile } from './Profile';
+export { default as Error } from './Error';

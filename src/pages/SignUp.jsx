@@ -32,18 +32,26 @@ const StyledInputLabel = styled(InputLabel)({
     color: 'inherit'
 });
 
-const StyledForm = styled('form')({
+const StyledForm = styled('form')(({ theme }) => ({
     padding: '1rem 1rem',
     width: '40rem',
-    height: '48rem'
-});
+    height: '48rem',
+    [theme.breakpoints.down('md')]: {
+        width: '100%',
+        height: '52rem'
+    }
+}));
 
 const StyledButton = styled(Button)(({ theme }) => ({
     padding: '1rem 1.5rem',
     margin: '0.5rem auto',
     width: '25rem',
+    backgroundColor: '#3B71CA',
     '&:hover': {
         backgroundColor: theme.palette.info.main
+    },
+    [theme.breakpoints.down('md')]: {
+        width: '100%'
     }
 }));
 
@@ -51,6 +59,18 @@ const StyledBox = styled(Box)({
     textAlign: 'center',
     margin: '2rem auto'
 });
+
+const StyledSignUpButton = styled(Button)(({ theme }) => ({
+    padding: '1rem 1.5rem',
+    margin: '0.5rem auto',
+    marginTop: '2rem',
+    width: '100%',
+    backgroundColor: '#388e3c',
+    marginLeft: '0.5rem',
+    '&:hover': {
+        backgroundColor: theme.palette.info.main
+    }
+}));
 
 const SignUp = () => {
     const emailRef = useRef();
@@ -93,26 +113,14 @@ const SignUp = () => {
         <StyledCard>
             <StyledForm onSubmit={submitHandler}>
                 <Typography variant="h3" fontWeight="bold" margin="2.5rem" textAlign="center" flexGrow="1">
-                    Welcome back
+                    Get Started
                 </Typography>
                 <StyledBox>
                     <div>
-                        <StyledButton
-                            variant="contained"
-                            sx={{
-                                backgroundColor: '#3B71CA'
-                            }}>
-                            Continue with Google
-                        </StyledButton>
+                        <StyledButton variant="contained">Continue with Google</StyledButton>
                     </div>
                     <div>
-                        <StyledButton
-                            variant="contained"
-                            sx={{
-                                backgroundColor: '#3B71CA'
-                            }}>
-                            Continue with Facebook
-                        </StyledButton>
+                        <StyledButton variant="contained">Continue with Facebook</StyledButton>
                     </div>
                 </StyledBox>
                 <Divider sx={{ margin: '2rem' }}>or with email</Divider>
@@ -149,16 +157,9 @@ const SignUp = () => {
                             endAdornment={<Adornment />}
                         />
                     </Grid>
-                    <StyledButton
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            marginTop: '2rem',
-                            width: '100%',
-                            backgroundColor: '#388e3c'
-                        }}>
+                    <StyledSignUpButton variant="contained" type="submit">
                         Sign Up
-                    </StyledButton>
+                    </StyledSignUpButton>
                 </Grid>
             </StyledForm>
             <Typography sx={{ padding: '1rem 0 2.5rem 0' }} textAlign="center">
