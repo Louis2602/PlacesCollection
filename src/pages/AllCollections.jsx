@@ -41,11 +41,7 @@ const AllCollections = () => {
                         All {collection[0].toUpperCase()}
                         {collection.slice(1)}
                     </h1>
-                    {loadedItems.length === 0 ? (
-                        <p>There is no {collection} stored yet! Add some more</p>
-                    ) : (
-                        <ItemsList items={loadedItems} />
-                    )}
+                    {loadedItems.length === 0 ? <p>There is no {collection} stored yet! Add some more</p> : <ItemsList items={loadedItems} />}
                 </section>
             )}
         </>

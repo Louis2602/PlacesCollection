@@ -1,15 +1,4 @@
-import {
-    styled,
-    Card,
-    Avatar,
-    Typography,
-    Box,
-    TextField,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    FormLabel
-} from '@mui/material/';
+import { styled, Card, Avatar, Typography, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material/';
 
 import { Avatar as AvatarImg } from '../components/Carousel/assets';
 
@@ -101,9 +90,7 @@ const StyledUserBox = styled(Box)(({ theme }) => ({
     }
 }));
 
-const UserFormControl = ({ gender, data }) => (
-    <FormControlLabel disabled={data !== gender} value={gender} label={gender} control={<Radio />} />
-);
+const UserFormControl = ({ gender, data }) => <FormControlLabel disabled={data !== gender} value={gender} label={gender} control={<Radio />} />;
 
 const UserTextField = ({ label, value }) => (
     <StyledTextField

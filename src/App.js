@@ -32,14 +32,15 @@ function App() {
         <FavoritesContextProvider>
             <Router>
                 <ThemeProvider theme={darkTheme}>
+                    <CssBaseline />
                     <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
                             minHeight: '100vh',
+                            width: '100%',
                             padding: 0
                         }}>
-                        <CssBaseline />
                         <NavBar setMode={setMode} mode={mode} />
                         <Box sx={{ flex: 1 }}>
                             <StyledStack spacing={2}>

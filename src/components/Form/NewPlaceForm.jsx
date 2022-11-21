@@ -1,18 +1,5 @@
 import { useRef, useState } from 'react';
-import {
-    Box,
-    Button,
-    Select,
-    InputLabel,
-    MenuItem,
-    FormControl,
-    styled,
-    TextField,
-    Grid,
-    Typography,
-    Card,
-    Rating
-} from '@mui/material';
+import { Box, Button, Select, InputLabel, MenuItem, FormControl, styled, TextField, Grid, Typography, Card, Rating } from '@mui/material';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     transition: '0.3s ease-in-out',
@@ -99,12 +86,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <StyledInputLabel htmlFor="type">Type of place</StyledInputLabel>
-                            <Select
-                                fullWidth
-                                required
-                                value={type}
-                                label="Type of place"
-                                onChange={handleTypeChange}>
+                            <Select fullWidth required value={type} label="Type of place" onChange={handleTypeChange}>
                                 <MenuItem value="restaurant">Restaurants</MenuItem>
                                 <MenuItem value="hotel">Hotels</MenuItem>
                                 <MenuItem value="attraction">Attractions</MenuItem>
@@ -113,38 +95,15 @@ const NewPlaceForm = ({ onAddPlace }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <StyledInputLabel htmlFor="title">Title</StyledInputLabel>
-                        <TextField
-                            fullWidth
-                            required
-                            variant="outlined"
-                            id="title"
-                            type="text"
-                            inputRef={titleInputRef}
-                            placeholder="Title"
-                        />
+                        <TextField fullWidth required variant="outlined" id="title" type="text" inputRef={titleInputRef} placeholder="Title" />
                     </Grid>
                     <Grid item>
                         <StyledInputLabel htmlFor="image">Image Url</StyledInputLabel>
-                        <TextField
-                            fullWidth
-                            type="url"
-                            variant="outlined"
-                            id="image"
-                            inputRef={imageInputRef}
-                            placeholder="Image url"
-                        />
+                        <TextField fullWidth type="url" variant="outlined" id="image" inputRef={imageInputRef} placeholder="Image url" />
                     </Grid>
                     <Grid item>
                         <StyledInputLabel htmlFor="address">Address</StyledInputLabel>
-                        <TextField
-                            fullWidth
-                            required
-                            variant="outlined"
-                            id="address"
-                            type="text"
-                            inputRef={addressInputRef}
-                            placeholder="Address"
-                        />
+                        <TextField fullWidth required variant="outlined" id="address" type="text" inputRef={addressInputRef} placeholder="Address" />
                     </Grid>
                     <Grid item>
                         <StyledInputLabel htmlFor="description">Rating</StyledInputLabel>
@@ -164,9 +123,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
                                     setHover(newHover);
                                 }}
                             />
-                            <Typography sx={{ mx: 1 }}>
-                                {hover !== -1 ? `(${hover})` : `(${rating})`}
-                            </Typography>
+                            <Typography sx={{ mx: 1 }}>{hover !== -1 ? `(${hover})` : `(${rating})`}</Typography>
                         </Box>
                     </Grid>
                     <Grid item>

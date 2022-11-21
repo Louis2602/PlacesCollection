@@ -1,18 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import {
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-    Typography,
-    IconButton,
-    Checkbox,
-    Box,
-    styled,
-    Rating
-} from '@mui/material/';
+import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
 
 import FavoritesContext from '../../../contexts/FavoritesContext';
@@ -109,13 +98,7 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                     <Typography noWrap variant="body1" color="text.primary" gutterBottom align="center">
                         {description}
                     </Typography>
-                    <Typography
-                        noWrap
-                        variant="subtitle2"
-                        color="text.secondary"
-                        gutterBottom
-                        align="center"
-                        sx={{ fontStyle: 'italic' }}>
+                    <Typography noWrap variant="subtitle2" color="text.secondary" gutterBottom align="center" sx={{ fontStyle: 'italic' }}>
                         {address}
                     </Typography>
 
@@ -133,11 +116,7 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                     {itemIsFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                 </StyledIconButton>
                 <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
-                    <Checkbox
-                        sx={{ padding: 0 }}
-                        checkedIcon={<LocationOn sx={{ color: 'orange' }} />}
-                        icon={<LocationOnOutlined />}
-                    />
+                    <Checkbox sx={{ padding: 0 }} checkedIcon={<LocationOn sx={{ color: 'orange' }} />} icon={<LocationOnOutlined />} />
                 </StyledIconButton>
                 <StyledIconButton aria-label="share">
                     <Share />

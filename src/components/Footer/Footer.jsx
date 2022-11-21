@@ -128,10 +128,7 @@ const Footer = () => {
                             Social Media
                         </StyledFooterTypo>
                         <Stack spacing={2}>
-                            <Atag
-                                href="https://www.facebook.com/tunglam.262/"
-                                rel="noreferrer"
-                                target="_blank">
+                            <Atag href="https://www.facebook.com/tunglam.262/" rel="noreferrer" target="_blank">
                                 Facebook
                             </Atag>
                             <Atag href="https://www.youtube.com/c/LVM262" rel="noreferrer" target="_blank">
@@ -140,10 +137,7 @@ const Footer = () => {
                             <Atag href="https://www.instagram.com/_ttlam_/" rel="noreferrer" target="_blank">
                                 Instagram
                             </Atag>
-                            <Atag
-                                href="https://www.linkedin.com/in/ttlam262/"
-                                rel="noreferrer"
-                                target="_blank">
+                            <Atag href="https://www.linkedin.com/in/ttlam262/" rel="noreferrer" target="_blank">
                                 LinkedIn
                             </Atag>
                             <Atag href="https://github.com/Louis2602" rel="noreferrer" target="_blank">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
     Box,
     Button,
@@ -35,7 +35,7 @@ const StyledInputLabel = styled(InputLabel)({
 const StyledForm = styled('form')({
     padding: '1rem 1rem',
     width: '40rem',
-    height: '54rem'
+    height: '48rem'
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -46,11 +46,17 @@ const StyledButton = styled(Button)(({ theme }) => ({
         backgroundColor: theme.palette.info.main
     }
 }));
+
 const StyledBox = styled(Box)({
     textAlign: 'center',
     margin: '2rem auto'
 });
+
 const SignUp = () => {
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const confirmPasswordRef = useRef();
+
     const [togglePassword, setTogglePassword] = useState({
         amount: '',
         password: '',
@@ -68,6 +74,21 @@ const SignUp = () => {
         });
     };
     const submitHandler = () => {};
+
+    const Adornment = () => (
+        <>
+            <InputAdornment position="end">
+                <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end">
+                    {togglePassword.showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+            </InputAdornment>
+        </>
+    );
+
     return (
         <StyledCard>
             <StyledForm onSubmit={submitHandler}>
@@ -98,17 +119,12 @@ const SignUp = () => {
                 <Grid container spacing={1} sx={{ padding: '0 1rem', marginBottom: '1.5rem' }}>
                     <Grid item xs={12}>
                         <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
-                        <TextField
-                            fullWidth
-                            required
-                            variant="outlined"
-                            id="title"
-                            type="email"
-                            placeholder="Email"
-                        />
+                        <TextField fullWidth required variant="outlined" id="title" type="email" placeholder="Email" inputRef={emailRef} />
                     </Grid>
                     <Grid item xs={12}>
-                        <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
+                        <StyledInputLabel htmlFor="password" inputRef={passwordRef}>
+                            Password
+                        </StyledInputLabel>
                         <OutlinedInput
                             fullWidth
                             required
@@ -116,21 +132,13 @@ const SignUp = () => {
                             id="password"
                             type={togglePassword.showPassword ? 'text' : 'password'}
                             placeholder="Password"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end">
-                                        {togglePassword.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
+                            endAdornment={<Adornment />}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <StyledInputLabel htmlFor="confirmed-password">Confirmed Password</StyledInputLabel>
+                        <StyledInputLabel htmlFor="confirmed-password" inputRef={confirmPasswordRef}>
+                            Confirmed Password
+                        </StyledInputLabel>
                         <OutlinedInput
                             fullWidth
                             required
@@ -138,17 +146,7 @@ const SignUp = () => {
                             id="password"
                             type={togglePassword.showPassword ? 'text' : 'password'}
                             placeholder="Confirmed Password"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end">
-                                        {togglePassword.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
+                            endAdornment={<Adornment />}
                         />
                     </Grid>
                     <StyledButton
@@ -162,19 +160,19 @@ const SignUp = () => {
                         Sign Up
                     </StyledButton>
                 </Grid>
-                <Typography sx={{ marginTop: '2rem' }} textAlign="center">
-                    Already have an account?
-                    <Link
-                        style={{
-                            color: '#42a5f5',
-                            textDecoration: 'underline',
-                            margin: '0 0.5rem'
-                        }}
-                        to={'/sign-in'}>
-                        Sign in
-                    </Link>
-                </Typography>
             </StyledForm>
+            <Typography sx={{ padding: '1rem 0 2.5rem 0' }} textAlign="center">
+                Already have an account?
+                <Link
+                    style={{
+                        color: '#42a5f5',
+                        textDecoration: 'underline',
+                        margin: '0 0.5rem'
+                    }}
+                    to={'/sign-in'}>
+                    Sign in
+                </Link>
+            </Typography>
         </StyledCard>
     );
 };

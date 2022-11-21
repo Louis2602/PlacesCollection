@@ -35,7 +35,7 @@ const StyledInputLabel = styled(InputLabel)({
 const StyledForm = styled('form')({
     padding: '1rem 1rem',
     width: '40rem',
-    height: '49rem'
+    height: '42rem'
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -98,14 +98,7 @@ const SignIn = () => {
                 <Grid container spacing={1} sx={{ padding: '0 1rem' }}>
                     <Grid item xs={12}>
                         <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
-                        <TextField
-                            fullWidth
-                            required
-                            variant="outlined"
-                            id="title"
-                            type="email"
-                            placeholder="Email"
-                        />
+                        <TextField fullWidth required variant="outlined" id="title" type="email" placeholder="Email" />
                     </Grid>
                     <Grid item xs={12}>
                         <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
@@ -140,19 +133,19 @@ const SignIn = () => {
                         Sign In
                     </StyledButton>
                 </Grid>
-                <Typography sx={{ marginTop: '2rem' }} textAlign="center">
-                    Don't have an account?
-                    <Link
-                        style={{
-                            color: '#42a5f5',
-                            textDecoration: 'underline',
-                            margin: '0 0.5rem'
-                        }}
-                        to={'/sign-up'}>
-                        Sign up
-                    </Link>
-                </Typography>
             </StyledForm>
+            <Typography sx={{ padding: '1rem 0 2.5rem 0' }} textAlign="center">
+                Don't have an account?
+                <Link
+                    style={{
+                        color: '#42a5f5',
+                        textDecoration: 'underline',
+                        margin: '0 0.5rem'
+                    }}
+                    to={'/sign-up'}>
+                    Sign up
+                </Link>
+            </Typography>
         </StyledCard>
     );
 };
