@@ -26,9 +26,7 @@ export const FavoritesContextProvider = (props) => {
     };
 
     const itemIsFavoriteHandler = (meetupId) => {
-        return (
-            userFavorites.some((meetup) => meetup.id === meetupId) || localStorage.getItem(meetupId) !== null
-        );
+        return userFavorites.some((meetup) => meetup.id === meetupId) || localStorage.getItem(meetupId) !== null;
     };
 
     const context = {

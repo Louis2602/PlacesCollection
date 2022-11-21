@@ -73,10 +73,7 @@ const Map = () => {
     if (!isLoaded) return <div>Loading...</div>;
     return (
         <>
-            <h1>
-                This feature cannot be implemented due to GoogleMapsAPI fees, this will be updated in the
-                future soon
-            </h1>
+            <h1>This feature cannot be implemented due to GoogleMapsAPI fees, this will be updated in the future soon</h1>
             <h3>Name: {tittle}</h3>
             <p>Address: {address}</p>
             {!found ? (

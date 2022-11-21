@@ -1,10 +1,9 @@
+import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 
-const AllCollections = () => {
-    const { collection } = useParams();
+const AllCollections = ({collection}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedItems, setloadedItems] = useState([]);
 
@@ -42,7 +41,7 @@ const AllCollections = () => {
                         {collection.slice(1)}
                     </h1>
                     {loadedItems.length === 0 ? (
-                        <p>There is no {collection} stored yet! Add some more</p>
+                        <Typography textAlign="center">There is no {collection} stored yet! Add some more</Typography>
                     ) : (
                         <ItemsList items={loadedItems} />
                     )}

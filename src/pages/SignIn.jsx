@@ -32,24 +32,46 @@ const StyledInputLabel = styled(InputLabel)({
     color: 'inherit'
 });
 
-const StyledForm = styled('form')({
+const StyledForm = styled('form')(({ theme }) => ({
     padding: '1rem 1rem',
     width: '40rem',
-    height: '49rem'
-});
+    height: '42rem',
+    [theme.breakpoints.down('md')]: {
+        width: '100%',
+        height: '46rem'
+    }
+}));
 
 const StyledButton = styled(Button)(({ theme }) => ({
     padding: '1rem 1.5rem',
     margin: '0.5rem auto',
     width: '25rem',
+    backgroundColor: '#3B71CA',
     '&:hover': {
         backgroundColor: theme.palette.info.main
+    },
+    [theme.breakpoints.down('md')]: {
+        width: '100%'
     }
 }));
+
 const StyledBox = styled(Box)({
     textAlign: 'center',
     margin: '2rem auto'
 });
+
+const StyledSignInButton = styled(Button)(({ theme }) => ({
+    padding: '1rem 1.5rem',
+    margin: '0.5rem auto',
+    marginTop: '2rem',
+    width: '100%',
+    backgroundColor: '#388e3c',
+    marginLeft: '0.5rem',
+    '&:hover': {
+        backgroundColor: theme.palette.info.main
+    }
+}));
+
 const SignIn = () => {
     const [togglePassword, setTogglePassword] = useState({
         amount: '',
@@ -76,36 +98,17 @@ const SignIn = () => {
                 </Typography>
                 <StyledBox>
                     <div>
-                        <StyledButton
-                            variant="contained"
-                            sx={{
-                                backgroundColor: '#3B71CA'
-                            }}>
-                            Continue with Google
-                        </StyledButton>
+                        <StyledButton variant="contained">Continue with Google</StyledButton>
                     </div>
                     <div>
-                        <StyledButton
-                            variant="contained"
-                            sx={{
-                                backgroundColor: '#3B71CA'
-                            }}>
-                            Continue with Facebook
-                        </StyledButton>
+                        <StyledButton variant="contained">Continue with Facebook</StyledButton>
                     </div>
                 </StyledBox>
                 <Divider sx={{ margin: '2rem' }}>or with email</Divider>
                 <Grid container spacing={1} sx={{ padding: '0 1rem' }}>
                     <Grid item xs={12}>
                         <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
-                        <TextField
-                            fullWidth
-                            required
-                            variant="outlined"
-                            id="title"
-                            type="email"
-                            placeholder="Email"
-                        />
+                        <TextField fullWidth required variant="outlined" id="title" type="email" placeholder="Email" />
                     </Grid>
                     <Grid item xs={12}>
                         <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
@@ -129,30 +132,23 @@ const SignIn = () => {
                             }
                         />
                     </Grid>
-                    <StyledButton
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            marginTop: '2rem',
-                            width: '100%',
-                            backgroundColor: '#388e3c'
-                        }}>
+                    <StyledSignInButton variant="contained" type="submit">
                         Sign In
-                    </StyledButton>
+                    </StyledSignInButton>
                 </Grid>
-                <Typography sx={{ marginTop: '2rem' }} textAlign="center">
-                    Don't have an account?
-                    <Link
-                        style={{
-                            color: '#42a5f5',
-                            textDecoration: 'underline',
-                            margin: '0 0.5rem'
-                        }}
-                        to={'/sign-up'}>
-                        Sign up
-                    </Link>
-                </Typography>
             </StyledForm>
+            <Typography sx={{ padding: '1rem 0 2.5rem 0' }} textAlign="center">
+                Don't have an account?
+                <Link
+                    style={{
+                        color: '#42a5f5',
+                        textDecoration: 'underline',
+                        margin: '0 0.5rem'
+                    }}
+                    to={'/sign-up'}>
+                    Sign up
+                </Link>
+            </Typography>
         </StyledCard>
     );
 };

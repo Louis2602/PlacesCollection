@@ -13,7 +13,7 @@ const NewPlace = () => {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            navigate(`/${placesData.type}s`);   
+            navigate(`/${placesData.type}s`);
         });
     };
     return (

@@ -1,18 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 
-import {
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-    Typography,
-    IconButton,
-    Checkbox,
-    Box,
-    styled,
-    Rating
-} from '@mui/material/';
+import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 
@@ -111,12 +100,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                     <Typography className={classes.root} variant="body1" color="text.primary" gutterBottom>
                         {description}
                     </Typography>
-                    <Typography
-                        className={classes.root}
-                        variant="subtitle2"
-                        color="text.secondary"
-                        gutterBottom
-                        sx={{ fontStyle: 'italic' }}>
+                    <Typography className={classes.root} variant="subtitle2" color="text.secondary" gutterBottom sx={{ fontStyle: 'italic' }}>
                         {address}
                     </Typography>
                     <Typography className={classes.root} align="center" fontWeight="bold">
@@ -131,11 +115,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                             {itemIsFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                         </StyledIconButton>
                         <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
-                            <Checkbox
-                                sx={{ padding: 0 }}
-                                checkedIcon={<LocationOn sx={{ color: 'orange' }} />}
-                                icon={<LocationOnOutlined />}
-                            />
+                            <Checkbox sx={{ padding: 0 }} checkedIcon={<LocationOn sx={{ color: 'orange' }} />} icon={<LocationOnOutlined />} />
                         </StyledIconButton>
                         <StyledIconButton aria-label="share">
                             <Share />
