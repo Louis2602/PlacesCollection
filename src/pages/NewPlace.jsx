@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 
 import NewPlaceForm from '../components/Form/NewPlaceForm';
 
-const NewPlace = () => {
+const NewPlace = ({ setHighlight }) => {
     const navigate = useNavigate();
 
     const addPlaceHandler = (placesData) => {
@@ -14,6 +14,11 @@ const NewPlace = () => {
             }
         }).then(() => {
             navigate(`/${placesData.type}s`);
+            setHighlight('');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     };
     return (

@@ -7,7 +7,6 @@ import {
     AllCollections,
     NewPlace,
     HomePage,
-    Favorites,
     Map,
     NavBar,
     SignIn,
@@ -44,8 +43,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
     padding: 0
 }));
 
+const username = 'PoTayTo';
+
 function App() {
     const [mode, setMode] = useState('light');
+    const [highlight, setHighlight] = useState('');
     const darkTheme = createTheme({
         palette: {
             primary: {
@@ -57,25 +59,26 @@ function App() {
             mode: mode
         }
     });
+
     return (
         <FavoritesContextProvider>
             <Router>
                 <ThemeProvider theme={darkTheme}>
                     <CssBaseline />
                     <StyledBox>
-                        <NavBar setMode={setMode} mode={mode} />
-                        <Box>
+                        <NavBar setMode={setMode} mode={mode} setHighlight={setHighlight} highlight={highlight} />
+                        <Box sx={{ minHeight: '30rem' }}>
                             <StyledStack spacing={2}>
                                 <Routes>
                                     <Route exact path="/" element={<HomePage />}></Route>
                                     <Route path="/map" element={<Map />}></Route>
                                     <Route path="/sign-in" element={<SignIn />}></Route>
                                     <Route path="/sign-up" element={<SignUp />}></Route>
-                                    <Route path="/restaurants" element={<AllCollections collection="restaurants" />}></Route>
-                                    <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
-                                    <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
-                                    <Route path="/new-place" element={<NewPlace />}></Route>
-                                    <Route path="/favorites" element={<Favorites />}></Route>
+                                    <Route path="/restaurants" element={<AllCollections collection="restaurants" username="" />}></Route>
+                                    <Route path="/hotels" element={<AllCollections collection="hotels" username="" />}></Route>
+                                    <Route path="/attractions" element={<AllCollections collection="attractions" username="" />}></Route>
+                                    <Route path="/favorites" element={<AllCollections collection="favorites" username={username} />}></Route>
+                                    <Route path="/new-place" element={<NewPlace setHighlight={setHighlight} />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
                                     <Route path="/profile" element={<Profile />}></Route>
