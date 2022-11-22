@@ -179,7 +179,8 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
 
 const StyledAppBar = styled(AppBar)({
     position: 'sticky',
-    width: '100%'
+    width: '100%',
+    top: 0
 });
 
 const StyledLink = styled(Link)({
@@ -237,19 +238,53 @@ const NavBar = ({ setMode, mode }) => {
         setMode(mode === 'light' ? 'dark' : 'light');
     };
     const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
+        if (window.pageYOffset > 10) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            setTimeout(
+                function (event) {
+                    setAnchorElUser(event);
+                    document.body.style.position = 'fixed';
+                },
+                300 + window.pageYOffset / 3,
+                event.currentTarget
+            );
+        } else {
+            setAnchorElUser(event.currentTarget);
+            document.body.style.position = 'fixed';
+        }
     };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+        document.body.style.position = 'static';
     };
 
     const handleOpenPlaces = (event) => {
-        setAnchorEl(event.currentTarget);
         setAllowAnimation(true);
+        if (window.pageYOffset > 10) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            setTimeout(
+                function (event) {
+                    setAnchorEl(event);
+                    document.body.style.position = 'fixed';
+                },
+                300 + window.pageYOffset / 3,
+                event.currentTarget
+            );
+        } else {
+            setAnchorEl(event.currentTarget);
+            document.body.style.position = 'fixed';
+        }
     };
     const handleClosePlaces = () => {
         setAnchorEl(null);
+        document.body.style.position = 'static';
     };
     const handleOpenList = () => {
         setOpenList(!openList);

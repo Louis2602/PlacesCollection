@@ -113,7 +113,7 @@ const SignUp = () => {
         <StyledCard>
             <StyledForm onSubmit={submitHandler}>
                 <Typography variant="h3" fontWeight="bold" margin="2.5rem" textAlign="center" flexGrow="1">
-                    Get Started
+                    Let's Get Started
                 </Typography>
                 <StyledBox>
                     <div>
@@ -151,7 +151,7 @@ const SignUp = () => {
                             fullWidth
                             required
                             variant="outlined"
-                            id="password"
+                            id="confirmpassword"
                             type={togglePassword.showPassword ? 'text' : 'password'}
                             placeholder="Confirmed Password"
                             endAdornment={<Adornment />}

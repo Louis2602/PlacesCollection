@@ -3,7 +3,29 @@ import { ThemeProvider } from '@emotion/react';
 import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FavoritesContextProvider } from './contexts/FavoritesContext';
-import { AllCollections, NewPlace, HomePage, Favorites, Map, NavBar, SignIn, SignUp, Footer, ItemDetails, Reviews, Profile, Error } from './pages';
+import {
+    AllCollections,
+    NewPlace,
+    HomePage,
+    Favorites,
+    Map,
+    NavBar,
+    SignIn,
+    SignUp,
+    Footer,
+    ItemDetails,
+    Reviews,
+    Profile,
+    Error,
+    About,
+    Howitworks,
+    Testimonials,
+    Termsofservice,
+    Contact,
+    Destination,
+    Sponsorships,
+    Support
+} from './pages';
 import './App.css';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -15,6 +37,13 @@ const StyledStack = styled(Stack)(({ theme }) => ({
         margin: '3rem auto'
     }
 }));
+
+const StyledBox = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 0
+}));
+
 function App() {
     const [mode, setMode] = useState('light');
     const darkTheme = createTheme({
@@ -33,16 +62,9 @@ function App() {
             <Router>
                 <ThemeProvider theme={darkTheme}>
                     <CssBaseline />
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minHeight: '100vh',
-                            width: '100%',
-                            padding: 0
-                        }}>
+                    <StyledBox>
                         <NavBar setMode={setMode} mode={mode} />
-                        <Box sx={{ flex: 1 }}>
+                        <Box>
                             <StyledStack spacing={2}>
                                 <Routes>
                                     <Route exact path="/" element={<HomePage />}></Route>
@@ -57,12 +79,20 @@ function App() {
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
                                     <Route path="/profile" element={<Profile />}></Route>
+                                    <Route path="/about" element={<About />}></Route>
+                                    <Route path="/howitworks" element={<Howitworks />}></Route>
+                                    <Route path="/testimonials" element={<Testimonials />}></Route>
+                                    <Route path="/termsofservice" element={<Termsofservice />}></Route>
+                                    <Route path="/contact" element={<Contact />}></Route>
+                                    <Route path="/support" element={<Support />}></Route>
+                                    <Route path="/destination" element={<Destination />}></Route>
+                                    <Route path="/sponsorships" element={<Sponsorships />}></Route>
                                     <Route path="/:error" element={<Error />}></Route>
                                 </Routes>
                             </StyledStack>
                         </Box>
                         <Footer />
-                    </Box>
+                    </StyledBox>
                 </ThemeProvider>
             </Router>
         </FavoritesContextProvider>
