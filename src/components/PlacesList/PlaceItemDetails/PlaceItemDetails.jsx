@@ -80,16 +80,14 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
         });
     };
     const classes = useStyles();
-
     const handleDelete = ({ id, type }) => {
         fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${type}s/${id}.json`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(() => {
-            window.location.reload(false);
         });
+        navigate(`/${type}s`);
     };
 
     return (

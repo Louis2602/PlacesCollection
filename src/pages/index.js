@@ -1,7 +1,6 @@
 export { default as AllCollections } from './AllCollections';
 export { default as NewPlace } from './NewPlace';
 export { default as HomePage } from './HomePage';
-export { default as Favorites } from './Favorites';
 export { default as Map } from './Map';
 export { default as NavBar } from '../components/NavBar/NavBar';
 export { default as SignIn } from './SignIn';

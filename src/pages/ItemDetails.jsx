@@ -17,18 +17,12 @@ const ItemDetails = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`)
+        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}/${id}.json`)
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
-                for (const key in data) {
-                    const item = {
-                        id: key,
-                        ...data[key]
-                    };
-                    if (item.id === id) setLoadedItem(item);
-                }
+                setLoadedItem(data);
                 setIsLoading(false);
             });
     }, [collection, id]);
@@ -45,7 +39,7 @@ const ItemDetails = () => {
                         <>
                             <Styledh1>{loadedItem.title}</Styledh1>
                             <PlaceItemDetails
-                                id={loadedItem.id}
+                                id={id}
                                 address={loadedItem.address}
                                 description={loadedItem.description}
                                 rating={loadedItem.rating}

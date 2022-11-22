@@ -3,13 +3,17 @@ import { useState, useEffect } from 'react';
 
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 
-const AllCollections = ({collection}) => {
+const AllCollections = ({ collection, username }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedItems, setloadedItems] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`)
+        fetch(
+            collection === 'favorites'
+                ? `https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}/favorites.json`
+                : `https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`
+        )
             .then((response) => {
                 return response.json();
             })
@@ -28,7 +32,7 @@ const AllCollections = ({collection}) => {
                 setIsLoading(false);
                 setloadedItems(items);
             });
-    }, [collection]);
+    }, [collection, username]);
 
     return (
         <>
@@ -36,10 +40,7 @@ const AllCollections = ({collection}) => {
                 <div className="loader"></div>
             ) : (
                 <section>
-                    <h1>
-                        All {collection[0].toUpperCase()}
-                        {collection.slice(1)}
-                    </h1>
+                    <h1>{collection !== 'favorites' ? `All ${collection[0].toUpperCase()}${collection.slice(1)}` : `${username}'s Favorites`}</h1>
                     {loadedItems.length === 0 ? (
                         <Typography textAlign="center">There is no {collection} stored yet! Add some more</Typography>
                     ) : (

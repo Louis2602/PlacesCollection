@@ -227,7 +227,7 @@ const StyledImg = styled('img')(({ theme }) => ({
     }
 }));
 
-const NavBar = ({ setMode, mode }) => {
+const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
@@ -264,6 +264,7 @@ const NavBar = ({ setMode, mode }) => {
 
     const handleOpenPlaces = (event) => {
         setAllowAnimation(true);
+        setHighlight('');
         if (window.pageYOffset > 10) {
             window.scrollTo({
                 top: 0,
@@ -291,10 +292,6 @@ const NavBar = ({ setMode, mode }) => {
         setAllowAnimation(true);
     };
 
-    const open = Boolean(anchorEl);
-    const openSm = Boolean(anchorSm);
-    const openUser = Boolean(anchorElUser);
-
     const handleToggleSidebar = () => {
         if (anchorSm) {
             setAnchorSm(false);
@@ -304,6 +301,10 @@ const NavBar = ({ setMode, mode }) => {
             setAllowAnimation(false);
         }
     };
+
+    const open = Boolean(anchorEl);
+    const openSm = Boolean(anchorSm);
+    const openUser = Boolean(anchorElUser);
 
     return (
         <StyledAppBar>
@@ -367,20 +368,13 @@ const NavBar = ({ setMode, mode }) => {
                             mx: 2
                         }}>
                         <StyledButton
+                            sx={open ? { backgroundColor: 'white', color: 'black' } : ''}
                             onClick={handleOpenPlaces}
                             endIcon={allowAnimation ? !open ? <StyledExpandLess /> : <StyledExpandMore /> : <ExpandLess />}>
                             Collections
                         </StyledButton>
 
-                        <StyledMenu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={open}
-                            onClose={handleClosePlaces}
-                            MenuListProps={{
-                                'aria-labelledby': 'basic-button'
-                            }}>
+                        <StyledMenu id="basic-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClosePlaces}>
                             {places.map((place, idx) => (
                                 <Grow in={open} key={idx} {...(open ? { timeout: 600 * idx } : {})}>
                                     <StyledLink to={`/${place}`}>
@@ -393,11 +387,19 @@ const NavBar = ({ setMode, mode }) => {
                         </StyledMenu>
 
                         <StyledLink to={'/new-place'}>
-                            <StyledButton>Add New Place</StyledButton>
+                            <StyledButton
+                                sx={highlight === 'new-place' ? { backgroundColor: 'white', color: 'black' } : ''}
+                                onClick={() => setHighlight('new-place')}>
+                                Add New Place
+                            </StyledButton>
                         </StyledLink>
 
                         <StyledLink to={'/favorites'}>
-                            <StyledButton>My Favorites</StyledButton>
+                            <StyledButton
+                                sx={highlight === 'favorites' ? { backgroundColor: 'white', color: 'black' } : ''}
+                                onClick={() => setHighlight('favorites')}>
+                                My Favorites
+                            </StyledButton>
                         </StyledLink>
                     </Box>
 
