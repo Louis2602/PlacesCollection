@@ -1,5 +1,6 @@
 import { Box, Grid, Typography, styled, Container, Stack, IconButton } from '@mui/material';
 import { Facebook, Instagram, YouTube, GitHub, LinkedIn } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const StyledIconButton = styled(IconButton)({
     color: '#fff',
@@ -26,6 +27,19 @@ const StyledBox = styled(Box)(({ theme }) => ({
     }
 }));
 const Atag = styled('a')(({ theme }) => ({
+    textDecoration: 'none',
+    fontSize: '1rem',
+    color: '#fff',
+    '&:hover': {
+        color: 'crimson'
+    },
+    transition: '0.3s ease-in-out',
+    [theme.breakpoints.down('md')]: {
+        width: '122px'
+    }
+}));
+
+const StyledLink = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
     fontSize: '1rem',
     color: '#fff',
@@ -88,18 +102,10 @@ const Footer = () => {
                             About Us
                         </StyledFooterTypo>
                         <Stack spacing={2}>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                About
-                            </Atag>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                How it works
-                            </Atag>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                Testimonials
-                            </Atag>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                Terms of service
-                            </Atag>
+                            <StyledLink to="/about">About</StyledLink>
+                            <StyledLink to="/howitworks">How it works</StyledLink>
+                            <StyledLink to="/testimonials">Testimonials</StyledLink>
+                            <StyledLink to="/termsofservice">Terms of service</StyledLink>
                         </Stack>
                     </StyledGrid>
 
@@ -108,18 +114,10 @@ const Footer = () => {
                             Contact Us
                         </StyledFooterTypo>
                         <Stack spacing={2}>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                Contact
-                            </Atag>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                Support
-                            </Atag>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                Destination
-                            </Atag>
-                            <Atag href="/" rel="noreferrer" target="_blank">
-                                Sponsorships
-                            </Atag>
+                            <StyledLink to="/contact">Contact</StyledLink>
+                            <StyledLink to="/support">Support</StyledLink>
+                            <StyledLink to="/destination">Destination</StyledLink>
+                            <StyledLink to="/sponsorships">Sponsorships</StyledLink>
                         </Stack>
                     </StyledGrid>
 
