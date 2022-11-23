@@ -54,6 +54,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
     const [type, setType] = useState('');
     const [rating, setRating] = useState(2);
     const [hover, setHover] = useState(-1);
+    const [open, setOpen] = useState(false);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -75,8 +76,30 @@ const NewPlaceForm = ({ onAddPlace }) => {
         };
         onAddPlace(placesData);
     };
+
     const handleTypeChange = (e) => {
         setType(e.target.value);
+    };
+
+    const handleClick = () => {
+        if (open) {
+            setOpen(false);
+            document.body.style.position = 'static';
+        } else {
+            if (window.pageYOffset > 10) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setTimeout(function () {
+                    setOpen(true);
+                    document.body.style.position = 'fixed';
+                }, 300 + window.pageYOffset / 3);
+            } else {
+                setOpen(true);
+                document.body.style.position = 'fixed';
+            }
+        }
     };
 
     return (
@@ -86,7 +109,14 @@ const NewPlaceForm = ({ onAddPlace }) => {
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <StyledInputLabel htmlFor="type">Type of place</StyledInputLabel>
-                            <Select fullWidth required value={type} label="Type of place" onChange={handleTypeChange}>
+                            <Select
+                                open={open}
+                                fullWidth
+                                required
+                                value={type}
+                                label="Type of place"
+                                onChange={handleTypeChange}
+                                onClick={handleClick}>
                                 <MenuItem value="restaurant">Restaurants</MenuItem>
                                 <MenuItem value="hotel">Hotels</MenuItem>
                                 <MenuItem value="attraction">Attractions</MenuItem>

@@ -25,6 +25,7 @@ import {
     Sponsorships,
     Support
 } from './pages';
+import ScrollToTop from './assets/ScrollToTop';
 import './App.css';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -63,6 +64,7 @@ function App() {
     return (
         <FavoritesContextProvider>
             <Router>
+                <ScrollToTop />
                 <ThemeProvider theme={darkTheme}>
                     <CssBaseline />
                     <StyledBox>

@@ -19,6 +19,7 @@ body {
     overflow-x: clip;
     width: 100%;
     scroll-behavior: smooth;
+    z-index: 999999;
 }
 
 h1 {

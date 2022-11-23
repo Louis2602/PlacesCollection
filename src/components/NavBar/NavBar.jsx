@@ -237,12 +237,15 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
     const handlerMode = () => {
         setMode(mode === 'light' ? 'dark' : 'light');
     };
+    const handleScrollTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
     const handleOpenUserMenu = (event) => {
         if (window.pageYOffset > 10) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            handleScrollTop();
             setTimeout(
                 function (event) {
                     setAnchorElUser(event);
@@ -264,12 +267,8 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
 
     const handleOpenPlaces = (event) => {
         setAllowAnimation(true);
-        setHighlight('');
         if (window.pageYOffset > 10) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            handleScrollTop();
             setTimeout(
                 function (event) {
                     setAnchorEl(event);
@@ -285,6 +284,7 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
     };
     const handleClosePlaces = () => {
         setAnchorEl(null);
+        setHighlight('');
         document.body.style.position = 'static';
     };
     const handleOpenList = () => {
@@ -300,6 +300,11 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
             setAnchorSm(true);
             setAllowAnimation(false);
         }
+    };
+
+    const handleClickNav = (des) => {
+        setHighlight(des);
+        handleScrollTop();
     };
 
     const open = Boolean(anchorEl);
@@ -389,7 +394,7 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
                         <StyledLink to={'/new-place'}>
                             <StyledButton
                                 sx={highlight === 'new-place' ? { backgroundColor: 'white', color: 'black' } : ''}
-                                onClick={() => setHighlight('new-place')}>
+                                onClick={() => handleClickNav('new-place')}>
                                 Add New Place
                             </StyledButton>
                         </StyledLink>
@@ -397,7 +402,7 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
                         <StyledLink to={'/favorites'}>
                             <StyledButton
                                 sx={highlight === 'favorites' ? { backgroundColor: 'white', color: 'black' } : ''}
-                                onClick={() => setHighlight('favorites')}>
+                                onClick={() => handleClickNav('favorites')}>
                                 My Favorites
                             </StyledButton>
                         </StyledLink>
