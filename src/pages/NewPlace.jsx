@@ -15,10 +15,6 @@ const NewPlace = ({ setHighlight }) => {
         }).then(() => {
             navigate(`/${placesData.type}s`);
             setHighlight('');
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
         });
     };
     return (
