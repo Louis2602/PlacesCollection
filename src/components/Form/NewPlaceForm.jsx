@@ -51,9 +51,9 @@ const NewPlaceForm = ({ onAddPlace }) => {
     const addressInputRef = useRef();
     const descriptionInputRef = useRef();
 
-    const [type, setType] = useState('');
     const [rating, setRating] = useState(2);
     const [hover, setHover] = useState(-1);
+    const [type, setType] = useState('');
     const [open, setOpen] = useState(false);
 
     const submitHandler = (e) => {
