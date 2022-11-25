@@ -29,10 +29,8 @@ const StyledCard = styled(Card)({
 const StyledForm = styled('form')(({ theme }) => ({
     padding: '1rem 1rem',
     width: '80rem',
-    minHeight: '30rem',
     [theme.breakpoints.down('md')]: {
-        width: '100%',
-        height: '52rem'
+        width: '100%'
     }
 }));
 
@@ -51,8 +49,24 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const StyledBox = styled(Box)({
     textAlign: 'center',
-    margin: '2rem auto'
+    margin: '3rem auto'
 });
+
+const StyledSignUpBox = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    padding: '2rem',
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        padding: '0 1rem'
+    }
+}));
+
+const StyledOtherBox = styled(Box)(({ theme }) => ({
+    padding: '1rem 4rem 1rem 0',
+    [theme.breakpoints.down('md')]: {
+        padding: 0
+    }
+}));
 
 const StyledLink = styled(Link)({
     color: '#42a5f5',
@@ -70,27 +84,48 @@ const StyledSignUpButton = styled(Button)(({ theme }) => ({
     }
 }));
 
+const StyledFormLabel = styled(FormLabel)(({ theme }) => ({
+    position: 'absolute',
+    top: -16,
+    left: -8,
+    backgroundColor: 'white',
+    padding: '0 5px',
+    fontSize: '0.8rem'
+}));
+
+const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
+    margin: '1px',
+    padding: '6px 1rem',
+    width: '100%',
+    color: 'rgba(0, 0, 0, 0.87)',
+    transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    borderRadius: '4px'
+}));
+
+const Genders = ['Female', 'Male', 'Other'];
+
+const validationSchema = Yup.object().shape({
+    gender: Yup.bool().required('Gender is required'),
+    birthday: Yup.string().required('Birthday is required'),
+    username: Yup.string()
+        .required('Username is required')
+        .min(6, 'Username must be at least 6 characters')
+        .max(20, 'Username must not exceed 20 characters'),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters')
+        .max(40, 'Password must not exceed 40 characters'),
+    confirmPassword: Yup.string()
+        .required('Confirm Password is required')
+        .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
+    acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
+});
+
 const SignUp = () => {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
 
-    const validationSchema = Yup.object().shape({
-        gender: Yup.bool().required('Gender is required'),
-        birthday: Yup.string().required('Birthday is required'),
-        username: Yup.string()
-            .required('Username is required')
-            .min(6, 'Username must be at least 6 characters')
-            .max(20, 'Username must not exceed 20 characters'),
-        email: Yup.string().required('Email is required').email('Email is invalid'),
-        password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(40, 'Password must not exceed 40 characters'),
-        confirmPassword: Yup.string()
-            .required('Confirm Password is required')
-            .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
-        acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
-    });
     const {
         register,
         control,
@@ -115,7 +150,6 @@ const SignUp = () => {
         weightRange: '',
         showPassword: false
     });
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
@@ -127,8 +161,8 @@ const SignUp = () => {
     };
 
     const onSubmit = () => {
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts.json`, {
-            method: 'POST',
+        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
+            method: 'PUT',
             body: JSON.stringify(userData),
             headers: {
                 'Content-Type': 'application/json'
@@ -150,22 +184,19 @@ const SignUp = () => {
             <h1>Sign Up</h1>
             <StyledCard>
                 <StyledForm>
-                    <Box sx={{ display: 'flex' }} px={10} py={3}>
-                        <Box sx={{ padding: '1rem 4rem 1rem 0' }} container spacing={1}>
+                    <StyledSignUpBox>
+                        <StyledOtherBox spacing={1}>
                             <StyledBox>
                                 <StyledButton variant="contained">Continue with Google</StyledButton>
                                 <StyledButton variant="contained">Continue with Facebook</StyledButton>
                             </StyledBox>
                             <Divider sx={{ margin: '2rem' }}>or with email</Divider>
-                        </Box>
+                        </StyledOtherBox>
 
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
-                                <FormControlLabel
-                                    error={errors.gender ? true : false}
+                                <StyledFormControlLabel
                                     sx={{
-                                        margin: '1px',
-                                        padding: '6px 1rem',
                                         border: `${
                                             errors.gender
                                                 ? !genderActive
@@ -175,10 +206,6 @@ const SignUp = () => {
                                                 ? '1px solid rgb(176, 176, 176)'
                                                 : '2px solid #693BD4'
                                         }`,
-                                        width: '100%',
-                                        color: 'rgba(0, 0, 0, 0.87)',
-                                        transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-                                        borderRadius: '4px',
                                         '&:hover': {
                                             border: `${errors.gender ? '' : !genderActive ? '1px solid black' : '2px solid #693BD4'}`
                                         }
@@ -192,49 +219,26 @@ const SignUp = () => {
                                             inputRef={register()}
                                             render={({ field: { onChange } }) => (
                                                 <FormControl>
-                                                    <FormLabel
+                                                    <StyledFormLabel
                                                         sx={{
-                                                            position: 'absolute',
-                                                            top: -16,
-                                                            left: -8,
-                                                            backgroundColor: 'white',
-                                                            padding: '0 5px',
-                                                            fontSize: '0.8rem',
                                                             color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}`
                                                         }}>
                                                         Gender *
-                                                    </FormLabel>
+                                                    </StyledFormLabel>
                                                     <RadioGroup row sx={{}}>
-                                                        <FormControlLabel
-                                                            sx={{ color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}` }}
-                                                            value="female"
-                                                            control={<Radio />}
-                                                            label="Female"
-                                                            onChange={(e) => {
-                                                                onChange(e.target.checked);
-                                                                setUserData({ ...userData, gender: 'Female' });
-                                                            }}
-                                                        />
-                                                        <FormControlLabel
-                                                            sx={{ color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}` }}
-                                                            value="male"
-                                                            control={<Radio />}
-                                                            label="Male"
-                                                            onChange={(e) => {
-                                                                onChange(e.target.checked);
-                                                                setUserData({ ...userData, gender: 'Male' });
-                                                            }}
-                                                        />
-                                                        <FormControlLabel
-                                                            sx={{ color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}` }}
-                                                            value="other"
-                                                            control={<Radio />}
-                                                            label="Other"
-                                                            onChange={(e) => {
-                                                                onChange(e.target.checked);
-                                                                setUserData({ ...userData, gender: 'Other' });
-                                                            }}
-                                                        />
+                                                        {Genders.map((gender, i) => (
+                                                            <FormControlLabel
+                                                                key={i}
+                                                                sx={{ color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}` }}
+                                                                value={gender}
+                                                                control={<Radio />}
+                                                                label={gender}
+                                                                onChange={(e) => {
+                                                                    onChange(e.target.checked);
+                                                                    setUserData({ ...userData, gender: { gender } });
+                                                                }}
+                                                            />
+                                                        ))}
                                                     </RadioGroup>
                                                 </FormControl>
                                             )}
@@ -346,7 +350,7 @@ const SignUp = () => {
                                     control={
                                         <Controller
                                             control={control}
-                                            name="acceptTerms"
+                                            name="showPassword"
                                             defaultValue="false"
                                             inputRef={register()}
                                             render={({ field: { onChange } }) => (
@@ -366,14 +370,10 @@ const SignUp = () => {
                                             name="acceptTerms"
                                             defaultValue="false"
                                             inputRef={register()}
-                                            render={({ field: { onChange } }) => (
-                                                <Checkbox color="primary" onChange={(e) => onChange(e.target.checked)} />
-                                            )}
+                                            render={({ field: { onChange } }) => <Checkbox color="primary" onChange={(e) => onChange(e.target.checked)} />}
                                         />
                                     }
-                                    label={
-                                        <Typography color={errors.acceptTerms ? 'error' : 'inherit'}>I have read and agree to the Terms *</Typography>
-                                    }
+                                    label={<Typography color={errors.acceptTerms ? 'error' : 'inherit'}>I have read and agree to the Terms *</Typography>}
                                 />
 
                                 <Typography variant="inherit" color="error">
@@ -394,7 +394,7 @@ const SignUp = () => {
                                 </Typography>
                             </Grid>
                         </Grid>
-                    </Box>
+                    </StyledSignUpBox>
                 </StyledForm>
             </StyledCard>
         </>

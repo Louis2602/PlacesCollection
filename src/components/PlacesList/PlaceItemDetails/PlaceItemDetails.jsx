@@ -1,11 +1,7 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-
 import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
-
-import FavoritesContext from '../../../contexts/FavoritesContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,25 +46,6 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
 }));
 
 const PlaceItemDetails = ({ id, image, title, rating, address, description, type }) => {
-    const favoriteCtx = useContext(FavoritesContext);
-
-    const itemIsFavorite = favoriteCtx.itemIsFavorite(id);
-
-    const toggleFavoriteStatusHandler = () => {
-        if (itemIsFavorite) {
-            favoriteCtx.removeFavorite(id);
-        } else {
-            favoriteCtx.addFavorite({
-                id: id,
-                title: title,
-                rating: rating,
-                description: description,
-                image: image,
-                address: address,
-                type: type
-            });
-        }
-    };
     const navigate = useNavigate();
     const toggleGoogleMap = () => {
         navigate('/map', {
@@ -109,8 +86,8 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                         <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
                     </Box>
                     <CardActions className={classes.root}>
-                        <StyledIconButton aria-label="add to favorites" onClick={toggleFavoriteStatusHandler}>
-                            {itemIsFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
+                        <StyledIconButton aria-label="add to favorites" onClick={() => {}}>
+                            {true ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                         </StyledIconButton>
                         <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
                             <Checkbox sx={{ padding: 0 }} checkedIcon={<LocationOn sx={{ color: 'orange' }} />} icon={<LocationOnOutlined />} />

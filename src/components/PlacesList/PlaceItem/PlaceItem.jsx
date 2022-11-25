@@ -1,10 +1,7 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
-
-import FavoritesContext from '../../../contexts/FavoritesContext';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: 380,
@@ -46,25 +43,6 @@ const StyledLink = styled(Link)(({ theme }) => ({
 }));
 
 const PlaceItem = ({ id, image, title, rating, address, description, type }) => {
-    const favoriteCtx = useContext(FavoritesContext);
-
-    const itemIsFavorite = favoriteCtx.itemIsFavorite(id);
-
-    const toggleFavoriteStatusHandler = () => {
-        if (itemIsFavorite) {
-            favoriteCtx.removeFavorite(id);
-        } else {
-            favoriteCtx.addFavorite({
-                id: id,
-                title: title,
-                rating: rating,
-                description: description,
-                image: image,
-                address: address,
-                type: type
-            });
-        }
-    };
     const navigate = useNavigate();
     const toggleGoogleMap = () => {
         navigate('/map', {
@@ -112,8 +90,8 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                 </CardContent>
             </StyledLink>
             <StyledCardActions>
-                <StyledIconButton aria-label="add to favorites" onClick={toggleFavoriteStatusHandler}>
-                    {itemIsFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
+                <StyledIconButton aria-label="add to favorites" onClick={() => {}}>
+                    {true ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                 </StyledIconButton>
                 <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
                     <Checkbox sx={{ padding: 0 }} checkedIcon={<LocationOn sx={{ color: 'orange' }} />} icon={<LocationOnOutlined />} />

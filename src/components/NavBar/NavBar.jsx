@@ -22,8 +22,11 @@ import {
     Collapse
 } from '@mui/material';
 import { AccountCircle, MenuOutlined, Reviews, Logout, ExpandMore, ExpandLess, ChevronLeft } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Avatar as AvatarImg } from '../Carousel/assets';
+import { preferences, subscribe } from '../../assets/redux/features/themeSlice';
+import { logout } from '../../assets/redux/features/counterSlice';
 
 const places = ['restaurants', 'hotels', 'attractions'];
 
@@ -133,10 +136,6 @@ const StyledUserMenu = styled((props) => (
             vertical: 'bottom',
             horizontal: 'right'
         }}
-        transformOrigin={{
-            vertical: 'left',
-            horizontal: 'right'
-        }}
         {...props}
     />
 ))(({ theme }) => ({
@@ -227,7 +226,9 @@ const StyledImg = styled('img')(({ theme }) => ({
     }
 }));
 
-const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
+const NavBar = ({ setHighlight, highlight }) => {
+    const dispatch = useDispatch();
+    const mode = useSelector((state) => state.theme.value);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
@@ -235,7 +236,8 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
     const [allowAnimation, setAllowAnimation] = useState(false);
 
     const handlerMode = () => {
-        setMode(mode === 'light' ? 'dark' : 'light');
+        dispatch(preferences());
+        dispatch(subscribe());
     };
     const handleScrollTop = () => {
         window.scrollTo({
@@ -305,6 +307,11 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
     const handleClickNav = (des) => {
         setHighlight(des);
         handleScrollTop();
+    };
+
+    const handleLogout = () => {
+        dispatch(logout());
+        setHighlight('');
     };
 
     const open = Boolean(anchorEl);
@@ -426,7 +433,7 @@ const NavBar = ({ setMode, mode, setHighlight, highlight }) => {
                             onClick={handleCloseUserMenu}>
                             {userMenu.map((userItem, idx) => (
                                 <Grow key={idx} in={openUser} {...(openUser ? { timeout: 600 * idx } : {})}>
-                                    <StyledLink to={userItem.link}>
+                                    <StyledLink to={userItem.link} onClick={userItem.obj === 'Logout' ? handleLogout : () => {}}>
                                         <MenuItem sx={{ px: 2 }}>
                                             <ListItemIcon>
                                                 <userItem.icon />
