@@ -133,10 +133,6 @@ const StyledUserMenu = styled((props) => (
             vertical: 'bottom',
             horizontal: 'right'
         }}
-        transformOrigin={{
-            vertical: 'left',
-            horizontal: 'right'
-        }}
         {...props}
     />
 ))(({ theme }) => ({
