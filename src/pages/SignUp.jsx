@@ -29,7 +29,6 @@ const StyledCard = styled(Card)({
 const StyledForm = styled('form')(({ theme }) => ({
     padding: '1rem 1rem',
     width: '80rem',
-    minHeight: '30rem',
     [theme.breakpoints.down('md')]: {
         width: '100%'
     }
@@ -50,7 +49,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const StyledBox = styled(Box)({
     textAlign: 'center',
-    margin: '2rem auto'
+    margin: '3rem auto'
 });
 
 const StyledSignUpBox = styled(Box)(({ theme }) => ({
@@ -162,8 +161,8 @@ const SignUp = () => {
     };
 
     const onSubmit = () => {
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts.json`, {
-            method: 'POST',
+        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
+            method: 'PUT',
             body: JSON.stringify(userData),
             headers: {
                 'Content-Type': 'application/json'
@@ -351,7 +350,7 @@ const SignUp = () => {
                                     control={
                                         <Controller
                                             control={control}
-                                            name="acceptTerms"
+                                            name="showPassword"
                                             defaultValue="false"
                                             inputRef={register()}
                                             render={({ field: { onChange } }) => (

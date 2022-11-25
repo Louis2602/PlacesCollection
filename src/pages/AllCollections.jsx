@@ -40,7 +40,11 @@ const AllCollections = ({ collection, username }) => {
                 <div className="loader"></div>
             ) : (
                 <section>
-                    <h1>{collection !== 'favorites' ? `All ${collection[0].toUpperCase()}${collection.slice(1)}` : `${username}'s Favorites`}</h1>
+                    <h1>
+                        {collection !== 'favorites'
+                            ? `All ${collection[0].toUpperCase()}${collection.slice(1)}`
+                            : `${username !== '' ? `${username}'s Favorites` : 'Please sign in to access favorites'}`}
+                    </h1>
                     {loadedItems.length === 0 ? (
                         <Typography textAlign="center">There is no {collection} stored yet! Add some more</Typography>
                     ) : (
