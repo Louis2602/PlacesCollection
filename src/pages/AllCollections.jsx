@@ -5,36 +5,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 
 const AllCollections = ({ collection }) => {
-    const dispatch = useDispatch();
     const username = useSelector((state) => state.counter.username);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [loadedItems, setloadedItems] = useState([]);
 
     useEffect(() => {
-        setIsLoading(true);
-        fetch(
-            collection === 'favorites'
-                ? `https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}/favorites.json`
-                : `https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`
-        )
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                const items = [];
+        if (username) {
+            setIsLoading(true);
+            fetch(
+                collection === 'favorites'
+                    ? `https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}/favorites.json`
+                    : `https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`
+            )
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    const items = [];
 
-                for (const key in data) {
-                    const item = {
-                        id: key,
-                        ...data[key]
-                    };
+                    for (const key in data) {
+                        const item = {
+                            id: key,
+                            ...data[key]
+                        };
 
-                    items.push(item);
-                }
+                        items.push(item);
+                    }
 
-                setIsLoading(false);
-                setloadedItems(items);
-            });
+                    setIsLoading(false);
+                    setloadedItems(items);
+                });
+        }
     }, [collection, username]);
 
     return (
@@ -46,9 +47,9 @@ const AllCollections = ({ collection }) => {
                     <h1>
                         {collection !== 'favorites'
                             ? `All ${collection[0].toUpperCase()}${collection.slice(1)}`
-                            : `${username !== '' ? `${username}'s Favorites` : 'Please sign in to access favorites'}`}
+                            : `${username ? `${username}'s Favorites` : 'Please sign in to access favorites'}`}
                     </h1>
-                    {username && loadedItems.length === 0 ? (
+                    {loadedItems.length === 0 ? (
                         <Typography textAlign="center">There is no {collection} stored yet! Add some more</Typography>
                     ) : (
                         <ItemsList items={loadedItems} />

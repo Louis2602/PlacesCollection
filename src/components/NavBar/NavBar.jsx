@@ -59,7 +59,7 @@ const ModeSwitch = styled(Switch)(({ theme }) => ({
         }
     },
     '& .MuiSwitch-thumb': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+        backgroundColor: theme.palette.mode === 'dark' ? '#003892' : 'var(--white--color)',
         width: 32,
         height: 32,
         '&:before': {
@@ -177,9 +177,10 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
 }));
 
 const StyledAppBar = styled(AppBar)({
-    position: 'sticky',
-    width: '100%',
+    position: 'fixed',
     top: 0,
+    zIndex: 1000,
+    width: '100%',
     backgroundColor: 'var(--main--color) !important'
 });
 
@@ -241,61 +242,28 @@ const NavBar = ({ setHighlight, highlight }) => {
         dispatch(preferences());
         dispatch(subscribe());
     };
-    const handleScrollTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
+
     const handleOpenUserMenu = (event, username) => {
         if (username) {
-            if (window.pageYOffset > 10) {
-                handleScrollTop();
-                setTimeout(
-                    function (event) {
-                        setAnchorElUser(event);
-                        document.body.style.position = 'fixed';
-                    },
-                    300 + window.pageYOffset / 3,
-                    event.currentTarget
-                );
-            } else {
-                setAnchorElUser(event.currentTarget);
-                document.body.style.position = 'fixed';
-            }
+            setAnchorElUser(event.currentTarget);
         } else {
             setHighlight('');
             navigate('/sign-in');
         }
     };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
-        document.body.style.position = 'static';
     };
 
     const handleOpenPlaces = (event) => {
         setAllowAnimation(true);
-        if (window.pageYOffset > 10) {
-            handleScrollTop();
-            setTimeout(
-                function (event) {
-                    setAnchorEl(event);
-                    document.body.style.position = 'fixed';
-                },
-                300 + window.pageYOffset / 3,
-                event.currentTarget
-            );
-        } else {
-            setAnchorEl(event.currentTarget);
-            document.body.style.position = 'fixed';
-        }
+        setAnchorEl(event.currentTarget);
     };
     const handleClosePlaces = () => {
         setAnchorEl(null);
         setHighlight('');
-        document.body.style.position = 'static';
     };
+
     const handleOpenList = () => {
         setOpenList(!openList);
         setAllowAnimation(true);
@@ -313,7 +281,6 @@ const NavBar = ({ setHighlight, highlight }) => {
 
     const handleClickNav = (des) => {
         setHighlight(des);
-        handleScrollTop();
     };
 
     const handleLogout = () => {

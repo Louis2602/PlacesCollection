@@ -42,11 +42,11 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    padding: 0
+    padding: 0,
+    marginTop: '4%'
 }));
 
 function App() {
-    const dispatch = useDispatch();
     const mode = useSelector((state) => state.theme.value);
     const [highlight, setHighlight] = useState('');
     const darkTheme = createTheme({
