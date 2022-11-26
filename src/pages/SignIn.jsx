@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, styled, TextField, Grid, Typography, Card, Divider, FormControlLabel, Checkbox } from '@mui/material';
+import { Box, Button, styled, TextField, Grid, Typography, Card, Divider, FormControlLabel, Checkbox, IconButton } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,11 +7,18 @@ import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { signin } from '../assets/redux/features/counterSlice';
+import { Facebook, Google } from '@mui/icons-material';
 
 const StyledCard = styled(Card)({
     transition: '0.1s ease-in-out',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.1)'
 });
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiFilledInput-root': {
+        backgroundColor: 'inherit'
+    }
+}));
 
 const StyledForm = styled('form')(({ theme }) => ({
     padding: '1rem 1rem',
@@ -36,13 +43,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
     margin: '0.5rem auto',
     marginLeft: '4rem',
     width: '20rem',
-    backgroundColor: '#3B71CA',
+    backgroundColor: '#693bd4',
+    color: 'white',
     '&:hover': {
         backgroundColor: theme.palette.info.main
     },
     [theme.breakpoints.down('md')]: {
-        width: '100%',
-        marginLeft: '0'
+        width: '100%'
     }
 }));
 
@@ -55,6 +62,10 @@ const StyledSignInButton = styled(Button)(({ theme }) => ({
         backgroundColor: theme.palette.info.main
     }
 }));
+
+const StyledIconButton = styled(IconButton)({
+    color: 'inherit'
+});
 
 const StyledOtherBox = styled(Box)(({ theme }) => ({
     marginTop: '2rem',
@@ -151,20 +162,30 @@ const SignIn = () => {
                 <StyledForm>
                     <StyledSignInBox>
                         <StyledOtherBox>
-                            <StyledButton variant="contained">Continue with Google</StyledButton>
-                            <StyledButton variant="contained">Continue with Facebook</StyledButton>
-                            <Divider sx={{ margin: '2rem' }}>or with our account</Divider>
+                            <StyledButton>
+                                Continue with
+                                <StyledIconButton aria-label="google">
+                                    <Google />
+                                </StyledIconButton>
+                            </StyledButton>
+                            <StyledButton>
+                                Continue with
+                                <StyledIconButton aria-label="facebook">
+                                    <Facebook />
+                                </StyledIconButton>
+                            </StyledButton>
+                            <Divider sx={{ margin: '2rem' }}>or with your account</Divider>
                         </StyledOtherBox>
 
-                        <Grid container spacing={1} sx={{ padding: '0 4rem' }}>
+                        <Grid container spacing={1}>
                             <Grid item xs={12} sm={12}>
-                                <TextField
+                                <StyledTextField
                                     required
                                     id="Username"
                                     name="Username"
                                     label="Username"
                                     fullWidth
-                                    margin="dense"
+                                    variant="filled"
                                     {...register('username')}
                                     error={errors.username ? true : false}
                                     value={userData.username}
@@ -178,14 +199,14 @@ const SignIn = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={12}>
-                                <TextField
+                                <StyledTextField
                                     required
                                     id="password"
                                     name="password"
                                     label="Password"
                                     type={togglePassword.showPassword ? 'text' : 'password'}
                                     fullWidth
-                                    margin="dense"
+                                    variant="filled"
                                     {...register('password')}
                                     error={errors.password ? true : false}
                                     value={userData.password}

@@ -13,13 +13,15 @@ import {
     Radio,
     TextField,
     Checkbox,
-    Divider
+    Divider,
+    IconButton
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
+import { Facebook, Google } from '@mui/icons-material';
 
 const StyledCard = styled(Card)({
     transition: '0.3s ease-in-out',
@@ -38,7 +40,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
     padding: '1rem 1.5rem',
     margin: '0.5rem 0',
     width: '20rem',
-    backgroundColor: '#3B71CA',
+    backgroundColor: '#693bd4',
+    color: 'white',
     '&:hover': {
         backgroundColor: theme.palette.info.main
     },
@@ -46,6 +49,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
         width: '100%'
     }
 }));
+
+const StyledIconButton = styled(IconButton)({
+    color: 'inherit'
+});
 
 const StyledBox = styled(Box)({
     textAlign: 'center',
@@ -57,7 +64,7 @@ const StyledSignUpBox = styled(Box)(({ theme }) => ({
     padding: '2rem',
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
-        padding: '0 1rem'
+        padding: '0 0.5rem'
     }
 }));
 
@@ -88,24 +95,27 @@ const StyledFormLabel = styled(FormLabel)(({ theme }) => ({
     position: 'absolute',
     top: -16,
     left: -8,
-    backgroundColor: 'white',
+    backgroundColor: 'inherit',
     padding: '0 5px',
     fontSize: '0.8rem'
 }));
 
 const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
-    margin: '1px',
-    padding: '6px 1rem',
     width: '100%',
-    color: 'rgba(0, 0, 0, 0.87)',
-    transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-    borderRadius: '4px'
+    paddingTop: '1.3rem',
+    paddingLeft: '1.6rem',
+    color: 'inherit'
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiFilledInput-root': {
+        backgroundColor: 'inherit'
+    }
 }));
 
 const Genders = ['Female', 'Male', 'Other'];
 
 const validationSchema = Yup.object().shape({
-    gender: Yup.bool().required('Gender is required'),
     birthday: Yup.string().required('Birthday is required'),
     username: Yup.string()
         .required('Username is required')
@@ -135,7 +145,6 @@ const SignUp = () => {
         resolver: yupResolver(validationSchema)
     });
 
-    const [genderActive, setGenderActive] = useState(false);
     const [userData, setUserData] = useState({
         gender: '',
         birthday: '',
@@ -187,8 +196,18 @@ const SignUp = () => {
                     <StyledSignUpBox>
                         <StyledOtherBox spacing={1}>
                             <StyledBox>
-                                <StyledButton variant="contained">Continue with Google</StyledButton>
-                                <StyledButton variant="contained">Continue with Facebook</StyledButton>
+                                <StyledButton>
+                                    Continue with
+                                    <StyledIconButton aria-label="google">
+                                        <Google />
+                                    </StyledIconButton>
+                                </StyledButton>
+                                <StyledButton>
+                                    Continue with
+                                    <StyledIconButton aria-label="facebook">
+                                        <Facebook />
+                                    </StyledIconButton>
+                                </StyledButton>
                             </StyledBox>
                             <Divider sx={{ margin: '2rem' }}>or with email</Divider>
                         </StyledOtherBox>
@@ -196,22 +215,6 @@ const SignUp = () => {
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
                                 <StyledFormControlLabel
-                                    sx={{
-                                        border: `${
-                                            errors.gender
-                                                ? !genderActive
-                                                    ? '1px solid #D32F2F'
-                                                    : '2px solid #D32F2F'
-                                                : !genderActive
-                                                ? '1px solid rgb(176, 176, 176)'
-                                                : '2px solid #693BD4'
-                                        }`,
-                                        '&:hover': {
-                                            border: `${errors.gender ? '' : !genderActive ? '1px solid black' : '2px solid #693BD4'}`
-                                        }
-                                    }}
-                                    onFocus={() => setGenderActive(true)}
-                                    onBlur={() => setGenderActive(false)}
                                     control={
                                         <Controller
                                             control={control}
@@ -219,17 +222,11 @@ const SignUp = () => {
                                             inputRef={register()}
                                             render={({ field: { onChange } }) => (
                                                 <FormControl>
-                                                    <StyledFormLabel
-                                                        sx={{
-                                                            color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}`
-                                                        }}>
-                                                        Gender *
-                                                    </StyledFormLabel>
-                                                    <RadioGroup row sx={{}}>
+                                                    <StyledFormLabel>Gender</StyledFormLabel>
+                                                    <RadioGroup row>
                                                         {Genders.map((gender, i) => (
                                                             <FormControlLabel
                                                                 key={i}
-                                                                sx={{ color: `${errors.gender ? '#D32F2F' : 'rgba(0, 0, 0, 0.6)'}` }}
                                                                 value={gender}
                                                                 control={<Radio />}
                                                                 label={gender}
@@ -251,10 +248,12 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <StyledTextField
+                                    required
                                     id="date"
-                                    label="Birthday *"
+                                    label="Birthday"
                                     type="date"
+                                    variant="filled"
                                     fullWidth
                                     InputLabelProps={{
                                         shrink: true
@@ -272,11 +271,12 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <StyledTextField
                                     required
                                     id="username"
                                     name="username"
                                     label="Username"
+                                    variant="filled"
                                     fullWidth
                                     {...register('username')}
                                     error={errors.username ? true : false}
@@ -291,11 +291,12 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <StyledTextField
                                     required
                                     id="email"
                                     name="email"
                                     label="Email"
+                                    variant="filled"
                                     fullWidth
                                     {...register('email')}
                                     error={errors.email ? true : false}
@@ -310,11 +311,12 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <StyledTextField
                                     required
                                     id="password"
                                     name="password"
                                     label="Password"
+                                    variant="filled"
                                     type={togglePassword.showPassword ? 'text' : 'password'}
                                     fullWidth
                                     {...register('password')}
@@ -330,11 +332,12 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <StyledTextField
                                     required
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     label="Confirm Password"
+                                    variant="filled"
                                     type={togglePassword.showPassword ? 'text' : 'password'}
                                     fullWidth
                                     {...register('confirmPassword')}
