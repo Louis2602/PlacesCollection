@@ -1,4 +1,5 @@
 import { styled, Card, Avatar, Typography, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material/';
+import { useDispatch } from 'react-redux';
 
 import { Avatar as AvatarImg } from '../components/Carousel/assets';
 
@@ -104,6 +105,8 @@ const UserTextField = ({ label, value }) => (
 );
 
 const Profile = () => {
+    const dispatch = useDispatch();
+    
     return (
         <>
             <h1>Profile</h1>
@@ -124,7 +127,7 @@ const Profile = () => {
                     <StyledUserBox>
                         <UserTextField label="Date Of Birth" value={data.dateOfBirth} />
                         <UserTextField label="Email" value={data.email} />
-                        <UserTextField label="Created On" value={data.createdOn} />
+                        <UserTextField label="Password" value={data.createdOn} />
                     </StyledUserBox>
                 </StyledBox>
             </StyledCard>

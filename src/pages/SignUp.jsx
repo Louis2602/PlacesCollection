@@ -47,7 +47,7 @@ const BpIcon = styled('span')(({ theme }) => ({
 }));
 
 const BpCheckedIcon = styled(BpIcon)({
-    backgroundColor: '#693bd4',
+    backgroundColor: 'var(--main--color)',
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
     '&:before': {
         display: 'block',
@@ -60,7 +60,7 @@ const BpCheckedIcon = styled(BpIcon)({
         content: '""'
     },
     'input:hover ~ &': {
-        backgroundColor: '#693bd4'
+        backgroundColor: 'var(--main--color)'
     }
 });
 
@@ -78,13 +78,14 @@ const StyledForm = styled('form')(({ theme }) => ({
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-    padding: '1rem 1.5rem',
-    margin: '0.5rem 0',
+    padding: '0.5rem 1.5rem',
+    margin: '0.7rem auto',
     width: '20rem',
-    backgroundColor: '#693bd4',
+    backgroundColor: 'var(--main--color)',
     color: 'white',
+    transition: 'all 0.3s ease-in-out',
     '&:hover': {
-        backgroundColor: '#B6216B'
+        backgroundColor: '#8b3ebb'
     },
     [theme.breakpoints.down('md')]: {
         width: '100%'
@@ -126,9 +127,9 @@ const StyledSignUpButton = styled(Button)(({ theme }) => ({
     padding: '1rem 1.5rem',
     marginTop: '0.5rem',
     width: '100%',
-    backgroundColor: '#693bd4',
+    backgroundColor: 'var(--main--color)',
     '&:hover': {
-        backgroundColor: '#B6216B'
+        backgroundColor: '#8b3ebb'
     }
 }));
 
@@ -254,8 +255,8 @@ const SignUp = () => {
                                         <Facebook />
                                     </StyledIconButton>
                                 </StyledButton>
+                                <Divider sx={{ margin: '1rem' }}>or with email</Divider>
                             </StyledBox>
-                            <Divider sx={{ margin: '2rem' }}>or with email</Divider>
                         </StyledOtherBox>
 
                         <Grid container spacing={1}>

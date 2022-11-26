@@ -47,14 +47,14 @@ export default function DemoCarousel() {
             renderArrowPrev={(onClickHandler, hasPrev, label) =>
                 hasPrev && (
                     <StyledButton onClick={onClickHandler} title={label} style={{ left: '10%' }}>
-                        <ArrowBackIos sx={{ fontSize: 30 }} />
+                        <ArrowBackIos sx={{ color: 'white', fontSize: 30 }} />
                     </StyledButton>
                 )
             }
             renderArrowNext={(onClickHandler, hasNext, label) =>
                 hasNext && (
                     <StyledButton onClick={onClickHandler} title={label} style={{ right: '10%' }}>
-                        <ArrowForwardIos sx={{ fontSize: 30 }} />
+                        <ArrowForwardIos sx={{ color: 'white', fontSize: 30 }} />
                     </StyledButton>
                 )
             }>

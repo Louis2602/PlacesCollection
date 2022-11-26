@@ -3,7 +3,7 @@ import { Facebook, Instagram, YouTube, GitHub, LinkedIn } from '@mui/icons-mater
 import { Link } from 'react-router-dom';
 
 const StyledIconButton = styled(IconButton)({
-    color: '#fff',
+    color: 'var(--white--color)',
     '&:hover': {
         color: 'crimson'
     },
@@ -11,7 +11,7 @@ const StyledIconButton = styled(IconButton)({
 });
 const StyledBox = styled(Box)(({ theme }) => ({
     backgroundColor: '#242424',
-    color: '#fff',
+    color: 'var(--white--color)',
     width: '100%',
     position: 'relative',
     bottom: 0,
@@ -29,7 +29,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const Atag = styled('a')(({ theme }) => ({
     textDecoration: 'none',
     fontSize: '1rem',
-    color: '#fff',
+    color: 'var(--white--color)',
     '&:hover': {
         color: 'crimson'
     },
@@ -42,7 +42,7 @@ const Atag = styled('a')(({ theme }) => ({
 const StyledLink = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
     fontSize: '1rem',
-    color: '#fff',
+    color: 'var(--white--color)',
     '&:hover': {
         color: 'crimson'
     },

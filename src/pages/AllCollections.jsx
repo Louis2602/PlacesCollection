@@ -1,9 +1,12 @@
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 
-const AllCollections = ({ collection, username }) => {
+const AllCollections = ({ collection }) => {
+    const dispatch = useDispatch();
+    const username = useSelector((state) => state.counter.username);
     const [isLoading, setIsLoading] = useState(true);
     const [loadedItems, setloadedItems] = useState([]);
 
@@ -45,7 +48,7 @@ const AllCollections = ({ collection, username }) => {
                             ? `All ${collection[0].toUpperCase()}${collection.slice(1)}`
                             : `${username !== '' ? `${username}'s Favorites` : 'Please sign in to access favorites'}`}
                     </h1>
-                    {loadedItems.length === 0 ? (
+                    {username && loadedItems.length === 0 ? (
                         <Typography textAlign="center">There is no {collection} stored yet! Add some more</Typography>
                     ) : (
                         <ItemsList items={loadedItems} />

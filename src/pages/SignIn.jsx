@@ -33,7 +33,7 @@ const BpIcon = styled('span')(({ theme }) => ({
 }));
 
 const BpCheckedIcon = styled(BpIcon)({
-    backgroundColor: '#693bd4',
+    backgroundColor: 'var(--main--color)',
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
     '&:before': {
         display: 'block',
@@ -46,7 +46,7 @@ const BpCheckedIcon = styled(BpIcon)({
         content: '""'
     },
     'input:hover ~ &': {
-        backgroundColor: '#693bd4'
+        backgroundColor: 'var(--main--color)'
     }
 });
 
@@ -80,14 +80,15 @@ const StyledSignInBox = styled(Box)(({ theme }) => ({
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-    padding: '1rem 1.5rem',
-    margin: '0.5rem auto',
+    padding: '0.5rem 1.5rem',
+    margin: '0.7rem auto',
     marginLeft: '4rem',
     width: '20rem',
-    backgroundColor: '#693bd4',
+    backgroundColor: 'var(--main--color)',
     color: 'white',
+    transition: 'all 0.3s ease-in-out',
     '&:hover': {
-        backgroundColor: '#8b3ebb'
+        backgroundColor: 'var(--main--hover--color)'
     },
     [theme.breakpoints.down('md')]: {
         width: '100%'
@@ -98,9 +99,9 @@ const StyledSignInButton = styled(Button)(({ theme }) => ({
     padding: '1rem 1.5rem',
     marginTop: '1rem',
     width: '100%',
-    backgroundColor: '#693bd4',
+    backgroundColor: 'var(--main--color)',
     '&:hover': {
-        backgroundColor: '#8b3ebb'
+        backgroundColor: 'var(--main--hover--color)'
     }
 }));
 
@@ -124,6 +125,12 @@ const StyledLink = styled(Link)({
 const StyledTypo = styled(Typography)(({ theme }) => ({
     fontSize: '0.8rem'
 }));
+
+const StyledDivider = styled(Divider)({
+    margin: '1rem',
+    marginLeft: '4rem',
+    width: '20rem'
+});
 
 const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -207,7 +214,7 @@ const SignIn = () => {
             <StyledCard>
                 <StyledForm>
                     <StyledSignInBox>
-                        <StyledOtherBox>
+                        <StyledOtherBox spacing={1}>
                             <StyledButton>
                                 Continue with
                                 <StyledIconButton aria-label="google">
@@ -220,7 +227,7 @@ const SignIn = () => {
                                     <Facebook />
                                 </StyledIconButton>
                             </StyledButton>
-                            <Divider sx={{ margin: '2rem' }}>or with your account</Divider>
+                            <StyledDivider>or with your account</StyledDivider>
                         </StyledOtherBox>
 
                         <Grid container spacing={1}>
