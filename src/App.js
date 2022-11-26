@@ -48,16 +48,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
 function App() {
     const dispatch = useDispatch();
     const mode = useSelector((state) => state.theme.value);
-    const username = useSelector((state) => state.counter.username);
     const [highlight, setHighlight] = useState('');
     const darkTheme = createTheme({
         palette: {
-            primary: {
-                main: '#693bd4'
-            },
-            layer: {
-                main: '#ccc'
-            },
             mode: `${mode ? 'dark' : 'light'}`
         }
     });
@@ -77,10 +70,10 @@ function App() {
                                     <Route path="/map" element={<Map />}></Route>
                                     <Route path="/sign-in" element={<SignIn />}></Route>
                                     <Route path="/sign-up" element={<SignUp />}></Route>
-                                    <Route path="/restaurants" element={<AllCollections collection="restaurants" username="" />}></Route>
-                                    <Route path="/hotels" element={<AllCollections collection="hotels" username="" />}></Route>
-                                    <Route path="/attractions" element={<AllCollections collection="attractions" username="" />}></Route>
-                                    <Route path="/favorites" element={<AllCollections collection="favorites" username={username} />}></Route>
+                                    <Route path="/restaurants" element={<AllCollections collection="restaurants" />}></Route>
+                                    <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
+                                    <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
+                                    <Route path="/favorites" element={<AllCollections collection="favorites" />}></Route>
                                     <Route path="/new-place" element={<NewPlace setHighlight={setHighlight} />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
