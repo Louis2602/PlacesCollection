@@ -416,7 +416,7 @@ const NavBar = ({ setHighlight, highlight }) => {
                     </Box>
 
                     <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row' }}>
-                        <ModeSwitch sx={{ m: 1 }} defaultChecked onChange={handlerMode} />
+                        <ModeSwitch sx={{ m: 1 }} onChange={handlerMode} />
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Avatar" src={AvatarImg} />
