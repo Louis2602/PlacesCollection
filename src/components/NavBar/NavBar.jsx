@@ -22,7 +22,7 @@ import {
     Collapse
 } from '@mui/material';
 import { AccountCircle, MenuOutlined, Reviews, Logout, ExpandMore, ExpandLess, ChevronLeft } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Avatar as AvatarImg } from '../Carousel/assets';
 import { preferences, subscribe } from '../../assets/redux/features/themeSlice';
@@ -179,7 +179,8 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
 const StyledAppBar = styled(AppBar)({
     position: 'sticky',
     width: '100%',
-    top: 0
+    top: 0,
+    backgroundColor: '#693bd4 !important'
 });
 
 const StyledLink = styled(Link)({
@@ -228,7 +229,6 @@ const StyledImg = styled('img')(({ theme }) => ({
 
 const NavBar = ({ setHighlight, highlight }) => {
     const dispatch = useDispatch();
-    const mode = useSelector((state) => state.theme.value);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
@@ -416,7 +416,7 @@ const NavBar = ({ setHighlight, highlight }) => {
                     </Box>
 
                     <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row' }}>
-                        <ModeSwitch sx={{ m: 1 }} defaultChecked onChange={handlerMode} />
+                        <ModeSwitch sx={{ m: 1 }} onChange={handlerMode} />
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Avatar" src={AvatarImg} />
