@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, styled, TextField, Grid, Typography, Card, Divider, FormControlLabel, Checkbox, IconButton } from '@mui/material';
+import { Box, Button, styled, TextField, Grid, Typography, Card, Divider, FormControlLabel, Checkbox } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -80,9 +80,8 @@ const StyledSignInBox = styled(Box)(({ theme }) => ({
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-    padding: '0.5rem 1.5rem',
+    padding: '1rem 1.5rem',
     margin: '0.7rem auto',
-    marginLeft: '4rem',
     width: '20rem',
     backgroundColor: 'var(--main--color)',
     color: 'white',
@@ -97,7 +96,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const StyledSignInButton = styled(Button)(({ theme }) => ({
     padding: '1rem 1.5rem',
-    marginTop: '1rem',
+    marginTop: '0.5rem',
     width: '100%',
     backgroundColor: 'var(--main--color)',
     '&:hover': {
@@ -105,14 +104,14 @@ const StyledSignInButton = styled(Button)(({ theme }) => ({
     }
 }));
 
-const StyledIconButton = styled(IconButton)({
-    color: 'inherit'
-});
-
-const StyledOtherBox = styled(Box)(({ theme }) => ({
-    marginTop: '2rem',
+const StyledBox = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '3rem',
+    marginRight: '3rem',
     [theme.breakpoints.down('md')]: {
-        marginTop: 0
+        padding: 0,
+        margin: 0
     }
 }));
 
@@ -126,11 +125,11 @@ const StyledTypo = styled(Typography)(({ theme }) => ({
     fontSize: '0.8rem'
 }));
 
-const StyledDivider = styled(Divider)({
-    margin: '1rem',
-    marginLeft: '4rem',
-    width: '20rem'
-});
+const StyledTypoBot = styled(Typography)(({ theme }) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: '0.9rem'
+    }
+}));
 
 const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -214,21 +213,11 @@ const SignIn = () => {
             <StyledCard>
                 <StyledForm>
                     <StyledSignInBox>
-                        <StyledOtherBox spacing={1}>
-                            <StyledButton>
-                                Continue with
-                                <StyledIconButton aria-label="google">
-                                    <Google />
-                                </StyledIconButton>
-                            </StyledButton>
-                            <StyledButton>
-                                Continue with
-                                <StyledIconButton aria-label="facebook">
-                                    <Facebook />
-                                </StyledIconButton>
-                            </StyledButton>
-                            <StyledDivider>or with your account</StyledDivider>
-                        </StyledOtherBox>
+                        <StyledBox spacing={1}>
+                            <StyledButton endIcon={<Google />}>Continue with</StyledButton>
+                            <StyledButton endIcon={<Facebook />}>Continue with</StyledButton>
+                            <Divider sx={{ margin: '1rem' }}>or with email</Divider>
+                        </StyledBox>
 
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={12}>
@@ -291,7 +280,7 @@ const SignIn = () => {
                                             )}
                                         />
                                     }
-                                    label={<Typography>Show Password</Typography>}
+                                    label={<StyledTypoBot>Show Password</StyledTypoBot>}
                                 />
                             </Grid>
 

@@ -11,15 +11,13 @@ const themeSlice = createSlice({
     name: 'theme',
     initialState,
     reducers: {
-        preferences: (state) => {
-            state.value = !state.value;
-        },
-        subscribe: (state) => {
+        themePreferences: (state, action) => {
+            state.value = action.payload;
             localStorage.setItem(localStorageKey, JSON.stringify(state.value));
         }
     }
 });
 
-export const { preferences, subscribe } = themeSlice.actions;
+export const { themePreferences } = themeSlice.actions;
 
 export default themeSlice.reducer;

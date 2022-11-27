@@ -21,15 +21,15 @@ const StyledInputLabel = styled(InputLabel)({
 const StyledButton = styled(Button)({
     font: 'inherit',
     cursor: 'pointer',
-    backgroundColor: '#77002e',
+    backgroundColor: 'var(--main--color)',
     color: 'white',
     padding: '0.5rem 1.5rem',
-    border: '1px solid #77002e',
+    border: '1px solid var(--main--color)',
     borderRadius: '4px',
     fontWeight: 'bold',
     '&:hover, active': {
-        backgroundColor: '#a50e48',
-        borderColor: '#a50e48'
+        backgroundColor: 'var(--main--hover--color)',
+        borderColor: 'var(--main--hover--color)'
     }
 });
 const StyledBox = styled(Box)({
@@ -82,41 +82,17 @@ const NewPlaceForm = ({ onAddPlace }) => {
     };
 
     const handleClick = () => {
-        if (open) {
-            setOpen(false);
-            document.body.style.position = 'static';
-        } else {
-            if (window.pageYOffset > 10) {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-                setTimeout(function () {
-                    setOpen(true);
-                    document.body.style.position = 'fixed';
-                }, 300 + window.pageYOffset / 3);
-            } else {
-                setOpen(true);
-                document.body.style.position = 'fixed';
-            }
-        }
+        open ? setOpen(false) : setOpen(true);
     };
 
     return (
         <StyledCard>
             <StyledForm onSubmit={submitHandler}>
-                <Grid container fullWidth spacing={1} direction="column">
+                <Grid container spacing={1} direction="column">
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <StyledInputLabel htmlFor="type">Type of place</StyledInputLabel>
-                            <Select
-                                open={open}
-                                fullWidth
-                                required
-                                value={type}
-                                label="Type of place"
-                                onChange={handleTypeChange}
-                                onClick={handleClick}>
+                            <Select open={open} fullWidth required value={type} label="Type of place" onChange={handleTypeChange} onClick={handleClick}>
                                 <MenuItem value="restaurant">Restaurants</MenuItem>
                                 <MenuItem value="hotel">Hotels</MenuItem>
                                 <MenuItem value="attraction">Attractions</MenuItem>

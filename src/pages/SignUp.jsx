@@ -13,8 +13,7 @@ import {
     Radio,
     TextField,
     Checkbox,
-    Divider,
-    IconButton
+    Divider
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
@@ -70,36 +69,28 @@ const StyledCard = styled(Card)({
 });
 
 const StyledForm = styled('form')(({ theme }) => ({
-    padding: '1rem 1rem',
+    padding: '1rem',
     width: '80rem',
     [theme.breakpoints.down('md')]: {
-        width: '100%'
+        width: '100%',
+        padding: '2rem 1rem'
     }
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-    padding: '0.5rem 1.5rem',
+    padding: '1rem 1.5rem',
     margin: '0.7rem auto',
     width: '20rem',
     backgroundColor: 'var(--main--color)',
     color: 'white',
     transition: 'all 0.3s ease-in-out',
     '&:hover': {
-        backgroundColor: '#8b3ebb'
+        backgroundColor: 'var(--main--hover--color)'
     },
     [theme.breakpoints.down('md')]: {
         width: '100%'
     }
 }));
-
-const StyledIconButton = styled(IconButton)({
-    color: 'inherit'
-});
-
-const StyledBox = styled(Box)({
-    textAlign: 'center',
-    margin: '3rem auto'
-});
 
 const StyledSignUpBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -110,10 +101,14 @@ const StyledSignUpBox = styled(Box)(({ theme }) => ({
     }
 }));
 
-const StyledOtherBox = styled(Box)(({ theme }) => ({
-    padding: '1rem 4rem 1rem 0',
+const StyledBox = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '4rem',
+    marginRight: '3rem',
     [theme.breakpoints.down('md')]: {
-        padding: 0
+        padding: 0,
+        margin: 0
     }
 }));
 
@@ -129,7 +124,7 @@ const StyledSignUpButton = styled(Button)(({ theme }) => ({
     width: '100%',
     backgroundColor: 'var(--main--color)',
     '&:hover': {
-        backgroundColor: '#8b3ebb'
+        backgroundColor: 'var(--main--hover--color)'
     }
 }));
 
@@ -157,6 +152,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 const StyledTypo = styled(Typography)(({ theme }) => ({
     fontSize: '0.8rem'
+}));
+
+const StyledTypoBot = styled(Typography)(({ theme }) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: '0.9rem'
+    }
 }));
 
 const Genders = ['Female', 'Male', 'Other'];
@@ -217,6 +218,7 @@ const SignUp = () => {
     };
 
     const onSubmit = () => {
+        setUserData({ ...userData, birthday: `${userData.birthday.str.split('').reverse().join('')}` });
         fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
             method: 'PUT',
             body: JSON.stringify(userData),
@@ -241,23 +243,11 @@ const SignUp = () => {
             <StyledCard>
                 <StyledForm>
                     <StyledSignUpBox>
-                        <StyledOtherBox spacing={1}>
-                            <StyledBox>
-                                <StyledButton>
-                                    Continue with
-                                    <StyledIconButton aria-label="google">
-                                        <Google />
-                                    </StyledIconButton>
-                                </StyledButton>
-                                <StyledButton>
-                                    Continue with
-                                    <StyledIconButton aria-label="facebook">
-                                        <Facebook />
-                                    </StyledIconButton>
-                                </StyledButton>
-                                <Divider sx={{ margin: '1rem' }}>or with email</Divider>
-                            </StyledBox>
-                        </StyledOtherBox>
+                        <StyledBox spacing={1}>
+                            <StyledButton endIcon={<Google />}>Continue with</StyledButton>
+                            <StyledButton endIcon={<Facebook />}>Continue with</StyledButton>
+                            <Divider sx={{ margin: '1rem' }}>or with email</Divider>
+                        </StyledBox>
 
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
@@ -279,7 +269,7 @@ const SignUp = () => {
                                                                 label={gender}
                                                                 onChange={(e) => {
                                                                     onChange(e.target.checked);
-                                                                    setUserData({ ...userData, gender: { gender } });
+                                                                    setUserData({ ...userData, gender: `${gender}` });
                                                                 }}
                                                             />
                                                         ))}
@@ -414,7 +404,7 @@ const SignUp = () => {
                                             )}
                                         />
                                     }
-                                    label={<Typography>Show Password</Typography>}
+                                    label={<StyledTypoBot>Show Password</StyledTypoBot>}
                                 />
                             </Grid>
 
@@ -436,7 +426,11 @@ const SignUp = () => {
                                             )}
                                         />
                                     }
-                                    label={<Typography color={errors.acceptTerms ? 'error' : 'inherit'}>I have read and agree to the Terms *</Typography>}
+                                    label={
+                                        <StyledTypoBot color={errors.acceptTerms ? 'error' : 'inherit'}>
+                                            I have read and agree to the Terms *
+                                        </StyledTypoBot>
+                                    }
                                 />
 
                                 <StyledTypo variant="inherit" color="error">
@@ -451,7 +445,7 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <Typography sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                                <Typography sx={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
                                     Already have an account?
                                     <StyledLink to={'/sign-in'}>Sign in</StyledLink>
                                 </Typography>

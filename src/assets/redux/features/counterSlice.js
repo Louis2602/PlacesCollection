@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const localStorageKey = 'counter';
+const persistedUser = localStorage.getItem(localStorageKey);
+
 const initialState = {
-    username: ''
+    username: persistedUser ? JSON.parse(persistedUser) : null
 };
 
 export const counterSlice = createSlice({
@@ -10,9 +13,11 @@ export const counterSlice = createSlice({
     reducers: {
         signin: (state, action) => {
             state.username = action.payload;
+            localStorage.setItem(localStorageKey, JSON.stringify(state.username));
         },
         logout: (state) => {
             state.username = '';
+            localStorage.setItem(localStorageKey, JSON.stringify(state.username));
         }
     }
 });

@@ -1,8 +1,11 @@
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { themePreferences } from '../assets/redux/features/themeSlice';
 
 import NewPlaceForm from '../components/Form/NewPlaceForm';
 
-const NewPlace = ({ setHighlight }) => {
+const NewPlace = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const addPlaceHandler = (placesData) => {
@@ -14,7 +17,7 @@ const NewPlace = ({ setHighlight }) => {
             }
         }).then(() => {
             navigate(`/${placesData.type}s`);
-            setHighlight('');
+            dispatch(themePreferences(''));
         });
     };
     return (
