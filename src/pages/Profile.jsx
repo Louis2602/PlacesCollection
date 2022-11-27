@@ -1,75 +1,55 @@
-import { styled, Card, Avatar, Typography, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material/';
-import { useDispatch } from 'react-redux';
+import { styled, Card, Avatar, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material/';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Avatar as AvatarImg } from '../components/Carousel/assets';
 
-const data = {
-    id: 1,
-    name: 'PoTayTo',
-    gender: 'Male',
-    dateOfBirth: '11/07/2003',
-    email: 'tdakhoa21@clc.fitus.edu.vn',
-    createdOn: '12/11/2022'
-};
 const StyledCard = styled(Card)(({ theme }) => ({
-    width: '50vw',
-    height: '50vh',
-    margin: '1rem',
-    padding: '0 10px',
+    width: '48rem',
+    height: '24rem',
     display: 'flex',
-    alignItems: 'center',
+    paddingRight: '4rem',
     transition: '0.3s ease-in-out',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.1)',
     [theme.breakpoints.down('md')]: {
-        margin: 0,
         flexDirection: 'column',
         width: '100%',
-        height: 'auto'
+        height: '33rem',
+        padding: 0
     }
 }));
+
 const StyledBox = styled(Box)(({ theme }) => ({
     width: '30vw',
+    padding: '4rem 0',
     [theme.breakpoints.down('md')]: {
         marginTop: '1rem',
-        width: '100%'
+        width: '100%',
+        padding: 0
     }
 }));
+
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
     width: '220px',
     height: '220px',
     display: 'flex',
-    margin: '1.5rem auto',
+    margin: '1rem auto',
     [theme.breakpoints.down('md')]: {
         marginTop: '1rem',
         width: '200px',
         height: '200px'
     }
 }));
-const StyledTypo = styled(Typography)(({ theme }) => ({
-    textAlign: 'center',
-    marginBottom: '1rem',
-    [theme.breakpoints.down('md')]: {
-        marginBottom: '1rem'
-    }
-}));
+
 const StyledTextField = styled(TextField)(({ theme }) => ({
-    width: '20vw',
-    marginBottom: '1rem',
+    marginBottom: '0.5rem',
     [theme.breakpoints.down('md')]: {
-        width: '280px',
-        input: { textAlign: 'center' },
-        '& .MuiInputLabel-root': {
+        '& .MuiInputBase-readOnly': {
             textAlign: 'center'
-        },
-        '& .MuiInputLabel-shrink': {
-            margin: '0 auto',
-            position: 'absolute',
-            right: '-20px',
-            left: '0',
-            width: '100px'
         }
     }
 }));
+
 const StyledFormLabel = styled(FormLabel)(({ theme }) => ({
     fontSize: '0.8rem',
     [theme.breakpoints.down('md')]: {
@@ -77,6 +57,7 @@ const StyledFormLabel = styled(FormLabel)(({ theme }) => ({
         justifyContent: 'center'
     }
 }));
+
 const StyledRadioGroup = styled(RadioGroup)(({ theme }) => ({
     marginBottom: '4px',
     [theme.breakpoints.down('md')]: {
@@ -85,19 +66,25 @@ const StyledRadioGroup = styled(RadioGroup)(({ theme }) => ({
         marginLeft: '16px'
     }
 }));
+
 const StyledUserBox = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
-        margin: '0 22px'
+        margin: '0 22px',
+        textAlign: 'center'
     }
 }));
 
-const UserFormControl = ({ gender, data }) => <FormControlLabel disabled={data !== gender} value={gender} label={gender} control={<Radio />} />;
+const UserFormControl = ({ gender, data }) => <FormControlLabel disabled={data !== gender} checked={data === gender} label={gender} control={<Radio />} />;
 
 const UserTextField = ({ label, value }) => (
     <StyledTextField
-        variant="standard"
         label={label}
-        defaultValue={value}
+        value={value ? value : ''}
+        variant="standard"
+        fullWidth
+        InputLabelProps={{
+            shrink: true
+        }}
         InputProps={{
             readOnly: true
         }}
@@ -105,29 +92,37 @@ const UserTextField = ({ label, value }) => (
 );
 
 const Profile = () => {
-    const dispatch = useDispatch();
-    
+    const [loadedItems, setloadedItems] = useState({});
+    const username = useSelector((state) => state.counter.username);
+    useEffect(() => {
+        if (username) {
+            fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}.json`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    setloadedItems(data);
+                });
+        }
+    }, [username]);
     return (
         <>
             <h1>Profile</h1>
             <StyledCard>
                 <StyledBox>
                     <StyledAvatar alt="Avatar" src={AvatarImg} />
-                    <StyledTypo variant="h5" color="text.primary" gutterBottom>
-                        {data.name}
-                    </StyledTypo>
                 </StyledBox>
                 <StyledBox>
                     <StyledFormLabel>Gender</StyledFormLabel>
-                    <StyledRadioGroup defaultValue={data.gender} row>
-                        <UserFormControl gender="Male" data={data.gender} />
-                        <UserFormControl gender="Female" data={data.gender} />
-                        <UserFormControl gender="Other" data={data.gender} />
+                    <StyledRadioGroup row>
+                        <UserFormControl gender="Male" data={loadedItems.gender} />
+                        <UserFormControl gender="Female" data={loadedItems.gender} />
+                        <UserFormControl gender="Other" data={loadedItems.gender} />
                     </StyledRadioGroup>
                     <StyledUserBox>
-                        <UserTextField label="Date Of Birth" value={data.dateOfBirth} />
-                        <UserTextField label="Email" value={data.email} />
-                        <UserTextField label="Password" value={data.createdOn} />
+                        <UserTextField label="Username" value={loadedItems.username} />
+                        <UserTextField label="Birthday" value={loadedItems.birthday} />
+                        <UserTextField label="Email" value={loadedItems.email} />
                     </StyledUserBox>
                 </StyledBox>
             </StyledCard>

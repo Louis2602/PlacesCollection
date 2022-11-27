@@ -23,10 +23,12 @@ import {
 } from '@mui/material';
 import { AccountCircle, MenuOutlined, Reviews, Logout, ExpandMore, ExpandLess, ChevronLeft } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 import { Avatar as AvatarImg } from '../Carousel/assets';
-import { preferences, subscribe } from '../../assets/redux/features/themeSlice';
 import { logout } from '../../assets/redux/features/counterSlice';
+import { highlightPreferences } from '../../assets/redux/features/highlightSlice';
+import { themePreferences } from '../../assets/redux/features/themeSlice';
 
 const places = ['restaurants', 'hotels', 'attractions'];
 
@@ -124,7 +126,7 @@ const StyledMenu = styled((props) => (
         },
         '& .MuiMenuItem-root': {
             padding: 10,
-            borderTop: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`
+            borderTop: '1px solid #999'
         }
     }
 }));
@@ -228,10 +230,13 @@ const StyledImg = styled('img')(({ theme }) => ({
     }
 }));
 
-const NavBar = ({ setHighlight, highlight }) => {
+const NavBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const username = useSelector((state) => state.counter.username);
+    const mode = useSelector((state) => state.theme.value);
+    const highlight = useSelector((state) => state.highlight.value);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
@@ -239,15 +244,21 @@ const NavBar = ({ setHighlight, highlight }) => {
     const [allowAnimation, setAllowAnimation] = useState(false);
 
     const handlerMode = () => {
-        dispatch(preferences());
-        dispatch(subscribe());
+        dispatch(themePreferences(!mode));
     };
 
     const handleOpenUserMenu = (event, username) => {
         if (username) {
             setAnchorElUser(event.currentTarget);
         } else {
-            setHighlight('');
+            dispatch(highlightPreferences(''));
+            enqueueSnackbar('Sign in to access!', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                }
+            });
             navigate('/sign-in');
         }
     };
@@ -261,7 +272,7 @@ const NavBar = ({ setHighlight, highlight }) => {
     };
     const handleClosePlaces = () => {
         setAnchorEl(null);
-        setHighlight('');
+        dispatch(highlightPreferences(''));
     };
 
     const handleOpenList = () => {
@@ -280,12 +291,12 @@ const NavBar = ({ setHighlight, highlight }) => {
     };
 
     const handleClickNav = (des) => {
-        setHighlight(des);
+        dispatch(highlightPreferences(des));
     };
 
-    const handleLogout = () => {
-        dispatch(logout());
-        setHighlight('');
+    const handleUserMenu = (action) => {
+        if (action === 'Logout') dispatch(logout());
+        dispatch(highlightPreferences(''));
     };
 
     const open = Boolean(anchorEl);
@@ -364,7 +375,7 @@ const NavBar = ({ setHighlight, highlight }) => {
                             {places.map((place, idx) => (
                                 <Grow in={open} key={idx} {...(open ? { timeout: 600 * idx } : {})}>
                                     <StyledLink to={`/${place}`}>
-                                        <MenuItem onClick={handleClosePlaces}>
+                                        <MenuItem sx={{ backgroundColor: 'white', color: 'black' }} onClick={handleClosePlaces}>
                                             <Typography textAlign="center">{place.toUpperCase()}</Typography>
                                         </MenuItem>
                                     </StyledLink>
@@ -403,10 +414,10 @@ const NavBar = ({ setHighlight, highlight }) => {
                             keepMounted
                             anchorEl={anchorElUser}
                             open={openUser}
-                            onClose={handleCloseUserMenu}>
+                            onClick={handleCloseUserMenu}>
                             {userMenu.map((userItem, idx) => (
                                 <Grow key={idx} in={openUser} {...(openUser ? { timeout: 600 * idx } : {})}>
-                                    <StyledLink to={userItem.link} onClick={userItem.obj === 'Logout' ? handleLogout : () => {}}>
+                                    <StyledLink to={userItem.link} onClick={() => handleUserMenu(userItem.obj)}>
                                         <MenuItem sx={{ px: 2 }}>
                                             <ListItemIcon>
                                                 <userItem.icon />

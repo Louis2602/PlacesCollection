@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
     AllCollections,
     NewPlace,
@@ -43,14 +42,19 @@ const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     padding: 0,
-    marginTop: '4%'
+    marginTop: '4%',
+    [theme.breakpoints.down('md')]: {
+        marginTop: '15%'
+    }
 }));
 
 function App() {
     const mode = useSelector((state) => state.theme.value);
-    const [highlight, setHighlight] = useState('');
     const darkTheme = createTheme({
         palette: {
+            primary: {
+                main: '#693bd4'
+            },
             mode: `${mode ? 'dark' : 'light'}`
         }
     });
@@ -59,10 +63,10 @@ function App() {
         <Router>
             <ScrollToTop />
             <ThemeProvider theme={darkTheme}>
-                <SnackbarProvider maxSnack={3}>
+                <SnackbarProvider autoHideDuration={2000}>
                     <CssBaseline />
                     <StyledBox>
-                        <NavBar setHighlight={setHighlight} highlight={highlight} />
+                        <NavBar />
                         <Box sx={{ minHeight: '30rem' }}>
                             <StyledStack spacing={2}>
                                 <Routes>
@@ -74,7 +78,7 @@ function App() {
                                     <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
                                     <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
                                     <Route path="/favorites" element={<AllCollections collection="favorites" />}></Route>
-                                    <Route path="/new-place" element={<NewPlace setHighlight={setHighlight} />}></Route>
+                                    <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
                                     <Route path="/profile" element={<Profile />}></Route>

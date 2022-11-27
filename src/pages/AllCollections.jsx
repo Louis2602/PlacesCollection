@@ -1,10 +1,12 @@
 import { Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 
 const AllCollections = ({ collection }) => {
+    const { enqueueSnackbar } = useSnackbar();
     const username = useSelector((state) => state.counter.username);
     const [isLoading, setIsLoading] = useState(false);
     const [loadedItems, setloadedItems] = useState([]);
@@ -35,8 +37,17 @@ const AllCollections = ({ collection }) => {
                     setIsLoading(false);
                     setloadedItems(items);
                 });
+        } else {
+            enqueueSnackbar('Sign in to access!', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                },
+                preventDuplicate: true
+            });
         }
-    }, [collection, username]);
+    }, [collection, username, enqueueSnackbar]);
 
     return (
         <>

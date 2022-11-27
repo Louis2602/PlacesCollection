@@ -21,15 +21,15 @@ const StyledInputLabel = styled(InputLabel)({
 const StyledButton = styled(Button)({
     font: 'inherit',
     cursor: 'pointer',
-    backgroundColor: '#77002e',
+    backgroundColor: 'var(--main--color)',
     color: 'white',
     padding: '0.5rem 1.5rem',
-    border: '1px solid #77002e',
+    border: '1px solid var(--main--color)',
     borderRadius: '4px',
     fontWeight: 'bold',
     '&:hover, active': {
-        backgroundColor: '#a50e48',
-        borderColor: '#a50e48'
+        backgroundColor: 'var(--main--hover--color)',
+        borderColor: 'var(--main--hover--color)'
     }
 });
 const StyledBox = styled(Box)({
@@ -88,7 +88,7 @@ const NewPlaceForm = ({ onAddPlace }) => {
     return (
         <StyledCard>
             <StyledForm onSubmit={submitHandler}>
-                <Grid container fullWidth spacing={1} direction="column">
+                <Grid container spacing={1} direction="column">
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <StyledInputLabel htmlFor="type">Type of place</StyledInputLabel>
