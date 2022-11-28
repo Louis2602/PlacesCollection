@@ -17,7 +17,7 @@ export const counterSlice = createSlice({
         },
         logout: (state) => {
             state.username = '';
-            localStorage.setItem(localStorageKey, JSON.stringify(state.username));
+            localStorage.removeItem(localStorageKey);
         }
     }
 });

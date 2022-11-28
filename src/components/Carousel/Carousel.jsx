@@ -35,6 +35,22 @@ const StyledImg = styled('img')(({ theme }) => ({
     }
 }));
 
+const StyledArrowBackIos = styled(ArrowBackIos)({
+    color: 'white',
+    fontSize: 30,
+    '&:hover': {
+        color: 'var(--main--hover--color)'
+    }
+});
+
+const StyledArrowForwardIos = styled(ArrowForwardIos)({
+    color: 'white',
+    fontSize: 30,
+    '&:hover': {
+        color: 'var(--main--hover--color)'
+    }
+});
+
 export default function DemoCarousel() {
     return (
         <Carousel
@@ -47,14 +63,14 @@ export default function DemoCarousel() {
             renderArrowPrev={(onClickHandler, hasPrev, label) =>
                 hasPrev && (
                     <StyledButton onClick={onClickHandler} title={label} style={{ left: '10%' }}>
-                        <ArrowBackIos sx={{ color: 'white', fontSize: 30 }} />
+                        <StyledArrowBackIos />
                     </StyledButton>
                 )
             }
             renderArrowNext={(onClickHandler, hasNext, label) =>
                 hasNext && (
                     <StyledButton onClick={onClickHandler} title={label} style={{ right: '10%' }}>
-                        <ArrowForwardIos sx={{ color: 'white', fontSize: 30 }} />
+                        <StyledArrowForwardIos />
                     </StyledButton>
                 )
             }>

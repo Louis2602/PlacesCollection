@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const StyledIconButton = styled(IconButton)({
     color: 'var(--white--color)',
     '&:hover': {
-        color: 'crimson'
+        color: 'var(--main--hover--color)'
     },
     transition: '0.3s ease-in-out'
 });
@@ -31,7 +31,7 @@ const Atag = styled('a')(({ theme }) => ({
     fontSize: '1rem',
     color: 'var(--white--color)',
     '&:hover': {
-        color: 'crimson'
+        color: 'var(--main--hover--color)'
     },
     transition: '0.3s ease-in-out',
     [theme.breakpoints.down('md')]: {
@@ -44,7 +44,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
     fontSize: '1rem',
     color: 'var(--white--color)',
     '&:hover': {
-        color: 'crimson'
+        color: 'var(--main--hover--color)'
     },
     transition: '0.3s ease-in-out',
     [theme.breakpoints.down('md')]: {
@@ -73,9 +73,9 @@ const StyledBotGrid = styled(Grid)(({ theme }) => ({
 const StyledLogoATag = styled('a')({
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    color: 'crimson',
+    color: 'var(--main--color)',
     '&:hover': {
-        color: 'orange',
+        color: 'var(--main--hover--color)',
         transition: '0.3s ease-in-out'
     }
 });
