@@ -193,6 +193,7 @@ const SignUp = () => {
         resolver: yupResolver(validationSchema)
     });
 
+    const [error, setError] = useState('');
     const [userData, setUserData] = useState({
         gender: '',
         birthday: '',
@@ -218,23 +219,54 @@ const SignUp = () => {
     };
 
     const onSubmit = () => {
-        setUserData({ ...userData, birthday: `${userData.birthday.str.split('').reverse().join('')}` });
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
-            method: 'PUT',
-            body: JSON.stringify(userData),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            enqueueSnackbar('Sign up success!', {
-                variant: 'success',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right'
+        setError(false);
+        fetch('https://food-collections-test-default-rtdb.firebaseio.com/accounts.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                for (const username in data) {
+                    if (username === userData.username) {
+                        setError(true);
+                        enqueueSnackbar("Username's already taken!", {
+                            variant: 'error',
+                            anchorOrigin: {
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }
+                        });
+                    }
+                    if (data[username].email === userData.email) {
+                        setError(true);
+                        enqueueSnackbar("Email's already registered!", {
+                            variant: 'error',
+                            anchorOrigin: {
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }
+                        });
+                    }
                 }
             });
-            navigate('/sign-in');
-        });
+
+        if (error === false) {
+            fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
+                method: 'PUT',
+                body: JSON.stringify(userData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                enqueueSnackbar('Sign up success!', {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }
+                });
+                navigate('/sign-in');
+            });
+        }
     };
 
     return (
