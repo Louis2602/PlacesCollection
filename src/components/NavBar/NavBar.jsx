@@ -398,7 +398,7 @@ const NavBar = () => {
                                     <StyledLink to={`/${place}`}>
                                         <MenuItem
                                             sx={{
-                                                backgroundColor: 'white',
+                                                backgroundColor: 'var(--main-color)',
                                                 color: 'black'
                                             }}
                                             onClick={handleClosePlaces}>
