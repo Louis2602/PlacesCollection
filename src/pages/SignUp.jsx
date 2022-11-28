@@ -189,379 +189,313 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
-	const navigate = useNavigate();
-	const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
 
-	const {
-		register,
-		control,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
-		resolver: yupResolver(validationSchema),
-	});
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(validationSchema)
+    });
 
-	const [userData, setUserData] = useState({
-		gender: '',
-		birthday: '',
-		username: '',
-		email: '',
-		password: '',
-	});
-	const [togglePassword, setTogglePassword] = useState({
-		amount: '',
-		password: '',
-		weight: '',
-		weightRange: '',
-		showPassword: false,
-	});
-	const handleMouseDownPassword = (event) => {
-		event.preventDefault();
-	};
-	const handleClickShowPassword = () => {
-		setTogglePassword({
-			...togglePassword,
-			showPassword: !togglePassword.showPassword,
-		});
-	};
+    const [error, setError] = useState('');
+    const [userData, setUserData] = useState({
+        gender: '',
+        birthday: '',
+        username: '',
+        email: '',
+        password: ''
+    });
+    const [togglePassword, setTogglePassword] = useState({
+        amount: '',
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false
+    });
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+    const handleClickShowPassword = () => {
+        setTogglePassword({
+            ...togglePassword,
+            showPassword: !togglePassword.showPassword
+        });
+    };
 
-	const onSubmit = () => {
-		setUserData({
-			...userData,
-			birthday: `${userData.birthday}`,
-		});
-		fetch(
-			`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`,
-			{
-				method: 'PUT',
-				body: JSON.stringify(userData),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		).then(() => {
-			enqueueSnackbar('Sign up success!', {
-				variant: 'success',
-				anchorOrigin: {
-					vertical: 'top',
-					horizontal: 'right',
-				},
-			});
-			navigate('/sign-in');
-		});
-	};
+    const onSubmit = () => {
+        setError(false);
+        fetch('https://food-collections-test-default-rtdb.firebaseio.com/accounts.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                for (const username in data) {
+                    if (username === userData.username) {
+                        setError(true);
+                        enqueueSnackbar("Username's already taken!", {
+                            variant: 'error',
+                            anchorOrigin: {
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }
+                        });
+                    }
+                    if (data[username].email === userData.email) {
+                        setError(true);
+                        enqueueSnackbar("Email's already registered!", {
+                            variant: 'error',
+                            anchorOrigin: {
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }
+                        });
+                    }
+                }
+            });
 
-	return (
-		<>
-			<h1>Sign Up</h1>
-			<StyledCard>
-				<StyledForm onSubmit={handleSubmit(onSubmit)}>
-					<StyledSignUpBox>
-						<StyledBox spacing={1}>
-							<StyledButton endIcon={<Google />}>
-								Continue with
-							</StyledButton>
-							<StyledButton endIcon={<Facebook />}>
-								Continue with
-							</StyledButton>
-							<Divider sx={{ margin: '1rem' }}>
-								or with email
-							</Divider>
-						</StyledBox>
+        if (error === false) {
+            fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
+                method: 'PUT',
+                body: JSON.stringify(userData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                enqueueSnackbar('Sign up success!', {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }
+                });
+                navigate('/sign-in');
+            });
+        }
+    };
 
-						<Grid container spacing={1}>
-							<Grid item xs={12} sm={6}>
-								<StyledFormControlLabel
-									control={
-										<Controller
-											control={control}
-											name='gender'
-											inputRef={register()}
-											render={({
-												field: { onChange },
-											}) => (
-												<FormControl>
-													<StyledFormLabel>
-														Gender
-													</StyledFormLabel>
-													<RadioGroup row>
-														{Genders.map(
-															(gender, i) => (
-																<FormControlLabel
-																	key={i}
-																	value={
-																		gender
-																	}
-																	control={
-																		<Radio />
-																	}
-																	label={
-																		gender
-																	}
-																	onChange={(
-																		e
-																	) => {
-																		onChange(
-																			e
-																				.target
-																				.checked
-																		);
-																		setUserData(
-																			{
-																				...userData,
-																				gender: `${gender}`,
-																			}
-																		);
-																	}}
-																/>
-															)
-														)}
-													</RadioGroup>
-												</FormControl>
-											)}
-										/>
-									}
-								/>
-								<StyledTypo
-									sx={{ marginTop: '2px' }}
-									variant='inherit'
-									color='error'
-								>
-									{errors.gender?.message}
-								</StyledTypo>
-							</Grid>
+    return (
+        <>
+            <h1>Sign Up</h1>
+            <StyledCard>
+                <StyledForm>
+                    <StyledSignUpBox>
+                        <StyledBox spacing={1}>
+                            <StyledButton endIcon={<Google />}>Continue with</StyledButton>
+                            <StyledButton endIcon={<Facebook />}>Continue with</StyledButton>
+                            <Divider sx={{ margin: '1rem' }}>or with email</Divider>
+                        </StyledBox>
 
-							<Grid item xs={12} sm={6}>
-								<StyledTextField
-									required
-									id='date'
-									label='Birthday'
-									type='date'
-									variant='filled'
-									fullWidth
-									InputLabelProps={{
-										shrink: true,
-									}}
-									{...register('birthday')}
-									error={errors.birthday ? true : false}
-									value={userData.birthday}
-									onChange={(e) => {
-										setUserData({
-											...userData,
-											birthday: e.target.value,
-										});
-									}}
-								/>
-								<StyledTypo variant='inherit' color='error'>
-									{errors.birthday?.message}
-								</StyledTypo>
-							</Grid>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} sm={6}>
+                                <StyledFormControlLabel
+                                    control={
+                                        <Controller
+                                            control={control}
+                                            name="gender"
+                                            inputRef={register()}
+                                            render={({ field: { onChange } }) => (
+                                                <FormControl>
+                                                    <StyledFormLabel>Gender</StyledFormLabel>
+                                                    <RadioGroup row>
+                                                        {Genders.map((gender, i) => (
+                                                            <FormControlLabel
+                                                                key={i}
+                                                                value={gender}
+                                                                control={<Radio />}
+                                                                label={gender}
+                                                                onChange={(e) => {
+                                                                    onChange(e.target.checked);
+                                                                    setUserData({ ...userData, gender: `${gender}` });
+                                                                }}
+                                                            />
+                                                        ))}
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            )}
+                                        />
+                                    }
+                                />
+                                <StyledTypo sx={{ marginTop: '2px' }} variant="inherit" color="error">
+                                    {errors.gender?.message}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12} sm={6}>
-								<StyledTextField
-									required
-									id='username'
-									name='username'
-									label='Username'
-									variant='filled'
-									fullWidth
-									{...register('username')}
-									error={errors.username ? true : false}
-									value={userData.username}
-									onChange={(e) => {
-										setUserData({
-											...userData,
-											username: e.target.value,
-										});
-									}}
-								/>
-								<StyledTypo variant='inherit' color='error'>
-									{errors.username?.message}
-								</StyledTypo>
-							</Grid>
+                            <Grid item xs={12} sm={6}>
+                                <StyledTextField
+                                    required
+                                    id="date"
+                                    label="Birthday"
+                                    type="date"
+                                    variant="filled"
+                                    fullWidth
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                    {...register('birthday')}
+                                    error={errors.birthday ? true : false}
+                                    value={userData.birthday}
+                                    onChange={(e) => {
+                                        setUserData({ ...userData, birthday: e.target.value });
+                                    }}
+                                />
+                                <StyledTypo variant="inherit" color="error">
+                                    {errors.birthday?.message}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12} sm={6}>
-								<StyledTextField
-									required
-									id='email'
-									name='email'
-									label='Email'
-									variant='filled'
-									fullWidth
-									{...register('email')}
-									error={errors.email ? true : false}
-									value={userData.email}
-									onChange={(e) => {
-										setUserData({
-											...userData,
-											email: e.target.value,
-										});
-									}}
-								/>
-								<StyledTypo variant='inherit' color='error'>
-									{errors.email?.message}
-								</StyledTypo>
-							</Grid>
+                            <Grid item xs={12} sm={6}>
+                                <StyledTextField
+                                    required
+                                    id="username"
+                                    name="username"
+                                    label="Username"
+                                    variant="filled"
+                                    fullWidth
+                                    {...register('username')}
+                                    error={errors.username ? true : false}
+                                    value={userData.username}
+                                    onChange={(e) => {
+                                        setUserData({ ...userData, username: e.target.value });
+                                    }}
+                                />
+                                <StyledTypo variant="inherit" color="error">
+                                    {errors.username?.message}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12} sm={6}>
-								<StyledTextField
-									required
-									id='password'
-									name='password'
-									label='Password'
-									variant='filled'
-									type={
-										togglePassword.showPassword
-											? 'text'
-											: 'password'
-									}
-									fullWidth
-									{...register('password')}
-									error={errors.password ? true : false}
-									value={userData.password}
-									onChange={(e) => {
-										setUserData({
-											...userData,
-											password: e.target.value,
-										});
-									}}
-								/>
-								<StyledTypo variant='inherit' color='error'>
-									{errors.password?.message}
-								</StyledTypo>
-							</Grid>
+                            <Grid item xs={12} sm={6}>
+                                <StyledTextField
+                                    required
+                                    id="email"
+                                    name="email"
+                                    label="Email"
+                                    variant="filled"
+                                    fullWidth
+                                    {...register('email')}
+                                    error={errors.email ? true : false}
+                                    value={userData.email}
+                                    onChange={(e) => {
+                                        setUserData({ ...userData, email: e.target.value });
+                                    }}
+                                />
+                                <StyledTypo variant="inherit" color="error">
+                                    {errors.email?.message}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12} sm={6}>
-								<StyledTextField
-									required
-									id='confirmPassword'
-									name='confirmPassword'
-									label='Confirm Password'
-									variant='filled'
-									type={
-										togglePassword.showPassword
-											? 'text'
-											: 'password'
-									}
-									fullWidth
-									{...register('confirmPassword')}
-									error={
-										errors.confirmPassword ? true : false
-									}
-								/>
-								<StyledTypo variant='inherit' color='error'>
-									{errors.confirmPassword?.message}
-								</StyledTypo>
-							</Grid>
+                            <Grid item xs={12} sm={6}>
+                                <StyledTextField
+                                    required
+                                    id="password"
+                                    name="password"
+                                    label="Password"
+                                    variant="filled"
+                                    type={togglePassword.showPassword ? 'text' : 'password'}
+                                    fullWidth
+                                    {...register('password')}
+                                    error={errors.password ? true : false}
+                                    value={userData.password}
+                                    onChange={(e) => {
+                                        setUserData({ ...userData, password: e.target.value });
+                                    }}
+                                />
+                                <StyledTypo variant="inherit" color="error">
+                                    {errors.password?.message}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12}>
-								<FormControlLabel
-									control={
-										<Controller
-											control={control}
-											name='showPassword'
-											defaultValue='false'
-											inputRef={register()}
-											render={() => (
-												<Checkbox
-													checkedIcon={
-														<BpCheckedIcon />
-													}
-													icon={<BpIcon />}
-													color='primary'
-													onClick={
-														handleClickShowPassword
-													}
-													onMouseDown={
-														handleMouseDownPassword
-													}
-												/>
-											)}
-										/>
-									}
-									label={
-										<StyledTypoBot>
-											Show Password
-										</StyledTypoBot>
-									}
-								/>
-							</Grid>
+                            <Grid item xs={12} sm={6}>
+                                <StyledTextField
+                                    required
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    variant="filled"
+                                    type={togglePassword.showPassword ? 'text' : 'password'}
+                                    fullWidth
+                                    {...register('confirmPassword')}
+                                    error={errors.confirmPassword ? true : false}
+                                />
+                                <StyledTypo variant="inherit" color="error">
+                                    {errors.confirmPassword?.message}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12}>
-								<FormControlLabel
-									control={
-										<Controller
-											control={control}
-											name='acceptTerms'
-											defaultValue='false'
-											inputRef={register()}
-											render={({
-												field: { onChange },
-											}) => (
-												<Checkbox
-													checkedIcon={
-														<BpCheckedIcon />
-													}
-													icon={<BpIcon />}
-													color='primary'
-													onChange={(e) =>
-														onChange(
-															e.target.checked
-														)
-													}
-												/>
-											)}
-										/>
-									}
-									label={
-										<StyledTypoBot
-											color={
-												errors.acceptTerms
-													? 'error'
-													: 'inherit'
-											}
-										>
-											I have read and agree to the Terms *
-										</StyledTypoBot>
-									}
-								/>
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Controller
+                                            control={control}
+                                            name="showPassword"
+                                            defaultValue="false"
+                                            inputRef={register()}
+                                            render={() => (
+                                                <Checkbox
+                                                    checkedIcon={<BpCheckedIcon />}
+                                                    icon={<BpIcon />}
+                                                    color="primary"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                />
+                                            )}
+                                        />
+                                    }
+                                    label={<StyledTypoBot>Show Password</StyledTypoBot>}
+                                />
+                            </Grid>
 
-								<StyledTypo variant='inherit' color='error'>
-									{errors.acceptTerms
-										? '(' + errors.acceptTerms.message + ')'
-										: ''}
-								</StyledTypo>
-							</Grid>
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Controller
+                                            control={control}
+                                            name="acceptTerms"
+                                            defaultValue="false"
+                                            inputRef={register()}
+                                            render={({ field: { onChange } }) => (
+                                                <Checkbox
+                                                    checkedIcon={<BpCheckedIcon />}
+                                                    icon={<BpIcon />}
+                                                    color="primary"
+                                                    onChange={(e) => onChange(e.target.checked)}
+                                                />
+                                            )}
+                                        />
+                                    }
+                                    label={
+                                        <StyledTypoBot color={errors.acceptTerms ? 'error' : 'inherit'}>
+                                            I have read and agree to the Terms *
+                                        </StyledTypoBot>
+                                    }
+                                />
 
-							<Grid item xs={12}>
-								<StyledSignUpButton
-									variant='contained'
-									type='submit'
-								>
-									Sign Up
-								</StyledSignUpButton>
-							</Grid>
+                                <StyledTypo variant="inherit" color="error">
+                                    {errors.acceptTerms ? '(' + errors.acceptTerms.message + ')' : ''}
+                                </StyledTypo>
+                            </Grid>
 
-							<Grid item xs={12}>
-								<Typography
-									sx={{
-										display: 'flex',
-										justifyContent: 'center',
-										marginTop: '1.5rem',
-									}}
-								>
-									Already have an account?
-									<StyledLink to={'/sign-in'}>
-										Sign in
-									</StyledLink>
-								</Typography>
-							</Grid>
-						</Grid>
-					</StyledSignUpBox>
-				</StyledForm>
-			</StyledCard>
-		</>
-	);
+                            <Grid item xs={12}>
+                                <StyledSignUpButton variant="contained" onClick={handleSubmit(onSubmit)}>
+                                    Sign Up
+                                </StyledSignUpButton>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Typography sx={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
+                                    Already have an account?
+                                    <StyledLink to={'/sign-in'}>Sign in</StyledLink>
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </StyledSignUpBox>
+                </StyledForm>
+            </StyledCard>
+        </>
+    );
 };
 
 export default SignUp;
