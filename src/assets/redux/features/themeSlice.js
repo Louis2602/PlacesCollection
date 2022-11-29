@@ -4,7 +4,7 @@ const localStorageKey = 'theme';
 const persistedTheme = localStorage.getItem(localStorageKey);
 
 const initialState = {
-    value: persistedTheme ? JSON.parse(persistedTheme) : true
+    value: persistedTheme ? JSON.parse(persistedTheme) : false
 };
 
 const themeSlice = createSlice({

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import AvatarEdit from 'react-avatar-edit';
-import DoneIcon from '@mui/icons-material/Done';
+import { Close, Done } from '@mui/icons-material';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: '48rem',
@@ -27,6 +27,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
         marginTop: '1rem',
         width: '100%',
         padding: 0
+    }
+}));
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+    '& 	.MuiDialog-paper': {
+        borderRadius: 0,
+        padding: '1rem'
     }
 }));
 
@@ -76,6 +83,19 @@ const StyledUserBox = styled(Box)(({ theme }) => ({
     }
 }));
 
+const StyledAvatarBox = styled(Box)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '0.5rem'
+});
+
+const StyledDialogTitle = styled(DialogTitle)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+});
+
 const UserFormControl = ({ gender, data }) => <FormControlLabel disabled={data !== gender} checked={data === gender} label={gender} control={<Radio />} />;
 
 const UserTextField = ({ label, value }) => (
@@ -98,6 +118,7 @@ const Profile = () => {
     const [loadedItems, setloadedItems] = useState({});
     const [imageCrop, setImageCrop] = useState(false);
     const [dialogs, setDialogs] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const username = useSelector((state) => state.counter.username);
 
@@ -117,7 +138,7 @@ const Profile = () => {
         setImageCrop(view);
     };
     const onClose = () => {
-        setImageCrop(null);
+        setImageCrop(false);
     };
 
     const saveImage = () => {
@@ -128,6 +149,7 @@ const Profile = () => {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
+            window.location.reload(false);
             enqueueSnackbar('Upload image success!', {
                 variant: 'success',
                 anchorOrigin: {
@@ -135,9 +157,10 @@ const Profile = () => {
                     horizontal: 'right'
                 }
             });
+            setIsLoading(false);
         });
         setDialogs(false);
-        fetchData();
+        setIsLoading(true);
     };
 
     const onBeforeFileLoad = (elem) => {
@@ -147,54 +170,66 @@ const Profile = () => {
         }
     };
 
+    const handleCloseDialog = () => {
+        setDialogs(false);
+        setImageCrop(false);
+    };
+
     fetchData();
 
     return (
         <>
-            <h1>Profile</h1>
-            <StyledCard>
-                <StyledBox>
-                    <StyledAvatar alt="Avatar" src={loadedItems.avatar ? loadedItems.avatar : null} />
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: '0.5rem'
-                        }}>
-                        <Button onClick={() => setDialogs(true)}>Upload Image</Button>
-                    </Box>
-                    <Dialog open={dialogs} onClose={() => setDialogs(false)}>
-                        <DialogTitle
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                            Change Avatar
-                        </DialogTitle>
-                        <AvatarEdit width={300} height={300} textAlign="center" onClose={onClose} onCrop={onCrop} onBeforeFileLoad={onBeforeFileLoad} />
-                        <Button onClick={saveImage} variant="contained">
-                            <DoneIcon />
-                            Save
-                        </Button>
-                    </Dialog>
-                </StyledBox>
+            {isLoading ? (
+                <div className="loader"></div>
+            ) : (
+                <>
+                    <h1>Profile</h1>
+                    <StyledCard>
+                        <StyledBox>
+                            <StyledAvatar alt="Avatar" src={loadedItems.avatar ? loadedItems.avatar : null} />
+                            <StyledAvatarBox>
+                                <Button onClick={() => setDialogs(true)}>Upload Image</Button>
+                            </StyledAvatarBox>
 
-                <StyledBox>
-                    <StyledFormLabel>Gender</StyledFormLabel>
-                    <StyledRadioGroup row>
-                        <UserFormControl gender="Male" data={loadedItems.gender} />
-                        <UserFormControl gender="Female" data={loadedItems.gender} />
-                        <UserFormControl gender="Other" data={loadedItems.gender} />
-                    </StyledRadioGroup>
-                    <StyledUserBox>
-                        <UserTextField label="Username" value={loadedItems.username} />
-                        <UserTextField label="Birthday" value={loadedItems.birthday} />
-                        <UserTextField label="Email" value={loadedItems.email} />
-                    </StyledUserBox>
-                </StyledBox>
-            </StyledCard>
+                            <StyledDialog open={dialogs} onClose={handleCloseDialog}>
+                                <StyledDialogTitle>Change Avatar</StyledDialogTitle>
+                                <AvatarEdit
+                                    width={300}
+                                    height={300}
+                                    textAlign="center"
+                                    onClose={onClose}
+                                    onCrop={onCrop}
+                                    onBeforeFileLoad={onBeforeFileLoad}
+                                />
+                                <Box>
+                                    <Button onClick={handleCloseDialog} variant="contained">
+                                        <Close />
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={saveImage} disabled={!imageCrop} variant="contained">
+                                        <Done />
+                                        Save
+                                    </Button>
+                                </Box>
+                            </StyledDialog>
+                        </StyledBox>
+
+                        <StyledBox>
+                            <StyledFormLabel>Gender</StyledFormLabel>
+                            <StyledRadioGroup row>
+                                <UserFormControl gender="Male" data={loadedItems.gender} />
+                                <UserFormControl gender="Female" data={loadedItems.gender} />
+                                <UserFormControl gender="Other" data={loadedItems.gender} />
+                            </StyledRadioGroup>
+                            <StyledUserBox>
+                                <UserTextField label="Username" value={loadedItems.username} />
+                                <UserTextField label="Birthday" value={loadedItems.birthday} />
+                                <UserTextField label="Email" value={loadedItems.email} />
+                            </StyledUserBox>
+                        </StyledBox>
+                    </StyledCard>
+                </>
+            )}
         </>
     );
 };
