@@ -9,6 +9,7 @@
     text-decoration: none;
     list-style: none;
 }
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -16,6 +17,7 @@
 ::-webkit-file-upload-button {
     display: none;
 }
+
 html,
 body {
     font-family: 'Open Sans', sans-serif;

@@ -1,13 +1,12 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 
-import { Button, styled } from '@mui/material';
+import { IconButton, styled } from '@mui/material';
 import { ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
 
 import { img1, img2, img3, img4, img5, img6, img7 } from './assets/';
 
-const StyledButton = styled(Button)(({ theme }) => ({
-    background: 'transparent !important',
+const StyledButton = styled(IconButton)(({ theme }) => ({
     borderRadius: 999,
     color: 'black',
     position: 'absolute',
@@ -16,9 +15,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
     cursor: 'pointer',
     width: 50,
     height: 50,
-    '&:hover': {
-        color: '#757de8'
-    },
     display: 'block',
     [theme.breakpoints.down('md')]: {
         display: 'none'
@@ -38,6 +34,7 @@ const StyledImg = styled('img')(({ theme }) => ({
 const StyledArrowBackIos = styled(ArrowBackIos)({
     color: 'white',
     fontSize: 30,
+    transition: 'all 0.3s ease-in-out',
     '&:hover': {
         color: 'var(--main--hover--color)'
     }
@@ -46,6 +43,7 @@ const StyledArrowBackIos = styled(ArrowBackIos)({
 const StyledArrowForwardIos = styled(ArrowForwardIos)({
     color: 'white',
     fontSize: 30,
+    transition: 'all 0.3s ease-in-out',
     '&:hover': {
         color: 'var(--main--hover--color)'
     }
@@ -62,14 +60,14 @@ export default function DemoCarousel() {
             renderThumbs={() => ``}
             renderArrowPrev={(onClickHandler, hasPrev, label) =>
                 hasPrev && (
-                    <StyledButton onClick={onClickHandler} title={label} style={{ left: '10%' }}>
+                    <StyledButton onClick={onClickHandler} title={label} sx={{ left: '12%' }}>
                         <StyledArrowBackIos />
                     </StyledButton>
                 )
             }
             renderArrowNext={(onClickHandler, hasNext, label) =>
                 hasNext && (
-                    <StyledButton onClick={onClickHandler} title={label} style={{ right: '10%' }}>
+                    <StyledButton onClick={onClickHandler} title={label} sx={{ right: '12%' }}>
                         <StyledArrowForwardIos />
                     </StyledButton>
                 )
