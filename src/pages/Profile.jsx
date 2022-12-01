@@ -31,9 +31,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-    '& 	.MuiDialog-paper': {
-        borderRadius: 0,
-        padding: '1rem'
+    '& .MuiDialog-paper': {
+        padding: '1rem',
+        paddingTop: 0
     }
 }));
 
@@ -194,20 +194,18 @@ const Profile = () => {
                             <StyledDialog open={dialogs} onClose={handleCloseDialog}>
                                 <StyledDialogTitle>Change Avatar</StyledDialogTitle>
                                 <AvatarEdit
-                                    width={300}
-                                    height={300}
+                                    width={280}
+                                    height={280}
                                     textAlign="center"
                                     onClose={onClose}
                                     onCrop={onCrop}
                                     onBeforeFileLoad={onBeforeFileLoad}
                                 />
-                                <Box>
-                                    <Button onClick={handleCloseDialog} variant="contained">
-                                        <Close />
+                                <Box sx={{ paddingTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+                                    <Button sx={{ width: '8rem' }} onClick={handleCloseDialog} variant="contained">
                                         Cancel
                                     </Button>
-                                    <Button onClick={saveImage} disabled={!imageCrop} variant="contained">
-                                        <Done />
+                                    <Button sx={{ width: '8rem' }} onClick={saveImage} disabled={!imageCrop} variant="contained">
                                         Save
                                     </Button>
                                 </Box>

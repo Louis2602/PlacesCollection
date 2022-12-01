@@ -10,32 +10,30 @@ const AllCollections = ({ collection }) => {
     const [loadedItems, setloadedItems] = useState([]);
 
     useEffect(() => {
-        if (username) {
-            setIsLoading(true);
-            fetch(
-                collection === 'favorites'
-                    ? `https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}/favorites.json`
-                    : `https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`
-            )
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    const items = [];
+        setIsLoading(true);
+        fetch(
+            collection === 'favorites'
+                ? `https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}/favorites.json`
+                : `https://food-collections-test-default-rtdb.firebaseio.com/places/${collection}.json`
+        )
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                const items = [];
 
-                    for (const key in data) {
-                        const item = {
-                            id: key,
-                            ...data[key]
-                        };
+                for (const key in data) {
+                    const item = {
+                        id: key,
+                        ...data[key]
+                    };
 
-                        items.push(item);
-                    }
+                    items.push(item);
+                }
 
-                    setIsLoading(false);
-                    setloadedItems(items);
-                });
-        }
+                setIsLoading(false);
+                setloadedItems(items);
+            });
     }, [collection, username]);
 
     return (

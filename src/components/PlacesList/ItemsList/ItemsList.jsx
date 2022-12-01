@@ -15,8 +15,8 @@ const StyledGrid = styled(Grid)({
 const ItemsList = ({ items }) => {
     return (
         <StyledGrid container spacing={1}>
-            {items.map((item) => (
-                <Grid item md={4} key={item.id}>
+            {items.map((item, i) => (
+                <Grid item md={4} key={i}>
                     <PlaceItem
                         id={item.id}
                         image={item.image}

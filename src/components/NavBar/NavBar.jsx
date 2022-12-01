@@ -1,35 +1,27 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-	styled,
-	Box,
-	Switch,
-	AppBar,
-	Toolbar,
-	IconButton,
-	Typography,
-	Menu,
-	Container,
-	Avatar,
-	Button,
-	Tooltip,
-	MenuItem,
-	List,
-	ListItem,
-	ListItemIcon,
-	Drawer,
-	Grow,
-	Collapse,
+    styled,
+    Box,
+    Switch,
+    AppBar,
+    Toolbar,
+    IconButton,
+    Typography,
+    Menu,
+    Container,
+    Avatar,
+    Button,
+    Tooltip,
+    MenuItem,
+    List,
+    ListItem,
+    ListItemIcon,
+    Drawer,
+    Grow,
+    Collapse
 } from '@mui/material';
-import {
-	AccountCircle,
-	MenuOutlined,
-	Reviews,
-	Logout,
-	ExpandMore,
-	ExpandLess,
-	ChevronLeft,
-} from '@mui/icons-material';
+import { AccountCircle, MenuOutlined, Reviews, Logout, ExpandMore, ExpandLess, ChevronLeft } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
@@ -39,9 +31,9 @@ import { themePreferences } from '../../assets/redux/features/themeSlice';
 const places = ['restaurants', 'hotels', 'attractions'];
 
 const userMenu = [
-	{ obj: 'Profile', icon: AccountCircle, link: 'profile' },
-	{ obj: 'Reviews', icon: Reviews, link: 'reviews' },
-	{ obj: 'Logout', icon: Logout, link: 'sign-in' },
+    { obj: 'Profile', icon: AccountCircle, link: 'profile' },
+    { obj: 'Reviews', icon: Reviews, link: 'reviews' },
+    { obj: 'Logout', icon: Logout, link: 'sign-in' }
 ];
 
 const ModeSwitch = styled(Switch)(({ theme }) => ({
@@ -91,64 +83,61 @@ const ModeSwitch = styled(Switch)(({ theme }) => ({
     }
 }));
 const StyledList = styled(List)(({ theme }) => ({
-	'& .MuiListItem-root': {
-		borderBottom: `1px solid ${
-			theme.palette.mode === 'dark' ? 'white' : '#999'
-		}`,
-		alignItems: 'center',
-		justiftContent: 'center',
-		display: 'flex',
-	},
+    '& .MuiListItem-root': {
+        borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`,
+        alignItems: 'center',
+        justiftContent: 'center',
+        display: 'flex'
+    }
 }));
 const StyledButton = styled(Button)({
-	'&:hover': {
-		color: 'black',
-		backgroundColor: 'white',
-	},
-	padding: '24px',
-	color: 'white',
-	fontSize: '1rem',
-	fontWeight: 'bold',
-	borderRadius: 0,
+    '&:hover': {
+        color: 'black',
+        backgroundColor: 'white'
+    },
+    padding: '24px',
+    color: 'white',
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    borderRadius: 0
 });
 const StyledMenu = styled((props) => (
-	<Menu
-		elevation={0}
-		anchorOrigin={{
-			vertical: 'bottom',
-			horizontal: 'center',
-		}}
-		transformOrigin={{
-			vertical: 'top',
-			horizontal: 'center',
-		}}
-		{...props}
-	/>
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+        }}
+        {...props}
+    />
 ))(({ theme }) => ({
-	'& .MuiPaper-root': {
-		borderRadius: 1,
-		boxShadow:
-			'0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
-		'& .MuiMenu-list': {
-			padding: 0,
-			width: '180px',
-		},
-		'& .MuiMenuItem-root': {
-			padding: 10,
-			borderTop: '1px solid #999',
-		},
-	},
+    '& .MuiPaper-root': {
+        borderRadius: 1,
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
+        '& .MuiMenu-list': {
+            padding: 0,
+            width: '180px'
+        },
+        '& .MuiMenuItem-root': {
+            padding: 10,
+            borderTop: '1px solid #999'
+        }
+    }
 }));
 
 const StyledUserMenu = styled((props) => (
-	<Menu
-		elevation={0}
-		anchorOrigin={{
-			vertical: 'bottom',
-			horizontal: 'right',
-		}}
-		{...props}
-	/>
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+        }}
+        {...props}
+    />
 ))(({ theme }) => ({
     '& .MuiPaper-root': {
         borderRadius: 1,
@@ -165,9 +154,9 @@ const StyledUserMenu = styled((props) => (
 }));
 
 const StyledToolbar = styled(Toolbar)({
-	display: 'flex',
-	justifyContent: 'space-between',
-	width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%'
 });
 
 const StyledTypoLogo = styled(Typography)(({ theme }) => ({
@@ -187,58 +176,56 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
 }));
 
 const StyledAppBar = styled(AppBar)({
-	position: 'fixed',
-	top: 0,
-	zIndex: 1000,
-	width: '100%',
-	backgroundColor: 'var(--main--color) !important',
+    position: 'fixed',
+    top: 0,
+    zIndex: 1000,
+    width: '100%',
+    backgroundColor: 'var(--main--color) !important'
 });
 
 const StyledLink = styled(Link)({
-	textDecoration: 'none',
-	color: 'inherit',
+    textDecoration: 'none',
+    color: 'inherit'
 });
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-	display: 'none',
-	marginRight: '1rem',
-	[theme.breakpoints.down('md')]: {
-		display: 'block',
-		marginRight: '.2rem',
-	},
+    display: 'none',
+    marginRight: '1rem',
+    [theme.breakpoints.down('md')]: {
+        display: 'block',
+        marginRight: '.2rem'
+    }
 }));
 
 const StyledExpandMore = styled(ExpandMore)({
-	animation: 'spin 0.4s linear 1',
-	'@keyframes spin': {
-		'0%': { transform: 'rotate(180deg)' },
-		'100%': { transform: 'rotate(0deg)' },
-	},
+    animation: 'spin 0.4s linear 1',
+    '@keyframes spin': {
+        '0%': { transform: 'rotate(180deg)' },
+        '100%': { transform: 'rotate(0deg)' }
+    }
 });
 
 const StyledExpandLess = styled(ExpandLess)({
-	animation: 'spin 0.4s linear 1',
-	'@keyframes spin': {
-		'0%': { transform: 'rotate(180deg)' },
-		'100%': { transform: 'rotate(0deg)' },
-	},
+    animation: 'spin 0.4s linear 1',
+    '@keyframes spin': {
+        '0%': { transform: 'rotate(180deg)' },
+        '100%': { transform: 'rotate(0deg)' }
+    }
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'flex-end',
-	padding: '32px 15px',
-	borderBottom: `1px solid ${
-		theme.palette.mode === 'dark' ? 'white' : '#999'
-	}`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '32px 15px',
+    borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'white' : '#999'}`
 }));
 
 const StyledImg = styled('img')(({ theme }) => ({
-	display: 'block',
-	[theme.breakpoints.down('md')]: {
-		display: 'none',
-	},
+    display: 'block',
+    [theme.breakpoints.down('md')]: {
+        display: 'none'
+    }
 }));
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
@@ -309,7 +296,10 @@ const NavBar = () => {
     };
 
     const handleUserMenu = (action) => {
-        if (action === 'Logout') dispatch(logout());
+        if (action === 'Logout') {
+            dispatch(logout());
+            window.location.reload(false);
+        }
     };
 
     const fetchData = () => {
@@ -346,7 +336,7 @@ const NavBar = () => {
 
                             <StyledList>
                                 <ListItem onClick={handleOpenList}>
-                                    <Typography variant="h6">COLLECTIONS</Typography>
+                                    <Typography sx={{ fontSize: '17px', fontWeight: '600' }}>COLLECTIONS</Typography>
                                     {allowAnimation ? openList ? <StyledExpandLess /> : <StyledExpandMore /> : <ExpandMore />}
                                 </ListItem>
                                 <Collapse in={openList} timeout="auto" unmountOnExit>
@@ -360,13 +350,13 @@ const NavBar = () => {
                                 </Collapse>
 
                                 <ListItem onClick={handleToggleSidebar}>
-                                    <Typography variant="h6">
+                                    <Typography sx={{ fontSize: '17px', fontWeight: '600' }}>
                                         <StyledLink to={`/new-place`}> ADD NEW PLACE </StyledLink>
                                     </Typography>
                                 </ListItem>
 
                                 <ListItem onClick={handleToggleSidebar}>
-                                    <Typography variant="h6">
+                                    <Typography sx={{ fontSize: '17px', fontWeight: '600' }}>
                                         <StyledLink to={`/favorites`}> MY FAVORITES </StyledLink>
                                     </Typography>
                                 </ListItem>
@@ -458,7 +448,7 @@ const NavBar = () => {
                             display: 'flex',
                             flexDirection: 'row'
                         }}>
-                        <ModeSwitch sx={{ margin: '0.9rem' }} checked={mode} onChange={handlerMode} />
+                        <ModeSwitch sx={{ margin: '0.9rem' }} checked={Boolean(mode)} onChange={handlerMode} />
                         <Tooltip title="Open settings">
                             <IconButton onClick={(e) => handleOpenUserMenu(e, username)}>
                                 <Avatar src={avatar || null} alt="Avatar" />

@@ -23,7 +23,8 @@ import {
     Contact,
     Destination,
     Sponsorships,
-    Support
+    Support,
+    Favorites
 } from './pages';
 import ScrollToTop from './assets/ScrollToTop';
 import './App.css';
@@ -77,7 +78,7 @@ function App() {
                                     <Route path="/restaurants" element={<AllCollections collection="restaurants" />}></Route>
                                     <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
                                     <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
-                                    <Route path="/favorites" element={<AllCollections collection="favorites" />}></Route>
+                                    <Route path="/favorites" element={<Favorites />}></Route>
                                     <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
