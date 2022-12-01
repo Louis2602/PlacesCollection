@@ -22,6 +22,8 @@ import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { Facebook, Google } from '@mui/icons-material';
 
+import { useGetAllAccountsQuery } from '../redux/services/fetchAPI';
+
 const BpIcon = styled('span')(({ theme }) => ({
     borderRadius: 3,
     width: 16,
@@ -189,6 +191,7 @@ const validationSchema = Yup.object().shape({
 const SignUp = () => {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
+    const { data, isFetching } = useGetAllAccountsQuery();
 
     const {
         register,
@@ -224,36 +227,31 @@ const SignUp = () => {
         });
     };
 
-    const onSubmit = () => {
+    const onSubmit = (data) => {
         setError(false);
-        fetch('https://food-collections-test-default-rtdb.firebaseio.com/accounts.json')
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                for (const username in data) {
-                    if (username === userData.username) {
-                        setError(true);
-                        enqueueSnackbar("Username's already taken!", {
-                            variant: 'error',
-                            anchorOrigin: {
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }
-                        });
+
+        for (const username in data) {
+            if (username === userData.username) {
+                setError(true);
+                enqueueSnackbar("Username's already taken!", {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
                     }
-                    if (data[username].email === userData.email) {
-                        setError(true);
-                        enqueueSnackbar("Email's already registered!", {
-                            variant: 'error',
-                            anchorOrigin: {
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }
-                        });
+                });
+            }
+            if (data[username].email === userData.email) {
+                setError(true);
+                enqueueSnackbar("Email's already registered!", {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
                     }
-                }
-            });
+                });
+            }
+        }
 
         if (error === false) {
             fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
@@ -275,8 +273,10 @@ const SignUp = () => {
         }
     };
 
+    if (isFetching) return <div className="loader" />;
+
     return (
-        <>
+        <section>
             <h1>Sign Up</h1>
             <StyledCard>
                 <StyledForm>
@@ -477,7 +477,7 @@ const SignUp = () => {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <StyledSignUpButton variant="contained" onClick={handleSubmit(onSubmit)}>
+                                <StyledSignUpButton variant="contained" onClick={() => handleSubmit(onSubmit(data))}>
                                     Sign Up
                                 </StyledSignUpButton>
                             </Grid>
@@ -492,7 +492,7 @@ const SignUp = () => {
                     </StyledSignUpBox>
                 </StyledForm>
             </StyledCard>
-        </>
+        </section>
     );
 };
 

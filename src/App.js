@@ -24,8 +24,10 @@ import {
 	Destination,
 	Sponsorships,
 	Support,
+	Favorites,
 } from './pages';
 import './App.css';
+import ScrollToTop from './ScrollToTop';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
 	margin: '3rem 1rem',
@@ -50,6 +52,15 @@ const StyledBox = styled(Box)(({ theme }) => ({
 function App() {
 	const mode = useSelector((state) => state.theme.value);
 	const darkTheme = createTheme({
+		typography: {
+			fontFamily: [
+				'Poppins',
+				'Helvetica Neue',
+				'Helvetica',
+				'Arial',
+				'sans-serif',
+			].join(','),
+		},
 		palette: {
 			primary: {
 				main: '#06CDFF',
@@ -60,6 +71,7 @@ function App() {
 
 	return (
 		<Router>
+			<ScrollToTop />
 			<ThemeProvider theme={darkTheme}>
 				<SnackbarProvider autoHideDuration={2000}>
 					<CssBaseline />
@@ -105,9 +117,7 @@ function App() {
 									></Route>
 									<Route
 										path='/favorites'
-										element={
-											<AllCollections collection='favorites' />
-										}
+										element={<Favorites />}
 									></Route>
 									<Route
 										path='/new-place'
