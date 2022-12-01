@@ -101,6 +101,7 @@ const ModeSwitch = styled(Switch)(({ theme }) => ({
         borderRadius: 20 / 2
     }
 }));
+
 const StyledList = styled(List)(({ theme }) => ({
     '& .MuiListItem-root': {
         borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--light--gray)'}`,
@@ -121,6 +122,7 @@ const StyledMenu = styled((props) => (
             vertical: 'top',
             horizontal: 'center'
         }}
+        disableScrollLock={true}
         {...props}
     />
 ))(({ theme }) => ({
@@ -143,8 +145,13 @@ const StyledUserMenu = styled((props) => (
         elevation={0}
         anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'right'
+            horizontal: 'left'
         }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+        }}
+        disableScrollLock={true}
         {...props}
     />
 ))(({ theme }) => ({
@@ -166,8 +173,6 @@ const StyledToolbar = styled(Toolbar)({
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
-    position: 'absolute',
-    top: 0,
     padding: '0 2rem'
 });
 
@@ -189,15 +194,14 @@ const StyledTypoLogo = styled(Typography)(({ theme }) => ({
 }));
 
 const StyledAppBar = styled(AppBar)({
-    top: 0,
-    zIndex: 1000,
-    width: '100%',
+    padding: '0 1rem',
     backgroundColor: 'inherit',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    width: '100%'
 });
 
 const StyledTypography = styled(Typography)({
-    transition: '400ms all ease-in-out',
+    transition: '0.4s all ease-in-out',
     display: 'inline-block',
     '&:after': {
         display: 'block',
@@ -308,7 +312,7 @@ const NavBar = (props) => {
 
     const username = useSelector((state) => state.counter.username);
     const mode = useSelector((state) => state.theme.value);
-    // const highlight = useSelector((state) => state.highlight.value);
+    const highlight = useSelector((state) => state.highlight.value);
     const { data: avatar, isFetching } = useGetAvatarQuery(username || '');
 
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -443,7 +447,12 @@ const NavBar = (props) => {
                             paddingRight: '24px'
                         }}
                         onClick={handleOpenPlaces}>
-                        <StyledTypography sx={{ paddingRight: 0 }}>Collections</StyledTypography>
+                        <StyledTypography
+                            sx={{
+                                paddingRight: 0
+                            }}>
+                            Collections
+                        </StyledTypography>
                         {allowAnimation ? !open ? <StyledExpandLess /> : <StyledExpandMore /> : <ExpandLess />}
                         {/* <Box
 							sx={{
@@ -474,10 +483,24 @@ const NavBar = (props) => {
                         ))}
                     </StyledMenu>
                     <StyledLink to={'/new-place'}>
-                        <StyledTypography>Add New Place</StyledTypography>
+                        <StyledTypography
+                            sx={{
+                                '&:after': {
+                                    transform: `${highlight === 'new-place' ? 'scaleX(1)' : 'scaleX(0)'}`
+                                }
+                            }}>
+                            Add New Place
+                        </StyledTypography>
                     </StyledLink>
                     <StyledLink to={'/favorites'}>
-                        <StyledTypography>My Favorites</StyledTypography>
+                        <StyledTypography
+                            sx={{
+                                '&:after': {
+                                    transform: `${highlight === 'favorites' ? 'scaleX(1)' : 'scaleX(0)'}`
+                                }
+                            }}>
+                            My Favorites
+                        </StyledTypography>
                     </StyledLink>
                 </Box>
                 <Box
