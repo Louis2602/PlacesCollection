@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import { useSelector } from 'react-redux';
 import {
-
     AllCollections,
     NewPlace,
     HomePage,
@@ -26,41 +25,40 @@ import {
     Sponsorships,
     Support,
     Favorites
-
 } from './pages';
 import './App.css';
 import ScrollToTop from './ScrollToTop';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
-	margin: '3rem 1rem',
-	display: 'flex',
-	[theme.breakpoints.up('sm')]: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		margin: '3rem auto',
-	},
+    margin: '3rem 1rem',
+    display: 'flex',
+    [theme.breakpoints.up('sm')]: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: '3rem auto'
+    }
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
-	display: 'flex',
-	flexDirection: 'column',
-	padding: 0,
-	marginTop: '4%',
-	[theme.breakpoints.down('md')]: {
-		marginTop: '15%',
-	},
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 0,
+    marginTop: '4%',
+    [theme.breakpoints.down('md')]: {
+        marginTop: '15%'
+    }
 }));
 
 function App() {
-	const mode = useSelector((state) => state.theme.value);
-	const darkTheme = createTheme({
-		palette: {
-			primary: {
-				main: '#06CDFF',
-			},
-			mode: `${mode ? 'dark' : 'light'}`,
-		},
-	});
+    const mode = useSelector((state) => state.theme.value);
+    const darkTheme = createTheme({
+        palette: {
+            primary: {
+                main: '#06CDFF'
+            },
+            mode: `${mode ? 'dark' : 'light'}`
+        }
+    });
 
     return (
         <Router>
@@ -103,8 +101,6 @@ function App() {
             </ThemeProvider>
         </Router>
     );
-
-									
 }
 
 export default App;
