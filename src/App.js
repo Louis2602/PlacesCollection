@@ -26,8 +26,8 @@ import {
     Support,
     Favorites
 } from './pages';
-import ScrollToTop from './assets/ScrollToTop';
 import './App.css';
+import ScrollToTop from './ScrollToTop';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
     margin: '3rem 1rem',

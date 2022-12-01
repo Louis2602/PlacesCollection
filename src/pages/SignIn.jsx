@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Box, Button, styled, TextField, Grid, Typography, Card, Divider, FormControlLabel, Checkbox } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, styled, TextField, Grid, Typography, Card, Divider, FormControlLabel, Checkbox } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
-import { signin } from '../assets/redux/features/counterSlice';
 import { Facebook, Google } from '@mui/icons-material';
+
+import { signin } from '../redux/features/counterSlice';
 
 const BpIcon = styled('span')(({ theme }) => ({
     borderRadius: 3,
@@ -145,8 +146,8 @@ const validationSchema = Yup.object().shape({
 
 const SignIn = () => {
     const navigate = useNavigate();
-    const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
 
     const {
         register,
@@ -208,7 +209,7 @@ const SignIn = () => {
     };
 
     return (
-        <>
+        <section>
             <h1>Sign In</h1>
             <StyledCard>
                 <StyledForm>
@@ -300,7 +301,7 @@ const SignIn = () => {
                     </StyledSignInBox>
                 </StyledForm>
             </StyledCard>
-        </>
+        </section>
     );
 };
 

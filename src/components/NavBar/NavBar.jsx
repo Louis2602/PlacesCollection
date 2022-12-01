@@ -25,8 +25,9 @@ import { AccountCircle, MenuOutlined, Reviews, Logout, ExpandMore, ExpandLess, C
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
-import { logout } from '../../assets/redux/features/counterSlice';
-import { themePreferences } from '../../assets/redux/features/themeSlice';
+import { logout } from '../../redux/features/counterSlice';
+import { themePreferences } from '../../redux/features/themeSlice';
+import { useGetAvatarQuery } from '../../redux/services/fetchAPI';
 
 const places = ['restaurants', 'hotels', 'attractions'];
 
@@ -240,15 +241,17 @@ const NavBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
+
     const username = useSelector((state) => state.counter.username);
     const mode = useSelector((state) => state.theme.value);
     const highlight = useSelector((state) => state.highlight.value);
+    const { data: avatar, isFetching } = useGetAvatarQuery(username || '');
+
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
     const [openList, setOpenList] = useState(false);
     const [allowAnimation, setAllowAnimation] = useState(false);
-    const [avatar, setAvatar] = useState(null);
 
     const handlerMode = () => {
         dispatch(themePreferences(!mode));
@@ -302,23 +305,11 @@ const NavBar = () => {
         }
     };
 
-    const fetchData = () => {
-        if (username) {
-            fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}/avatar.json`)
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    setAvatar(data);
-                });
-        }
-    };
-
     const open = Boolean(anchorEl);
     const openSm = Boolean(anchorSm);
     const openUser = Boolean(anchorElUser);
 
-    fetchData();
+    if (isFetching) return <div className="loader" />;
 
     return (
         <StyledAppBar>

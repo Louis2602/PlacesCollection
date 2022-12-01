@@ -1,9 +1,10 @@
-import { styled, Card, Avatar, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel, Dialog, Button, DialogTitle } from '@mui/material/';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import { styled, Card, Avatar, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel, Dialog, Button, DialogTitle } from '@mui/material/';
 import AvatarEdit from 'react-avatar-edit';
-import { Close, Done } from '@mui/icons-material';
+
+import { useGetAccountQuery } from '../redux/services/fetchAPI';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: '48rem',
@@ -115,24 +116,11 @@ const UserTextField = ({ label, value }) => (
 
 const Profile = () => {
     const { enqueueSnackbar } = useSnackbar();
-    const [loadedItems, setloadedItems] = useState({});
+    const username = useSelector((state) => state.counter.username);
+    const { data, isFetching } = useGetAccountQuery(username || '');
     const [imageCrop, setImageCrop] = useState(false);
     const [dialogs, setDialogs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    const username = useSelector((state) => state.counter.username);
-
-    const fetchData = () => {
-        if (username) {
-            fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}.json`)
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    setloadedItems(data);
-                });
-        }
-    };
 
     const onCrop = (view) => {
         setImageCrop(view);
@@ -144,7 +132,7 @@ const Profile = () => {
     const saveImage = () => {
         fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}.json`, {
             method: 'PUT',
-            body: JSON.stringify({ ...loadedItems, avatar: `${imageCrop}` }),
+            body: JSON.stringify({ ...data, avatar: `${imageCrop}` }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -175,60 +163,47 @@ const Profile = () => {
         setImageCrop(false);
     };
 
-    fetchData();
+    if (isFetching || isLoading) return <div className="loader" />;
 
     return (
-        <>
-            {isLoading ? (
-                <div className="loader"></div>
-            ) : (
-                <>
-                    <h1>Profile</h1>
-                    <StyledCard>
-                        <StyledBox>
-                            <StyledAvatar alt="Avatar" src={loadedItems.avatar ? loadedItems.avatar : null} />
-                            <StyledAvatarBox>
-                                <Button onClick={() => setDialogs(true)}>Upload Image</Button>
-                            </StyledAvatarBox>
+        <section>
+            <h1>Profile</h1>
+            <StyledCard>
+                <StyledBox>
+                    <StyledAvatar alt="Avatar" src={data.avatar ? data.avatar : null} />
+                    <StyledAvatarBox>
+                        <Button onClick={() => setDialogs(true)}>Upload Image</Button>
+                    </StyledAvatarBox>
 
-                            <StyledDialog open={dialogs} onClose={handleCloseDialog}>
-                                <StyledDialogTitle>Change Avatar</StyledDialogTitle>
-                                <AvatarEdit
-                                    width={280}
-                                    height={280}
-                                    textAlign="center"
-                                    onClose={onClose}
-                                    onCrop={onCrop}
-                                    onBeforeFileLoad={onBeforeFileLoad}
-                                />
-                                <Box sx={{ paddingTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-                                    <Button sx={{ width: '8rem' }} onClick={handleCloseDialog} variant="contained">
-                                        Cancel
-                                    </Button>
-                                    <Button sx={{ width: '8rem' }} onClick={saveImage} disabled={!imageCrop} variant="contained">
-                                        Save
-                                    </Button>
-                                </Box>
-                            </StyledDialog>
-                        </StyledBox>
+                    <StyledDialog open={dialogs} onClose={handleCloseDialog}>
+                        <StyledDialogTitle>Change Avatar</StyledDialogTitle>
+                        <AvatarEdit width={280} height={280} textAlign="center" onClose={onClose} onCrop={onCrop} onBeforeFileLoad={onBeforeFileLoad} />
+                        <Box sx={{ paddingTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+                            <Button sx={{ width: '8rem' }} onClick={handleCloseDialog} variant="contained">
+                                Cancel
+                            </Button>
+                            <Button sx={{ width: '8rem' }} onClick={saveImage} disabled={!imageCrop} variant="contained">
+                                Save
+                            </Button>
+                        </Box>
+                    </StyledDialog>
+                </StyledBox>
 
-                        <StyledBox>
-                            <StyledFormLabel>Gender</StyledFormLabel>
-                            <StyledRadioGroup row>
-                                <UserFormControl gender="Male" data={loadedItems.gender} />
-                                <UserFormControl gender="Female" data={loadedItems.gender} />
-                                <UserFormControl gender="Other" data={loadedItems.gender} />
-                            </StyledRadioGroup>
-                            <StyledUserBox>
-                                <UserTextField label="Username" value={loadedItems.username} />
-                                <UserTextField label="Birthday" value={loadedItems.birthday} />
-                                <UserTextField label="Email" value={loadedItems.email} />
-                            </StyledUserBox>
-                        </StyledBox>
-                    </StyledCard>
-                </>
-            )}
-        </>
+                <StyledBox>
+                    <StyledFormLabel>Gender</StyledFormLabel>
+                    <StyledRadioGroup row>
+                        <UserFormControl gender="Male" data={data.gender} />
+                        <UserFormControl gender="Female" data={data.gender} />
+                        <UserFormControl gender="Other" data={data.gender} />
+                    </StyledRadioGroup>
+                    <StyledUserBox>
+                        <UserTextField label="Username" value={data.username} />
+                        <UserTextField label="Birthday" value={data.birthday} />
+                        <UserTextField label="Email" value={data.email} />
+                    </StyledUserBox>
+                </StyledBox>
+            </StyledCard>
+        </section>
     );
 };
 

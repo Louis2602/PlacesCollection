@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { themePreferences } from '../assets/redux/features/themeSlice';
 
+import { themePreferences } from '../redux/features/themeSlice';
 import NewPlaceForm from '../components/Form/NewPlaceForm';
 
 const NewPlace = () => {
