@@ -27,7 +27,7 @@ const StyledTypography = styled(Typography)({
 	},
 });
 const Container = styled(Box)(({ theme }) => ({
-	marginTop: '6rem',
+	marginTop: '8rem',
 	padding: '0 6rem',
 	[theme.breakpoints.down('sm')]: {
 		padding: 0,
@@ -42,7 +42,7 @@ const StyledTypoQuote = styled(Typography)(({ theme }) => ({
 const Ellipse = styled('div')({
 	zIndex: '-1',
 	position: 'absolute',
-	top: '10%',
+	top: '15%',
 	right: '35%',
 	filter: 'blur(100px)',
 });
