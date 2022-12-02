@@ -5,12 +5,12 @@ import Carousel from '../components/Carousel/Carousel';
 import Header from '../components/Header/Header';
 
 const HomePage = () => {
-	return (
-		<Stack spacing={10}>
-			<Header />
-			<Carousel />
-		</Stack>
-	);
+    return (
+        <Stack spacing={20}>
+            <Header />
+            <Carousel />
+        </Stack>
+    );
 };
 
 export default HomePage;
