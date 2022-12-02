@@ -7,10 +7,8 @@ import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 const AllCollections = ({ collection }) => {
     const { data, isFetching } = useGetCollectionQuery(collection);
     const username = useSelector((state) => state.counter.username);
+
     const items = [];
-
-    if (isFetching) return <div className="loader" />;
-
     for (const key in data) {
         const item = {
             id: key,
@@ -18,6 +16,8 @@ const AllCollections = ({ collection }) => {
         };
         items.push(item);
     }
+
+    if (isFetching) return <div className="loader" />;
 
     return (
         <section>

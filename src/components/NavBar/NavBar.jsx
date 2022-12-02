@@ -490,7 +490,7 @@ const NavBar = (props) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                    <ModeSwitch sx={{ margin: '0.9rem' }} checked={mode} onChange={handlerMode} />
+                    <ModeSwitch sx={{ margin: '0.9rem' }} checked={Boolean(mode)} onChange={handlerMode} />
                     <Tooltip title="Open settings">
                         <Avatar src={avatar || null} alt="Avatar" onClick={(e) => handleOpenUserMenu(e, username)} sx={{ cursor: 'pointer' }} />
                     </Tooltip>

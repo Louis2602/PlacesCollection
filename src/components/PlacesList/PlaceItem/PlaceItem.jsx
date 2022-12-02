@@ -1,7 +1,14 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
+import { remove, ref, update } from 'firebase/database';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
+
+import { db } from '../../../firebase/firebaseConfig';
+import { useGetFavoritesQuery } from '../../../redux/services/fetchAPI';
+import { Link } from 'react-router-dom';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: 380,
@@ -44,6 +51,16 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 const PlaceItem = ({ id, image, title, rating, address, description, type }) => {
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
+
+    const username = useSelector((state) => state.counter.username);
+    const { data, isFetching } = useGetFavoritesQuery(username);
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    useEffect(() => {
+        if (data && data[id]) setIsFavorite(true);
+    }, [data, id]);
+
     const toggleGoogleMap = () => {
         navigate('/map', {
             state: {
@@ -54,16 +71,36 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
         });
     };
 
-    const handleDelete = ({ id, type }) => {
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${type}s/${id}.json`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            window.location.reload(false);
-        });
+    const handleDelete = async ({ id, type }) => {
+        await remove(ref(db, `/places/${type}s/${id}`));
+        navigate(`/${type}s`);
     };
+
+    const handleFavorite = ({ id, username }) => {
+        if (username) {
+            if (isFavorite) {
+                remove(ref(db, `/accounts/${username}/favorites/${id}`));
+                setIsFavorite(false);
+            } else {
+                const updates = {
+                    [`/accounts/${username}/favorites/${id}`]: true
+                };
+                update(ref(db), updates);
+                setIsFavorite(true);
+            }
+        } else {
+            enqueueSnackbar('Sign in to access!', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                }
+            });
+            navigate('/sign-in');
+        }
+    };
+
+    if (isFetching) return <div className="loader" />;
 
     return (
         <StyledCard>
@@ -79,7 +116,6 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                     <Typography noWrap variant="subtitle2" color="text.secondary" gutterBottom align="center" sx={{ fontStyle: 'italic' }}>
                         {address}
                     </Typography>
-
                     <Typography align="center" fontWeight="bold">
                         Rating
                     </Typography>
@@ -90,8 +126,8 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                 </CardContent>
             </StyledLink>
             <StyledCardActions>
-                <StyledIconButton aria-label="add to favorites" onClick={() => {}}>
-                    {true ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
+                <StyledIconButton aria-label="add to favorites" onClick={() => handleFavorite({ id, username })}>
+                    {isFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                 </StyledIconButton>
                 <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
                     <Checkbox sx={{ padding: 0 }} checkedIcon={<LocationOn sx={{ color: 'orange' }} />} icon={<LocationOnOutlined />} />

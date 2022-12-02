@@ -6,18 +6,29 @@ import { useGetAllCollectionsQuery, useGetFavoritesQuery } from '../redux/servic
 
 const Favorites = () => {
     const username = useSelector((state) => state.counter.username);
-    const { data: favData, isFetching: favFetch } = useGetFavoritesQuery(username || '');
-    const { data: placesData, isFetching: placeFetch } = useGetAllCollectionsQuery();
+    const { data: favData, isFetching: favFetch } = useGetFavoritesQuery(username || '', {
+        pollingInterval: 3000,
+        refetchOnMountOrArgChange: true,
+        skip: false
+    });
+    const { data: placesData, isFetching: placeFetch } = useGetAllCollectionsQuery({
+        pollingInterval: 3000,
+        refetchOnMountOrArgChange: true,
+        skip: false
+    });
 
-    const favList = [];
     const itemList = [];
-
-    for (const i in favData) favList.push(favData[i]);
 
     for (const i in placesData) {
         for (const j in placesData[i]) {
-            for (const k in favList) {
-                if (favList[k] === j) itemList.push(placesData[i][j]);
+            for (const k in favData) {
+                if (k === j) {
+                    const item = {
+                        id: k,
+                        ...placesData[i][j]
+                    };
+                    itemList.push(item);
+                }
             }
         }
     }

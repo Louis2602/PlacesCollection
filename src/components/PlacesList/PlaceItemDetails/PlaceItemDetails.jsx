@@ -1,7 +1,14 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+import { remove, ref, update } from 'firebase/database';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
+
+import { db } from '../../../firebase/firebaseConfig';
+import { useGetFavoritesQuery } from '../../../redux/services/fetchAPI';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +53,18 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
 }));
 
 const PlaceItemDetails = ({ id, image, title, rating, address, description, type }) => {
+    const classes = useStyles();
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
+
+    const username = useSelector((state) => state.counter.username);
+    const { data, isFetching } = useGetFavoritesQuery(username);
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    useEffect(() => {
+        if (data && data[id]) setIsFavorite(true);
+    }, [data, id]);
+
     const toggleGoogleMap = () => {
         navigate('/map', {
             state: {
@@ -56,29 +74,50 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
             }
         });
     };
-    const classes = useStyles();
-    const handleDelete = ({ id, type }) => {
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/places/${type}s/${id}.json`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+
+    const handleDelete = async ({ id, type }) => {
+        await remove(ref(db, `/places/${type}s/${id}`));
         navigate(`/${type}s`);
     };
+
+    const handleFavorite = ({ id, username }) => {
+        if (username) {
+            if (isFavorite) {
+                remove(ref(db, `/accounts/${username}/favorites/${id}`));
+                setIsFavorite(false);
+            } else {
+                const updates = {
+                    [`/accounts/${username}/favorites/${id}`]: true
+                };
+                update(ref(db), updates);
+                setIsFavorite(true);
+            }
+        } else {
+            enqueueSnackbar('Sign in to access!', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                }
+            });
+            navigate('/sign-in');
+        }
+    };
+
+    if (isFetching) return <div className="loader" />;
 
     return (
         <StyledCard className={classes.root}>
             <StyledCardContent className={classes.root}>
                 <StyledCardMedia className={classes.root} component="img" image={image} alt="error" />
                 <StyledTypoBox>
-                    <Typography className={classes.root} variant="body1" color="text.primary" gutterBottom>
+                    <Typography variant="body1" color="text.primary" gutterBottom>
                         {description}
                     </Typography>
-                    <Typography className={classes.root} variant="subtitle2" color="text.secondary" gutterBottom sx={{ fontStyle: 'italic' }}>
+                    <Typography variant="subtitle2" color="text.secondary" gutterBottom sx={{ fontStyle: 'italic' }}>
                         {address}
                     </Typography>
-                    <Typography className={classes.root} align="center" fontWeight="bold">
+                    <Typography align="center" fontWeight="bold">
                         Rating
                     </Typography>
                     <Box className={classes.root}>
@@ -86,8 +125,8 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                         <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
                     </Box>
                     <CardActions className={classes.root}>
-                        <StyledIconButton aria-label="add to favorites" onClick={() => {}}>
-                            {true ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
+                        <StyledIconButton aria-label="add to favorites" onClick={() => handleFavorite({ id, username })}>
+                            {isFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                         </StyledIconButton>
                         <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>
                             <Checkbox sx={{ padding: 0 }} checkedIcon={<LocationOn sx={{ color: 'orange' }} />} icon={<LocationOnOutlined />} />
