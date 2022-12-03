@@ -7,8 +7,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Facebook, Google } from '@mui/icons-material';
+import { onValue, ref } from 'firebase/database';
 
 import { signin } from '../redux/features/counterSlice';
+import { db } from '../firebase/firebaseConfig';
 
 const BpIcon = styled('span')(({ theme }) => ({
     borderRadius: 3,
@@ -150,6 +152,7 @@ const SignIn = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const {
+        reset,
         register,
         control,
         handleSubmit,
@@ -179,33 +182,31 @@ const SignIn = () => {
         });
     };
 
-    const onSubmit = () => {
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                if (data?.password === userData.password) {
-                    dispatch(signin(userData.username));
-                    enqueueSnackbar('Sign in success!', {
-                        variant: 'success',
-                        anchorOrigin: {
-                            vertical: 'top',
-                            horizontal: 'right'
-                        }
-                    });
-                    navigate('/');
-                } else {
-                    enqueueSnackbar('Sign in failed!', {
-                        variant: 'error',
-                        anchorOrigin: {
-                            vertical: 'top',
-                            horizontal: 'right'
-                        }
-                    });
-                    window.location.reload(false);
-                }
-            });
+    const onSubmit = (data) => {
+        const dataRef = ref(db, `/accounts/${data.username}}`);
+        onValue(dataRef, (db) => {
+            const dbData = db.val();
+            if (dbData?.password === data.password) {
+                dispatch(signin(userData.username));
+                enqueueSnackbar('Sign in success!', {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }
+                });
+                navigate('/');
+            } else {
+                enqueueSnackbar('Sign in failed!', {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }
+                });
+                reset();
+            }
+        });
     };
 
     return (

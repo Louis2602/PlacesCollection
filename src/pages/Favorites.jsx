@@ -1,22 +1,31 @@
 import { Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { onValue, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
-import { useGetAllCollectionsQuery, useGetFavoritesQuery } from '../redux/services/fetchAPI';
+import { db } from '../firebase/firebaseConfig';
 
-const Favorites = ({ favRender, setfavRender }) => {
+const Favorites = () => {
     const username = useSelector((state) => state.counter.username);
-    const { data: favData, isFetching: favFetch } = useGetFavoritesQuery(username || '', {
-        pollingInterval: `${favRender ? 1000 : false}`
-    });
-    const { data: placesData, isFetching: placeFetch } = useGetAllCollectionsQuery({
-        pollingInterval: `${favRender ? 1000 : false}`
-    });
+
+    const [placesData, setPlacesData] = useState({});
+    const [favData, setFavData] = useState({});
 
     useEffect(() => {
-        setfavRender(false);
-    }, [favFetch, placeFetch, setfavRender]);
+        const dataRef = ref(db, '/places');
+        return onValue(dataRef, (dbData) => {
+            const loadedData = dbData.val();
+            setPlacesData(loadedData);
+        });
+    });
+    useEffect(() => {
+        const dataRef = ref(db, `/accounts/${username}/favorites`);
+        return onValue(dataRef, (dbData) => {
+            const loadedData = dbData.val();
+            setFavData(loadedData);
+        });
+    });
 
     const itemList = [];
 
@@ -33,8 +42,6 @@ const Favorites = ({ favRender, setfavRender }) => {
             }
         }
     }
-
-    if (favFetch || placeFetch) return <div className="loader" />;
 
     return (
         <section>

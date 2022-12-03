@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { styled, Card, Avatar, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel, Dialog, Button, DialogTitle } from '@mui/material/';
+import { onValue, ref, update } from 'firebase/database';
 import AvatarEdit from 'react-avatar-edit';
 
-import { useGetAccountQuery } from '../redux/services/fetchAPI';
-import { ref, update } from 'firebase/database';
 import { db } from '../firebase/firebaseConfig';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -116,18 +115,23 @@ const UserTextField = ({ label, value }) => (
     />
 );
 
-const Profile = ({ render, setRender }) => {
+const Profile = () => {
     const { enqueueSnackbar } = useSnackbar();
+
     const [imageCrop, setImageCrop] = useState(false);
     const [dialogs, setDialogs] = useState(false);
+
     const username = useSelector((state) => state.counter.username);
-    const { data, isFetching } = useGetAccountQuery(username, {
-        pollingInterval: `${render ? 1000 : false}`
-    });
+
+    const [data, setData] = useState({});
 
     useEffect(() => {
-        setRender(false);
-    }, [isFetching, setRender]);
+        const dataRef = ref(db, `/accounts/${username}`);
+        return onValue(dataRef, (dbData) => {
+            const loadedData = dbData.val();
+            setData(loadedData);
+        });
+    });
 
     const onCrop = (view) => {
         setImageCrop(view);
@@ -149,7 +153,6 @@ const Profile = ({ render, setRender }) => {
             }
         });
         setDialogs(false);
-        setRender(true);
     };
 
     const onBeforeFileLoad = (elem) => {
@@ -163,8 +166,6 @@ const Profile = ({ render, setRender }) => {
         setDialogs(false);
         setImageCrop(false);
     };
-
-    if (isFetching) return <div className="loader" />;
 
     return (
         <section>

@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router';
 import { Card, CardActions, CardContent, CardMedia, Typography, IconButton, Checkbox, Box, styled, Rating } from '@mui/material/';
 import { Share, FavoriteBorder, Favorite, LocationOn, LocationOnOutlined, Delete } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
-import { remove, ref, update } from 'firebase/database';
+import { remove, ref, update, onValue } from 'firebase/database';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
 import { db } from '../../../firebase/firebaseConfig';
-import { useGetFavoritesQuery } from '../../../redux/services/fetchAPI';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,12 +57,16 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
     const { enqueueSnackbar } = useSnackbar();
 
     const username = useSelector((state) => state.counter.username);
-    const { data, isFetching } = useGetFavoritesQuery(username);
+
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        if (data && data[id]) setIsFavorite(true);
-    }, [data, id]);
+        const dataRef = ref(db, `/accounts/${username}/favorites`);
+        return onValue(dataRef, (dbData) => {
+            const loadedData = dbData.val();
+            setIsFavorite(loadedData);
+        });
+    });
 
     const toggleGoogleMap = () => {
         navigate('/map', {
@@ -103,8 +106,6 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
             navigate('/sign-in');
         }
     };
-
-    if (isFetching) return <div className="loader" />;
 
     return (
         <StyledCard className={classes.root}>
