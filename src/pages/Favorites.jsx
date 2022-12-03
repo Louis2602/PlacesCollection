@@ -1,21 +1,22 @@
 import { Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import ItemsList from '../components/PlacesList/ItemsList/ItemsList';
 import { useGetAllCollectionsQuery, useGetFavoritesQuery } from '../redux/services/fetchAPI';
 
-const Favorites = () => {
+const Favorites = ({ favRender, setfavRender }) => {
     const username = useSelector((state) => state.counter.username);
     const { data: favData, isFetching: favFetch } = useGetFavoritesQuery(username || '', {
-        pollingInterval: 3000,
-        refetchOnMountOrArgChange: true,
-        skip: false
+        pollingInterval: `${favRender ? 1000 : false}`
     });
     const { data: placesData, isFetching: placeFetch } = useGetAllCollectionsQuery({
-        pollingInterval: 3000,
-        refetchOnMountOrArgChange: true,
-        skip: false
+        pollingInterval: `${favRender ? 1000 : false}`
     });
+
+    useEffect(() => {
+        setfavRender(false);
+    }, [favFetch, placeFetch, setfavRender]);
 
     const itemList = [];
 

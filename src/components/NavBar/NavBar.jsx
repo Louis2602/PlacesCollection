@@ -17,9 +17,24 @@ import {
     ListItemIcon,
     Drawer,
     Grow,
-    Collapse
+    Collapse,
+    useScrollTrigger,
+    Fade,
+    Fab
 } from '@mui/material';
-import { AccountCircle, MenuOutlined, Reviews, Logout, ExpandMore, ExpandLess, ChevronLeft, Restaurant, Hotel, Attractions } from '@mui/icons-material';
+import {
+    AccountCircle,
+    MenuOutlined,
+    Reviews,
+    Logout,
+    ExpandMore,
+    ExpandLess,
+    ChevronLeft,
+    Restaurant,
+    Hotel,
+    Attractions,
+    KeyboardArrowUp
+} from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
@@ -184,8 +199,8 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
     position: 'fixed',
     padding: '0 1rem',
     width: '100%',
-    backgroundColor: `${theme.palette.mode !== 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`
-    //boxShadow: 'none'
+    backgroundColor: `${theme.palette.mode === 'dark' ? 'var(--black--color)' : 'var(--white--color)'}`,
+    backgroundImage: 'none'
 }));
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
@@ -284,7 +299,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     }
 }));
 
-const NavBar = (props) => {
+const NavBar = ({ render }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
@@ -292,13 +307,20 @@ const NavBar = (props) => {
     const username = useSelector((state) => state.counter.username);
     const mode = useSelector((state) => state.theme.value);
     const highlight = useSelector((state) => state.highlight.value);
-    const { data: avatar, isFetching } = useGetAvatarQuery(username || '');
+    const { data: avatar, isFetching } = useGetAvatarQuery(username || '', {
+        pollingInterval: `${render ? 1000 : false}`
+    });
 
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorSm, setAnchorSm] = useState(false);
     const [openList, setOpenList] = useState(false);
     const [allowAnimation, setAllowAnimation] = useState(false);
+
+    const trigger = useScrollTrigger({
+        disableHysteresis: true,
+        threshold: 100
+    });
 
     const handlerMode = () => {
         dispatch(themePreferences(!mode));
@@ -356,7 +378,7 @@ const NavBar = (props) => {
     if (isFetching) return <div className="loader" />;
 
     return (
-        <StyledAppBar>
+        <StyledAppBar style={{ boxShadow: `${trigger ? `5px 0px 27px -5px ${mode ? 'var(--white--color)' : 'var(--black--color)'}` : 'none'}` }}>
             <StyledToolbar disableGutters>
                 {/* Small devices */}
                 <StyledIconButton size="large" edge="start" color="inherit" aria-label="menu" onClick={handleToggleSidebar}>
@@ -520,6 +542,13 @@ const NavBar = (props) => {
                     </StyledUserMenu>
                 </Box>
             </StyledToolbar>
+            <Fade in={trigger}>
+                <Box role="presentation" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
+                    <Fab size="small" onClick={() => window.scrollTo(0, 0)}>
+                        <KeyboardArrowUp />
+                    </Fab>
+                </Box>
+            </Fade>
         </StyledAppBar>
     );
 };

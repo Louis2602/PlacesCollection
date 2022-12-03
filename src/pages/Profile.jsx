@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { styled, Card, Avatar, Box, TextField, RadioGroup, FormControlLabel, Radio, FormLabel, Dialog, Button, DialogTitle } from '@mui/material/';
 import AvatarEdit from 'react-avatar-edit';
 
 import { useGetAccountQuery } from '../redux/services/fetchAPI';
+import { ref, update } from 'firebase/database';
+import { db } from '../firebase/firebaseConfig';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: '48rem',
@@ -114,13 +116,18 @@ const UserTextField = ({ label, value }) => (
     />
 );
 
-const Profile = () => {
+const Profile = ({ render, setRender }) => {
     const { enqueueSnackbar } = useSnackbar();
-    const username = useSelector((state) => state.counter.username);
-    const { data, isFetching } = useGetAccountQuery(username || '');
     const [imageCrop, setImageCrop] = useState(false);
     const [dialogs, setDialogs] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const username = useSelector((state) => state.counter.username);
+    const { data, isFetching } = useGetAccountQuery(username, {
+        pollingInterval: `${render ? 1000 : false}`
+    });
+
+    useEffect(() => {
+        setRender(false);
+    }, [isFetching, setRender]);
 
     const onCrop = (view) => {
         setImageCrop(view);
@@ -129,26 +136,20 @@ const Profile = () => {
         setImageCrop(false);
     };
 
-    const saveImage = () => {
-        fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${username}.json`, {
-            method: 'PUT',
-            body: JSON.stringify({ ...data, avatar: `${imageCrop}` }),
-            headers: {
-                'Content-Type': 'application/json'
+    const saveImage = async () => {
+        const updates = {
+            [`/accounts/${username}/avatar`]: imageCrop
+        };
+        await update(ref(db), updates);
+        enqueueSnackbar('Upload image success!', {
+            variant: 'success',
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right'
             }
-        }).then(() => {
-            window.location.reload(false);
-            enqueueSnackbar('Upload image success!', {
-                variant: 'success',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right'
-                }
-            });
-            setIsLoading(false);
         });
         setDialogs(false);
-        setIsLoading(true);
+        setRender(true);
     };
 
     const onBeforeFileLoad = (elem) => {
@@ -163,7 +164,7 @@ const Profile = () => {
         setImageCrop(false);
     };
 
-    if (isFetching || isLoading) return <div className="loader" />;
+    if (isFetching) return <div className="loader" />;
 
     return (
         <section>

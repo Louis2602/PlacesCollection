@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
-import { createTheme, Stack, Box, styled, CssBaseline, useScrollTrigger, Fade, Fab } from '@mui/material';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import { useSelector } from 'react-redux';
@@ -31,23 +31,6 @@ import {
 import ScrollToTop from './ScrollToTop';
 import './App.css';
 
-function ScrollTop() {
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 100
-    });
-
-    return (
-        <Fade in={trigger}>
-            <Box role="presentation" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
-                <Fab size="small" onClick={() => window.scrollTo(0, 0)}>
-                    <KeyboardArrowUpIcon />
-                </Fab>
-            </Box>
-        </Fade>
-    );
-}
-
 const StyledStack = styled(Stack)(({ theme }) => ({
     margin: '3rem 1rem',
     display: 'flex',
@@ -65,6 +48,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 function App() {
+    const [render, setRender] = useState(false);
+    const [favRender, setfavRender] = useState(false);
     const mode = useSelector((state) => state.theme.value);
     const darkTheme = createTheme({
         typography: {
@@ -80,12 +65,12 @@ function App() {
 
     return (
         <Router>
-            <ScrollToTop />
+            <ScrollToTop setfavRender={setfavRender} />
             <ThemeProvider theme={darkTheme}>
                 <SnackbarProvider autoHideDuration={2000}>
                     <CssBaseline />
                     <StyledBox>
-                        <NavBar />
+                        <NavBar render={render} />
                         <Box sx={{ minHeight: '34rem' }}>
                             <StyledStack spacing={2}>
                                 <Routes>
@@ -96,11 +81,11 @@ function App() {
                                     <Route path="/restaurants" element={<AllCollections collection="restaurants" />}></Route>
                                     <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
                                     <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
-                                    <Route path="/favorites" element={<Favorites />}></Route>
+                                    <Route path="/favorites" element={<Favorites favRender={favRender} setfavRender={setfavRender} />}></Route>
                                     <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
-                                    <Route path="/profile" element={<Profile />}></Route>
+                                    <Route path="/profile" element={<Profile render={render} setRender={setRender} />}></Route>
                                     <Route path="/about" element={<About />}></Route>
                                     <Route path="/howitworks" element={<Howitworks />}></Route>
                                     <Route path="/testimonials" element={<Testimonials />}></Route>
@@ -114,7 +99,6 @@ function App() {
                             </StyledStack>
                         </Box>
                         <Footer />
-                        <ScrollTop />
                     </StyledBox>
                 </SnackbarProvider>
             </ThemeProvider>
