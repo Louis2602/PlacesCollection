@@ -728,6 +728,21 @@ const NavBar = ({ render }) => {
 							My Favorites
 						</StyledTypography>
 					</StyledLink>
+					<StyledLink to={'/shopping'}>
+						<StyledTypography
+							sx={{
+								'&:after': {
+									transform: `${
+										highlight === 'shopping'
+											? 'scaleX(1)'
+											: 'scaleX(0)'
+									}`,
+								},
+							}}
+						>
+							Shopping
+						</StyledTypography>
+					</StyledLink>
 				</Box>
 				<Box
 					sx={{

@@ -31,6 +31,7 @@ const Container = styled(Box)(({ theme }) => ({
 	padding: '0 6rem',
 	[theme.breakpoints.down('sm')]: {
 		padding: 0,
+		marginTop: '3rem',
 	},
 }));
 const StyledTypoQuote = styled(Typography)(({ theme }) => ({

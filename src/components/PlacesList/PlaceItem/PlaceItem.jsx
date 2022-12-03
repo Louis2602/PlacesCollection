@@ -99,7 +99,7 @@ const PlaceItem = ({
 			state: {
 				id: id,
 				address: address,
-				tittle: title,
+				title: title,
 			},
 		});
 	};
