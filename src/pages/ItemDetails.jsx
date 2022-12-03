@@ -1,13 +1,22 @@
+import { useEffect, useState } from 'react';
+import { onValue, ref } from 'firebase/database';
 import { useParams } from 'react-router-dom';
 
 import PlaceItemDetails from '../components/PlacesList/PlaceItemDetails/PlaceItemDetails';
-import { useGetCollectionDetailsQuery } from '../redux/services/fetchAPI';
+import { db } from '../firebase/firebaseConfig';
 
 const ItemDetails = () => {
     const { collection, id } = useParams();
-    const { data, isFetching } = useGetCollectionDetailsQuery({ collection, id });
 
-    if (isFetching) return <div className="loader" />;
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        const dataRef = ref(db, `/places/${collection}/${id}`);
+        return onValue(dataRef, (dbData) => {
+            const loadedData = dbData.val();
+            setData(loadedData);
+        });
+    });
 
     return (
         <section>

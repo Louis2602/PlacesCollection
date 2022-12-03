@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -21,8 +21,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { Facebook, Google } from '@mui/icons-material';
+import { onValue, ref, update } from 'firebase/database';
 
-import { useGetAllAccountsQuery } from '../redux/services/fetchAPI';
+import { db } from '../firebase/firebaseConfig';
 
 const BpIcon = styled('span')(({ theme }) => ({
     borderRadius: 3,
@@ -191,7 +192,16 @@ const validationSchema = Yup.object().shape({
 const SignUp = () => {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
-    const { data, isFetching } = useGetAllAccountsQuery();
+
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        const dataRef = ref(db, `/accounts`);
+        return onValue(dataRef, (dbData) => {
+            const loadedData = dbData.val();
+            setData(loadedData);
+        });
+    });
 
     const {
         register,
@@ -227,7 +237,7 @@ const SignUp = () => {
         });
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         setError(false);
 
         for (const username in data) {
@@ -254,26 +264,20 @@ const SignUp = () => {
         }
 
         if (error === false) {
-            fetch(`https://food-collections-test-default-rtdb.firebaseio.com/accounts/${userData.username}.json`, {
-                method: 'PUT',
-                body: JSON.stringify(userData),
-                headers: {
-                    'Content-Type': 'application/json'
+            const updates = {
+                [`/accounts/${userData.username}`]: { ...userData }
+            };
+            await update(ref(db), updates);
+            enqueueSnackbar('Sign up success!', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
                 }
-            }).then(() => {
-                enqueueSnackbar('Sign up success!', {
-                    variant: 'success',
-                    anchorOrigin: {
-                        vertical: 'top',
-                        horizontal: 'right'
-                    }
-                });
-                navigate('/sign-in');
             });
+            navigate('/sign-in');
         }
     };
-
-    if (isFetching) return <div className="loader" />;
 
     return (
         <section>

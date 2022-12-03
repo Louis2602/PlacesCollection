@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, Stack, Box, styled, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -48,8 +47,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 function App() {
-    const [render, setRender] = useState(false);
-    const [favRender, setfavRender] = useState(false);
     const mode = useSelector((state) => state.theme.value);
     const darkTheme = createTheme({
         typography: {
@@ -65,12 +62,12 @@ function App() {
 
     return (
         <Router>
-            <ScrollToTop setfavRender={setfavRender} />
+            <ScrollToTop />
             <ThemeProvider theme={darkTheme}>
                 <SnackbarProvider autoHideDuration={2000}>
                     <CssBaseline />
                     <StyledBox>
-                        <NavBar render={render} />
+                        <NavBar />
                         <Box sx={{ minHeight: '34rem' }}>
                             <StyledStack spacing={2}>
                                 <Routes>
@@ -81,11 +78,11 @@ function App() {
                                     <Route path="/restaurants" element={<AllCollections collection="restaurants" />}></Route>
                                     <Route path="/hotels" element={<AllCollections collection="hotels" />}></Route>
                                     <Route path="/attractions" element={<AllCollections collection="attractions" />}></Route>
-                                    <Route path="/favorites" element={<Favorites favRender={favRender} setfavRender={setfavRender} />}></Route>
+                                    <Route path="/favorites" element={<Favorites />}></Route>
                                     <Route path="/new-place" element={<NewPlace />}></Route>
                                     <Route path="/:collection/:id" element={<ItemDetails />}></Route>
                                     <Route path="/reviews" element={<Reviews />}></Route>
-                                    <Route path="/profile" element={<Profile render={render} setRender={setRender} />}></Route>
+                                    <Route path="/profile" element={<Profile />}></Route>
                                     <Route path="/about" element={<About />}></Route>
                                     <Route path="/howitworks" element={<Howitworks />}></Route>
                                     <Route path="/testimonials" element={<Testimonials />}></Route>
