@@ -43,7 +43,8 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    padding: 0
+    padding: 0,
+    backgroundColor: `${theme.palette.mode !== 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`
 }));
 
 function App() {

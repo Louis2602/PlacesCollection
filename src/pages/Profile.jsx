@@ -177,7 +177,7 @@ const Profile = () => {
                         <Button onClick={() => setDialogs(true)}>Upload Image</Button>
                     </StyledAvatarBox>
 
-                    <StyledDialog open={dialogs} onClose={handleCloseDialog}>
+                    <StyledDialog disableScrollLock={true} open={dialogs} onClose={handleCloseDialog}>
                         <StyledDialogTitle>Change Avatar</StyledDialogTitle>
                         <AvatarEdit width={280} height={280} textAlign="center" onClose={onClose} onCrop={onCrop} onBeforeFileLoad={onBeforeFileLoad} />
                         <Box sx={{ paddingTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>

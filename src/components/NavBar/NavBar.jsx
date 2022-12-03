@@ -333,7 +333,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     }
 }));
 
-const NavBar = ({ render }) => {
+const NavBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
@@ -357,6 +357,16 @@ const NavBar = ({ render }) => {
             setAvatar(loadedData);
         });
     });
+
+    const [offset, setOffset] = useState(0);
+
+    useEffect(() => {
+        const onScroll = () => setOffset(window.pageYOffset);
+        // clean up code
+        window.removeEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     const trigger = useScrollTrigger({
         disableHysteresis: true,
@@ -415,6 +425,12 @@ const NavBar = ({ render }) => {
     const open = Boolean(anchorEl);
     const openSm = Boolean(anchorSm);
     const openUser = Boolean(anchorElUser);
+
+    if (offset) {
+        handleClosePlaces();
+        handleCloseUserMenu();
+        setOffset(false);
+    }
 
     return (
         <StyledAppBar
@@ -580,12 +596,7 @@ const NavBar = ({ render }) => {
                         </StyledTypography>
                         {allowAnimation ? !open ? <StyledExpandLess /> : <StyledExpandMore /> : <NormalExpandLess />}
                     </Box>
-                    <StyledMenu
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={open}
-                        MenuListProps={{ onMouseLeave: handleClosePlaces }}
-                        onClose={handleClosePlaces}>
+                    <StyledMenu anchorEl={anchorEl} keepMounted open={open} onClose={handleClosePlaces}>
                         {places.map((place, idx) => (
                             <Grow in={open} key={idx} {...(open ? { timeout: 600 * idx } : {})}>
                                 <StyledLink to={place.link}>
@@ -644,15 +655,7 @@ const NavBar = ({ render }) => {
                         <Avatar src={avatar || null} alt="Avatar" onClick={(e) => handleOpenUserMenu(e, username)} sx={{ cursor: 'pointer' }} />
                     </Tooltip>
 
-                    <StyledUserMenu
-                        keepMounted
-                        anchorEl={anchorElUser}
-                        open={openUser}
-                        onClick={handleCloseUserMenu}
-                        MenuListProps={{
-                            onMouseLeave: handleCloseUserMenu
-                        }}
-                        onClose={handleCloseUserMenu}>
+                    <StyledUserMenu keepMounted anchorEl={anchorElUser} open={openUser} onClick={handleCloseUserMenu} onClose={handleCloseUserMenu}>
                         {userMenu.map((userItem, idx) => (
                             <Grow key={idx} in={openUser} {...(openUser ? { timeout: 600 * idx } : {})}>
                                 <StyledLink to={userItem.link} onClick={() => handleUserMenu(userItem.obj)}>
