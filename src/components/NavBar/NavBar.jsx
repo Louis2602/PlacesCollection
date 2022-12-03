@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
 import React from 'react';
 import {
 	styled,
@@ -21,6 +20,7 @@ import {
 	Drawer,
 	Grow,
 	Collapse,
+	useScrollTrigger,
 } from '@mui/material';
 import {
 	AccountCircle,
@@ -253,10 +253,11 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 	padding: '0 1rem',
 	width: '100%',
 	backgroundColor: `${
-		theme.palette.mode !== 'dark'
-			? 'var(--white--color)'
-			: 'var(--black--color)'
+		theme.palette.mode === 'dark'
+			? 'var(--black--color)'
+			: 'var(--white--color)'
 	}`,
+	backgroundImage: 'none',
 }));
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
