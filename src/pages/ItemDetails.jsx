@@ -11,7 +11,7 @@ const ItemDetails = () => {
     const [data, setData] = useState({});
 
     useEffect(() => {
-        const dataRef = ref(db, `/places/${collection}s/${id}`);
+        const dataRef = ref(db, `/places/${collection}/${id}`);
         return onValue(dataRef, (dbData) => {
             const loadedData = dbData.val();
             setData(loadedData);

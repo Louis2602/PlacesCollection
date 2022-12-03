@@ -61,7 +61,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        const dataRef = ref(db, `/accounts/${username}/favorites`);
+        const dataRef = ref(db, `/accounts/${username}/favorites/${id}`);
         return onValue(dataRef, (dbData) => {
             const loadedData = dbData.val();
             setIsFavorite(loadedData);

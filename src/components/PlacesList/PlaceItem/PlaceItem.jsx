@@ -71,7 +71,7 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        const dataRef = ref(db, `/accounts/${username}/favorites`);
+        const dataRef = ref(db, `/accounts/${username}/favorites/${id}`);
         return onValue(dataRef, (dbData) => {
             const loadedData = dbData.val();
             setIsFavorite(loadedData);
@@ -95,7 +95,9 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
 
     const handleFavorite = ({ id, username }) => {
         if (username) {
+            console.log(1);
             if (isFavorite) {
+                console.log(2);
                 remove(ref(db, `/accounts/${username}/favorites/${id}`));
                 setIsFavorite(false);
             } else {
@@ -104,6 +106,7 @@ const PlaceItem = ({ id, image, title, rating, address, description, type }) => 
                 };
                 update(ref(db), updates);
                 setIsFavorite(true);
+                console.log(3);
             }
         } else {
             enqueueSnackbar('Sign in to access!', {
