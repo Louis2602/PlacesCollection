@@ -25,9 +25,12 @@ const StyledBox = styled(Box)({
 	width: '100%',
 	height: '100%',
 });
-const StyledGrid = styled(Grid)({
+const StyledGrid = styled(Grid)(({ theme }) => ({
 	padding: '0 4rem',
-});
+	[theme.breakpoints.down('sm')]: {
+		padding: '0',
+	},
+}));
 const mapStyle = {
 	width: '100%',
 	height: '80vh',
@@ -129,73 +132,78 @@ const Map = () => {
 	}
 	return (
 		<Stack spacing={2} sx={{ width: '100%' }}>
-			<h1>Journey to your location</h1>
-			<StyledGrid container spacing={2}>
-				<Grid item xs={12} md={4}>
-					<Card sx={{ minWidth: 275 }}>
-						<CardContent>
-							<Typography
-								sx={{ fontSize: '2rem' }}
-								color='text.secondary'
-								gutterBottom
-								textAlign='center'
-							>
-								{title}
-							</Typography>
-							<Typography
-								variant='body2'
-								sx={{
-									fontStyle: 'italic',
-								}}
-							>
-								Address: {address}
-							</Typography>
-							<Typography variant='body2'>
-								Distance: {distance}
-							</Typography>
-							<Typography variant='body2'>
-								Duration: {duration}
-							</Typography>
-						</CardContent>
-						<CardActions>
-							<Button
-								size='small'
-								sx={{ marginLeft: 'auto', marginRight: '1rem' }}
-								onClick={calculateRoute}
-							>
-								Find Way
-							</Button>
-							<LocationSearching
-								sx={{ cursor: 'pointer' }}
-								onClick={() => {
-									map.panTo(center);
-									map.setZoom(18);
-								}}
-							/>
-						</CardActions>
-					</Card>
-				</Grid>
-				<Grid item xs={12} md={8}>
-					<StyledBox>
-						<GoogleMap
-							zoom={18}
-							center={center}
-							mapContainerStyle={mapStyle}
-							options={{
-								fullscreenControl: false,
-							}}
-							onLoad={(map) => setMap(map)}
-						>
-							<MarkerF draggable position={center} />
-							{directionsResponse && (
-								<DirectionsRenderer
-									directions={directionsResponse}
+			<Box sx={{ flexGrow: 1 }}>
+				<h1>Journey to your location</h1>
+				<StyledGrid container spacing={2}>
+					<Grid item xs={12} md={4}>
+						<Card>
+							<CardContent>
+								<Typography
+									sx={{ fontSize: '2rem' }}
+									color='text.secondary'
+									gutterBottom
+									textAlign='center'
+								>
+									{title}
+								</Typography>
+								<Typography
+									variant='body2'
+									sx={{
+										fontStyle: 'italic',
+									}}
+								>
+									Address: {address}
+								</Typography>
+								<Typography variant='body2'>
+									Distance: {distance}
+								</Typography>
+								<Typography variant='body2'>
+									Duration: {duration}
+								</Typography>
+							</CardContent>
+							<CardActions>
+								<Button
+									size='small'
+									sx={{
+										marginLeft: 'auto',
+										marginRight: '1rem',
+									}}
+									onClick={calculateRoute}
+								>
+									Find Way
+								</Button>
+								<LocationSearching
+									sx={{ cursor: 'pointer' }}
+									onClick={() => {
+										map.panTo(center);
+										map.setZoom(18);
+									}}
 								/>
-							)}
-						</GoogleMap>
-					</StyledBox>
-				</Grid>
-			</StyledGrid>
+							</CardActions>
+						</Card>
+					</Grid>
+					<Grid item xs={12} md={8}>
+						<StyledBox>
+							<GoogleMap
+								zoom={18}
+								center={center}
+								mapContainerStyle={mapStyle}
+								options={{
+									fullscreenControl: false,
+								}}
+								onLoad={(map) => setMap(map)}
+							>
+								<MarkerF draggable position={center} />
+								{directionsResponse && (
+									<DirectionsRenderer
+										directions={directionsResponse}
+									/>
+								)}
+							</GoogleMap>
+						</StyledBox>
+					</Grid>
+				</StyledGrid>
+			</Box>
 		</Stack>
 	);
 };
