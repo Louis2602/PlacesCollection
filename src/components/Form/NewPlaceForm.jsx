@@ -18,6 +18,7 @@ const StyledInputLabel = styled(InputLabel)({
     marginBottom: '0.5rem',
     color: 'inherit'
 });
+
 const StyledButton = styled(Button)({
     font: 'inherit',
     cursor: 'pointer',
@@ -92,7 +93,15 @@ const NewPlaceForm = ({ onAddPlace }) => {
                     <Grid item xs={12}>
                         <FormControl fullWidth>
                             <StyledInputLabel htmlFor="type">Type of place</StyledInputLabel>
-                            <Select open={open} fullWidth required value={type} label="Type of place" onChange={handleTypeChange} onClick={handleClick}>
+                            <Select
+                                inputProps={{ MenuProps: { disableScrollLock: true } }}
+                                open={open}
+                                fullWidth
+                                required
+                                value={type}
+                                label="Type of place"
+                                onChange={handleTypeChange}
+                                onClick={handleClick}>
                                 <MenuItem value="restaurant">Restaurants</MenuItem>
                                 <MenuItem value="hotel">Hotels</MenuItem>
                                 <MenuItem value="attraction">Attractions</MenuItem>

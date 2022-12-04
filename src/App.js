@@ -26,7 +26,8 @@ import {
     Sponsorships,
     Support,
     Favorites,
-    Shopping
+    Shopping,
+    Roulette
 } from './pages';
 import ScrollToTop from './ScrollToTop';
 import './App.css';
@@ -94,7 +95,8 @@ function App() {
                                     <Route path="/support" element={<Support />}></Route>
                                     <Route path="/destination" element={<Destination />}></Route>
                                     <Route path="/sponsorships" element={<Sponsorships />}></Route>
-                                    <Route path="/:error" element={<Error />}></Route>
+                                    <Route path="/roulette" element={<Roulette />}></Route>
+                                    <Route path="/*" element={<Error />}></Route>
                                 </Routes>
                             </StyledStack>
                         </Box>

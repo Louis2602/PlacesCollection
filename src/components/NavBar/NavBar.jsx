@@ -37,7 +37,8 @@ import {
     ModeNight,
     GridOn,
     PlaceOutlined,
-    FavoriteBorder
+    FavoriteBorder,
+    Casino
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -344,6 +345,15 @@ const StyledImg = styled('img')(({ theme }) => ({
     display: 'block'
 }));
 
+const StyledCasino = styled(Casino)(({ theme }) => ({
+    marginTop: '0.5rem',
+    color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
+    transition: '250ms all ease-in-out',
+    '&:hover': {
+        transform: 'scale(1.2)'
+    }
+}));
+
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     backgroundColor: 'var(--white--color)',
     color: 'var(--black--color)',
@@ -384,7 +394,6 @@ const NavBar = () => {
     const [offset, setOffset] = useState(0);
     useEffect(() => {
         const onScroll = () => setOffset(window.pageYOffset);
-        // clean up code
         window.removeEventListener('scroll', onScroll);
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
@@ -392,7 +401,7 @@ const NavBar = () => {
 
     const trigger = useScrollTrigger({
         disableHysteresis: true,
-        threshold: 100
+        threshold: 50
     });
 
     const handlerMode = () => {
@@ -666,6 +675,9 @@ const NavBar = () => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
+                    <Link to={'/roulette'}>
+                        <StyledCasino />
+                    </Link>
                     <ModeSwitch
                         sx={{
                             margin: '0.9rem',
