@@ -131,15 +131,20 @@ const StyledMenu = styled((props) => (
     />
 ))(({ theme }) => ({
     '& .MuiPaper-root': {
-        borderRadius: '15px',
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0,
+        borderBottomRightRadius: '15px',
+        borderBottomLeftRadius: '15px',
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
         '& .MuiMenu-list': {
             padding: 0,
             width: '180px'
         },
         '& .MuiMenuItem-root': {
-            borderBottom: '1px solid var(--light--gray)',
-            padding: 10
+            borderTop: '1px solid var(--light--gray)',
+            padding: 10,
+            color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
+            backgroundColor: 'inherit'
         }
     }
 }));
@@ -176,8 +181,10 @@ const StyledUserMenu = styled((props) => (
             width: '180px'
         },
         '& .MuiMenuItem-root': {
-            borderBottom: '1px solid var(--light--gray)',
-            padding: 10
+            borderTop: '1px solid var(--light--gray)',
+            padding: 10,
+            color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
+            backgroundColor: 'inherit'
         }
     },
     marginTop: '1.25rem',
@@ -253,6 +260,18 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     fontSize: '1.2rem',
     fontWeight: 'bold',
     borderRadius: 0
+}));
+
+const CollectTypography = styled(Typography)(({ theme }) => ({
+    transition: '0.4s all ease-in-out',
+    cursor: 'pointer',
+    color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
+    textDecoration: 'none',
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    borderRadius: 0,
+    display: 'flex',
+    alignItems: 'center'
 }));
 
 const StyledLink = styled(Link)({
@@ -333,7 +352,12 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     }
 }));
 
-const NavBar = ({ render }) => {
+function shadow({ trigger, open, openUser, mode }) {
+    const valid = trigger || open || openUser;
+    return { boxShadow: `${valid ? `5px 0px 27px -5px ${mode ? 'var(--white--color)' : 'var(--black--color)'}` : 'none'}` };
+}
+
+const NavBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
@@ -349,7 +373,6 @@ const NavBar = ({ render }) => {
     const [allowAnimation, setAllowAnimation] = useState(false);
 
     const [avatar, setAvatar] = useState('');
-
     useEffect(() => {
         const dataRef = ref(db, `/accounts/${username}/avatar`);
         return onValue(dataRef, (dbData) => {
@@ -357,6 +380,15 @@ const NavBar = ({ render }) => {
             setAvatar(loadedData);
         });
     });
+
+    const [offset, setOffset] = useState(0);
+    useEffect(() => {
+        const onScroll = () => setOffset(window.pageYOffset);
+        // clean up code
+        window.removeEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     const trigger = useScrollTrigger({
         disableHysteresis: true,
@@ -416,11 +448,14 @@ const NavBar = ({ render }) => {
     const openSm = Boolean(anchorSm);
     const openUser = Boolean(anchorElUser);
 
+    if (offset) {
+        handleClosePlaces();
+        handleCloseUserMenu();
+        setOffset(false);
+    }
+
     return (
-        <StyledAppBar
-            style={{
-                boxShadow: `${trigger ? `5px 0px 27px -5px ${mode ? 'var(--white--color)' : 'var(--black--color)'}` : 'none'}`
-            }}>
+        <StyledAppBar style={shadow({ trigger, open, openUser, mode })}>
             <StyledToolbar disableGutters>
                 {/* Small devices */}
                 <StyledIconButton size="large" edge="start" color="inherit" aria-label="menu" onClick={handleToggleSidebar}>
@@ -568,24 +603,17 @@ const NavBar = ({ render }) => {
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            paddingRight: '24px'
+                            justifyContent: 'center'
                         }}
                         onClick={handleOpenPlaces}>
-                        <StyledTypography
-                            sx={{
-                                paddingRight: 0
-                            }}>
-                            Collections
+                        <StyledTypography>
+                            <CollectTypography>
+                                Collections
+                                {allowAnimation ? !open ? <StyledExpandLess /> : <StyledExpandMore /> : <NormalExpandLess />}
+                            </CollectTypography>
                         </StyledTypography>
-                        {allowAnimation ? !open ? <StyledExpandLess /> : <StyledExpandMore /> : <NormalExpandLess />}
                     </Box>
-                    <StyledMenu
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={open}
-                        MenuListProps={{ onMouseLeave: handleClosePlaces }}
-                        onClose={handleClosePlaces}>
+                    <StyledMenu anchorEl={anchorEl} keepMounted open={open} onClose={handleClosePlaces}>
                         {places.map((place, idx) => (
                             <Grow in={open} key={idx} {...(open ? { timeout: 600 * idx } : {})}>
                                 <StyledLink to={place.link}>
@@ -654,15 +682,7 @@ const NavBar = ({ render }) => {
                         <Avatar src={avatar || null} alt="Avatar" onClick={(e) => handleOpenUserMenu(e, username)} sx={{ cursor: 'pointer' }} />
                     </Tooltip>
 
-                    <StyledUserMenu
-                        keepMounted
-                        anchorEl={anchorElUser}
-                        open={openUser}
-                        onClick={handleCloseUserMenu}
-                        MenuListProps={{
-                            onMouseLeave: handleCloseUserMenu
-                        }}
-                        onClose={handleCloseUserMenu}>
+                    <StyledUserMenu keepMounted anchorEl={anchorElUser} open={openUser} onClick={handleCloseUserMenu} onClose={handleCloseUserMenu}>
                         {userMenu.map((userItem, idx) => (
                             <Grow key={idx} in={openUser} {...(openUser ? { timeout: 600 * idx } : {})}>
                                 <StyledLink to={userItem.link} onClick={() => handleUserMenu(userItem.obj)}>

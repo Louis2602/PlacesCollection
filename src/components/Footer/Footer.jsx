@@ -158,7 +158,7 @@ const Footer = () => {
                         <StyledLogoATag href="/">PLACES COLLECTION</StyledLogoATag>
                     </StyledBotGrid>
                     <StyledBotGrid item xs={10} md={4}>
-                        <Typography sx={{ marginTop: '0.4rem' }}>© Lam Tran {new Date().getFullYear()}. All rights reserved.</Typography>
+                        <Typography sx={{ marginTop: '0.4rem' }}>© DSC Team {new Date().getFullYear()}. All rights reserved.</Typography>
                     </StyledBotGrid>
 
                     <StyledBotGrid item xs={8} md={4}>
