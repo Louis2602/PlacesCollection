@@ -20,3 +20,4 @@ export { default as Destination } from './Destination';
 export { default as Sponsorships } from './Sponsorships';
 export { default as Favorites } from './Favorites';
 export { default as Shopping } from './Shopping';
+export { default as Roulette } from './Roulette';

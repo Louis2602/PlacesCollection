@@ -182,11 +182,11 @@ const SignIn = () => {
         });
     };
 
-    const onSubmit = (data) => {
-        const dataRef = ref(db, `/accounts/${data.username}}`);
-        onValue(dataRef, (db) => {
+    const onSubmit = async (data) => {
+        const dataRef = ref(db, `/accounts/${data.username}`);
+        await onValue(dataRef, (db) => {
             const dbData = db.val();
-            if (dbData?.password === data.password) {
+            if (dbData.password === data.password) {
                 dispatch(signin(userData.username));
                 enqueueSnackbar('Sign in success!', {
                     variant: 'success',
