@@ -83,14 +83,14 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
         navigate(`/${type}s`);
     };
 
-    const handleFavorite = ({ id, username }) => {
+    const handleFavorite = ({ id, username, title }) => {
         if (username) {
             if (isFavorite) {
                 remove(ref(db, `/accounts/${username}/favorites/${id}`));
                 setIsFavorite(false);
             } else {
                 const updates = {
-                    [`/accounts/${username}/favorites/${id}`]: true
+                    [`/accounts/${username}/favorites/${id}`]: title
                 };
                 update(ref(db), updates);
                 setIsFavorite(true);
@@ -126,7 +126,7 @@ const PlaceItemDetails = ({ id, image, title, rating, address, description, type
                         <Typography sx={{ mx: 1 }}>{`(${rating})`}</Typography>
                     </Box>
                     <CardActions className={classes.root}>
-                        <StyledIconButton aria-label="add to favorites" onClick={() => handleFavorite({ id, username })}>
+                        <StyledIconButton aria-label="add to favorites" onClick={() => handleFavorite({ id, username, title })}>
                             {isFavorite ? <Favorite sx={{ color: 'red' }} /> : <FavoriteBorder />}
                         </StyledIconButton>
                         <StyledIconButton aira-label="marker on google maps" onClick={toggleGoogleMap}>

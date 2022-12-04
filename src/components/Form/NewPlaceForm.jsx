@@ -28,11 +28,12 @@ const StyledButton = styled(Button)({
     border: '1px solid var(--main--color)',
     borderRadius: '4px',
     fontWeight: 'bold',
-    '&:hover, active': {
+    '&:hover': {
         backgroundColor: 'var(--main--hover--color)',
         borderColor: 'var(--main--hover--color)'
     }
 });
+
 const StyledBox = styled(Box)({
     marginTop: '1rem',
     textAlign: 'right'

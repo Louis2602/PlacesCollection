@@ -122,6 +122,7 @@ const Profile = () => {
     const [dialogs, setDialogs] = useState(false);
 
     const username = useSelector((state) => state.counter.username);
+    const mode = useSelector((state) => state.theme.value);
 
     const [data, setData] = useState({});
 
@@ -179,7 +180,15 @@ const Profile = () => {
 
                     <StyledDialog disableScrollLock={true} open={dialogs} onClose={handleCloseDialog}>
                         <StyledDialogTitle>Change Avatar</StyledDialogTitle>
-                        <AvatarEdit width={280} height={280} textAlign="center" onClose={onClose} onCrop={onCrop} onBeforeFileLoad={onBeforeFileLoad} />
+                        <AvatarEdit
+                            labelStyle={{ color: mode ? 'var(--white--color)' : 'var(--black--color)', fontSize: '20px', fontWeight: '500' }}
+                            width={280}
+                            height={280}
+                            textAlign="center"
+                            onClose={onClose}
+                            onCrop={onCrop}
+                            onBeforeFileLoad={onBeforeFileLoad}
+                        />
                         <Box sx={{ paddingTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                             <Button sx={{ width: '8rem' }} onClick={handleCloseDialog} variant="contained">
                                 Cancel

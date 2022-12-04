@@ -175,7 +175,10 @@ const StyledUserMenu = styled((props) => (
     />
 ))(({ theme }) => ({
     '& .MuiPaper-root': {
-        borderRadius: '15px',
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0,
+        borderBottomRightRadius: '15px',
+        borderBottomLeftRadius: '15px',
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
         '& .MuiMenu-list': {
             padding: 0,
@@ -294,8 +297,8 @@ const StyledExpandMore = styled(ExpandMore)(({ theme }) => ({
     marginLeft: 'auto',
     transition: '0.4s all ease-in-out',
     color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
-    animation: 'spin 0.4s linear 1',
-    '@keyframes spin': {
+    animation: 'spiny 0.4s linear 1',
+    '@keyframes spiny': {
         '0%': { transform: 'rotate(180deg)' },
         '100%': { transform: 'rotate(0deg)' }
     }
@@ -306,8 +309,8 @@ const StyledExpandLess = styled(ExpandLess)(({ theme }) => ({
     marginLeft: 'auto',
     transition: '0.4s all ease-in-out',
     color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
-    animation: 'spin 0.4s linear 1',
-    '@keyframes spin': {
+    animation: 'spiny 0.4s linear 1',
+    '@keyframes spiny': {
         '0%': { transform: 'rotate(180deg)' },
         '100%': { transform: 'rotate(0deg)' }
     }
@@ -346,11 +349,14 @@ const StyledImg = styled('img')(({ theme }) => ({
 }));
 
 const StyledCasino = styled(Casino)(({ theme }) => ({
-    marginTop: '0.5rem',
+    display: 'block',
     color: `${theme.palette.mode === 'dark' ? 'var(--white--color)' : 'var(--black--color)'}`,
     transition: '250ms all ease-in-out',
     '&:hover': {
         transform: 'scale(1.2)'
+    },
+    [theme.breakpoints.down('md')]: {
+        display: 'none'
     }
 }));
 
@@ -546,7 +552,19 @@ const NavBar = () => {
                                     </Typography>
                                 </ListItem>
                             </MbBox>
-
+                            <MbBox>
+                                <ListItem onClick={handleToggleSidebar}>
+                                    <Casino
+                                        sx={{
+                                            marginRight: '8px',
+                                            fontSize: '2rem'
+                                        }}
+                                    />
+                                    <Typography variant="h6">
+                                        <StyledLink to={`/roulette`}>Roulette</StyledLink>
+                                    </Typography>
+                                </ListItem>
+                            </MbBox>
                             <MbBox>
                                 <ListItem>
                                     <ModeNight
@@ -616,7 +634,7 @@ const NavBar = () => {
                         }}
                         onClick={handleOpenPlaces}>
                         <StyledTypography>
-                            <CollectTypography>
+                            <CollectTypography component={'span'}>
                                 Collections
                                 {allowAnimation ? !open ? <StyledExpandLess /> : <StyledExpandMore /> : <NormalExpandLess />}
                             </CollectTypography>
